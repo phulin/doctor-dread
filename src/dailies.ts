@@ -342,12 +342,7 @@ function checkVolcanoQuest() {
         }
       },
     ],
-    [
-      $item`fused fuse`,
-      () => {
-        return have($item`Clara's bell`);
-      },
-    ],
+    [$item`fused fuse`, () => have($item`Clara's bell`) && !get("_claraBellUsed")],
     [
       $item`smooth velvet bra`,
       () => {
