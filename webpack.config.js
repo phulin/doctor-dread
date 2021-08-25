@@ -2,7 +2,9 @@
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const path = require("path");
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const { merge } = require("webpack-merge");
 
 const sharedConfig = {
@@ -41,11 +43,11 @@ const sharedConfig = {
 const scriptsConfig = merge(
   {
     entry: {
-      garbo: "./src/index.ts",
-      "garbo-combat": "./src/combat.ts",
+      duffo: "./src/index.ts",
+      "duffo-combat": "./src/combat.ts",
     },
     output: {
-      path: path.resolve(__dirname, "KoLmafia", "scripts", "garbage-collector"),
+      path: path.resolve(__dirname, "KoLmafia", "scripts", "duffel-collector"),
       filename: "[name].js",
       libraryTarget: "commonjs",
     },
@@ -53,13 +55,13 @@ const scriptsConfig = merge(
   sharedConfig
 );
 
-// handle the file creating the garbo UI html file
+// handle the file creating the duffo UI html file
 const otherRelayConfig = merge(
   {
-    entry: "./src/relay_garbo.ts",
+    entry: "./src/relay_duffo.ts",
     output: {
       path: path.resolve(__dirname, "KoLmafia", "relay"),
-      filename: "relay_garbo.js",
+      filename: "relay_duffo.js",
       libraryTarget: "commonjs",
     },
     module: {
@@ -76,13 +78,13 @@ const otherRelayConfig = merge(
   sharedConfig
 );
 
-// handle the react files used in the garbo html file
+// handle the react files used in the duffo html file
 const relayConfig = merge(
   {
     entry: "./src/relay/index.tsx",
     output: {
-      path: path.resolve(__dirname, "KoLmafia/relay/garbage-collector/"),
-      filename: "garbage-collector.js",
+      path: path.resolve(__dirname, "KoLmafia/relay/duffel-collector/"),
+      filename: "duffel-collector.js",
       libraryTarget: "commonjs",
     },
     module: {

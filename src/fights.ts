@@ -376,7 +376,7 @@ const embezzlerSources = [
   new EmbezzlerFight(
     "Professor MeatChain",
     () => false,
-    () => (have($familiar`Pocket Professor`) && !get<boolean>("_garbo_meatChain", false) ? 10 : 0),
+    () => (have($familiar`Pocket Professor`) && !get<boolean>("_duffo_meatChain", false) ? 10 : 0),
     () => {
       return;
     }
@@ -384,7 +384,7 @@ const embezzlerSources = [
   new EmbezzlerFight(
     "Professor WeightChain",
     () => false,
-    () => (have($familiar`Pocket Professor`) && !get<boolean>("_garbo_weightChain", false) ? 5 : 0),
+    () => (have($familiar`Pocket Professor`) && !get<boolean>("_duffo_weightChain", false) ? 5 : 0),
     () => {
       return;
     }
@@ -491,7 +491,7 @@ function getEmbezzlerFight(): EmbezzlerFight | null {
     potential > 0 &&
     get("_genieFightsUsed") < 3 &&
     userConfirm(
-      `Garbo has detected you have ${potential} potential ways to copy an Embezzler, but no way to start a fight with one. Should we wish for an Embezzler?`
+      `duffo has detected you have ${potential} potential ways to copy an Embezzler, but no way to start a fight with one. Should we wish for an Embezzler?`
     )
   ) {
     return new EmbezzlerFight(
@@ -545,7 +545,7 @@ export function dailyFights(): void {
       embezzlerSetup();
 
       // FIRST EMBEZZLER CHAIN
-      if (have($familiar`Pocket Professor`) && !get<boolean>("_garbo_meatChain", false)) {
+      if (have($familiar`Pocket Professor`) && !get<boolean>("_duffo_meatChain", false)) {
         const startLectures = get("_pocketProfessorLectures");
         const fightSource = getEmbezzlerFight();
         if (!fightSource) return;
@@ -566,14 +566,14 @@ export function dailyFights(): void {
           );
           log.initialEmbezzlersFought += 1 + get("_pocketProfessorLectures") - startLectures;
         }
-        set("_garbo_meatChain", true);
+        set("_duffo_meatChain", true);
         safeInterrupt();
       }
 
       startDigitize();
 
       // SECOND EMBEZZLER CHAIN
-      if (have($familiar`Pocket Professor`) && !get<boolean>("_garbo_weightChain", false)) {
+      if (have($familiar`Pocket Professor`) && !get<boolean>("_duffo_weightChain", false)) {
         const startLectures = get("_pocketProfessorLectures");
         const fightSource = getEmbezzlerFight();
         if (!fightSource) return;
@@ -597,7 +597,7 @@ export function dailyFights(): void {
           );
           log.initialEmbezzlersFought += 1 + get("_pocketProfessorLectures") - startLectures;
         }
-        set("_garbo_weightChain", true);
+        set("_duffo_weightChain", true);
         safeInterrupt();
       }
 
@@ -723,7 +723,7 @@ class FreeFight {
 
   runAll() {
     if (!this.available()) return;
-    if ((this.options.cost ? this.options.cost() : 0) > get("garbo_valueOfFreeFight", 2000)) return;
+    if ((this.options.cost ? this.options.cost() : 0) > get("duffo_valueOfFreeFight", 2000)) return;
     while (this.available()) {
       useFamiliar(
         this.options.familiar ? this.options.familiar() ?? freeFightFamiliar() : freeFightFamiliar()
@@ -754,7 +754,7 @@ class FreeRunFight extends FreeFight {
 
   runAll() {
     if (!this.available()) return;
-    if ((this.options.cost ? this.options.cost() : 0) > get("garbo_valueOfFreeFight", 2000)) return;
+    if ((this.options.cost ? this.options.cost() : 0) > get("duffo_valueOfFreeFight", 2000)) return;
     while (this.available()) {
       const runSource = findRun(this.options.familiar ? false : true);
       if (!runSource) break;
@@ -1623,10 +1623,10 @@ function setNepQuestChoicesAndPrepItems() {
   }
 
   if (get("lastEncounter") === "A Room With a View... Of a Bed" && lastDecision() === 5) {
-    set("_garbo_nepUsedRedDress", true);
+    set("_duffo_nepUsedRedDress", true);
   }
   if (get("lastEncounter") === "Basement Urges" && lastDecision() === 4) {
-    set("_garbo_nepUsedElectronicsKit", true);
+    set("_duffo_nepUsedElectronicsKit", true);
   }
   if (get("lastEncounter") === "Gone Kitchin'" && lastDecision() === 3) {
     print("Found Geraldine!", "blue");
@@ -1644,11 +1644,11 @@ function setNepQuestChoicesAndPrepItems() {
   } else if (quest === "woots") {
     retrieveItem($item`cosmetic football`);
 
-    if (!get<boolean>("_garbo_nepUsedElectronicsKit", false)) {
+    if (!get<boolean>("_duffo_nepUsedElectronicsKit", false)) {
       retrieveItem($item`electronics kit`);
       setChoice(1324, 4); // Investigate the basement
       setChoice(1328, 4); // Modify the living room lights
-    } else if (!get<boolean>("_garbo_nepUsedRedDress", false)) {
+    } else if (!get<boolean>("_duffo_nepUsedRedDress", false)) {
       retrieveItem($item`very small red dress`);
       setChoice(1324, 1); // Head upstairs
       setChoice(1325, 5); // Toss the red dress on the lamp

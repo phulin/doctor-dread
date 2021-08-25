@@ -23,7 +23,7 @@ export function main(): void {
 
   // load user prefences into json object to pass to react
   const settings = [];
-  const lines = fileToArray("garbo_settings.txt");
+  const lines = fileToArray("duffo_settings.txt");
   for (const i of Object.values(lines)) {
     const [, , name, type, description] = i.split("\t");
     settings.push({
@@ -34,7 +34,7 @@ export function main(): void {
     });
   }
 
-  writeln('<head><link rel="stylesheet" href="/garbage-collector/main.css"></head>');
+  writeln('<head><link rel="stylesheet" href="/duffel-collector/main.css"></head>');
   writeln('<div id="root"></div>');
 
   // add script that react calls when loaded to get kol data
@@ -48,5 +48,5 @@ export function main(): void {
   writeln("</script>");
 
   // include react scripts
-  writeln('<script src="./garbage-collector/garbage-collector.js"></script>');
+  writeln('<script src="./duffel-collector/duffel-collector.js"></script>');
 }

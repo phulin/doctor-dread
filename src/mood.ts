@@ -123,8 +123,8 @@ export function meatMood(urKels = false, embezzlers = false): Mood {
 export function freeFightMood(): Mood {
   const mood = new Mood();
 
-  if (!get<boolean>("_garbo_defectiveTokenAttempted", false)) {
-    set("_garbo_defectiveTokenAttempted", true);
+  if (!get<boolean>("_duffo_defectiveTokenAttempted", false)) {
+    set("_duffo_defectiveTokenAttempted", true);
     withStash($items`defective Game Grid token`, () => {
       if (!get("_defectiveTokenUsed") && have($item`defective Game Grid token`))
         use($item`defective Game Grid token`);

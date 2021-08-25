@@ -214,9 +214,9 @@ export function canContinue(): boolean {
 
 export function main(argString = ""): void {
   sinceKolmafiaRevision(20815);
-  if (!get("garbo_skipAscensionCheck", false) && (!get("kingLiberated") || myLevel() < 13)) {
+  if (!get("duffo_skipAscensionCheck", false) && (!get("kingLiberated") || myLevel() < 13)) {
     const proceedRegardless = userConfirm(
-      "Looks like your ascension may not be done yet. Are you sure you want to garbo?"
+      "Looks like your ascension may not be done yet. Are you sure you want to duffo?"
     );
     if (!proceedRegardless) abort();
   }
@@ -297,7 +297,7 @@ export function main(argString = ""): void {
       propertyManager.set({ mpAutoRecoveryTarget: mpTarget });
 
     cliExecute("mood apathetic");
-    cliExecute("ccs garbo");
+    cliExecute("ccs duffo");
     safeRestore();
 
     if (questStep("questM23Meatsmith") === -1) {

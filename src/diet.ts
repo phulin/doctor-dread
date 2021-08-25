@@ -332,9 +332,9 @@ export function runDiet(): void {
   fillLiver();
 
   if (!get("_distentionPillUsed") && 1 <= myInebriety()) {
-    if (!get<boolean>("garbo_skipPillCheck", false) && !have($item`distention pill`, 1)) {
+    if (!get<boolean>("duffo_skipPillCheck", false) && !have($item`distention pill`, 1)) {
       set(
-        "garbo_skipPillCheck",
+        "duffo_skipPillCheck",
         userConfirm(
           "You do not have any distention pills. Continue anyway? (Defaulting to no in 15 seconds)",
           15000,
@@ -343,7 +343,7 @@ export function runDiet(): void {
       );
     }
     if (
-      (have($item`distention pill`, 1) || !get<boolean>("garbo_skipPillCheck", false)) &&
+      (have($item`distention pill`, 1) || !get<boolean>("duffo_skipPillCheck", false)) &&
       !use($item`distention pill`)
     ) {
       print("WARNING: Out of distention pills.", "red");
@@ -351,9 +351,9 @@ export function runDiet(): void {
   }
 
   if (!get("_syntheticDogHairPillUsed") && 1 <= myInebriety()) {
-    if (!get<boolean>("garbo_skipPillCheck", false) && !have($item`synthetic dog hair pill`, 1)) {
+    if (!get<boolean>("duffo_skipPillCheck", false) && !have($item`synthetic dog hair pill`, 1)) {
       set(
-        "garbo_skipPillCheck",
+        "duffo_skipPillCheck",
         userConfirm(
           "You do not have any synthetic dog hair pills. Continue anyway? (Defaulting to no in 15 seconds)",
           15000,
@@ -362,7 +362,7 @@ export function runDiet(): void {
       );
     }
     if (
-      (have($item`synthetic dog hair pill`, 1) || !get<boolean>("garbo_skipPillCheck", false)) &&
+      (have($item`synthetic dog hair pill`, 1) || !get<boolean>("duffo_skipPillCheck", false)) &&
       !use($item`synthetic dog hair pill`)
     ) {
       print("WARNING: Out of synthetic dog hair pills.", "red");

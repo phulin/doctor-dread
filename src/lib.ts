@@ -65,8 +65,8 @@ export const baseMeat =
     : 250;
 
 export function safeInterrupt(): void {
-  if (get<boolean>("garbo_interrupt", false)) {
-    set("garbo_interrupt", false);
+  if (get<boolean>("duffo_interrupt", false)) {
+    set("duffo_interrupt", false);
     abort("User interrupt requested. Stopping Garbage Collector.");
   }
 }
