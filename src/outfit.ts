@@ -15,11 +15,11 @@ import {
   myFamiliar,
   myFullness,
   myInebriety,
-  myPrimestat,
   numericModifier,
   retrieveItem,
   toSlot,
   totalTurnsPlayed,
+  useFamiliar,
   visitUrl,
 } from "kolmafia";
 import {
@@ -30,7 +30,6 @@ import {
   $items,
   $slot,
   $slots,
-  $stat,
   get,
   getFoldGroup,
   getKramcoWandererChance,
@@ -40,6 +39,7 @@ import {
 import { pickBjorn } from "./bjorn";
 import { estimatedTurns, globalOptions } from "./globalvars";
 import { baseMeat, BonusEquipMode, Requirement, saleValue } from "./lib";
+import { findRun } from "./runs";
 
 const bestAdventuresFromPants =
   Item.all()
@@ -106,35 +106,36 @@ export function refreshLatte(): boolean {
 }
 
 export function tryFillLatte(): boolean {
+  const badConfig =
+    numericModifier($item`latte lovers member's mug`, "Familiar Weight") !== 5 ||
+    numericModifier($item`latte lovers member's mug`, "Item Drop") !== 20 ||
+    numericModifier($item`latte lovers member's mug`, "Meat Drop") !== 40;
+  const allValueUsed = get("_latteBanishUsed") && get("_latteDrinkUsed") && get("_latteCopyUsed");
   if (
     have($item`latte lovers member's mug`) &&
-    (numericModifier($item`latte lovers member's mug`, "Familiar Weight") !== 5 ||
-      numericModifier($item`latte lovers member's mug`, "Meat Drop") !== 40) &&
-    get("latteUnlocks").includes("cajun") &&
-    get("latteUnlocks").includes("rawhide") &&
+    (badConfig || allValueUsed) &&
     get("_latteRefillsUsed") < 3
   ) {
-    const latteIngredients = [
-      "cajun",
-      "rawhide",
-      get("latteUnlocks").includes("carrot")
-        ? "carrot"
-        : myPrimestat() === $stat`muscle`
-        ? "vanilla"
-        : myPrimestat() === $stat`mysticality`
-        ? "pumpkin spice"
-        : "cinnamon",
-    ].join(" ");
-    cliExecute(`latte refill ${latteIngredients}`);
+    if (
+      !(
+        get("latteUnlocks").includes("rawhide") &&
+        get("latteUnlocks").includes("carrot") &&
+        get("latteUnlocks").includes("cajun")
+      )
+    ) {
+      throw "Go make sure rawhide, carrot, cajun unlocked.";
+    }
+    cliExecute(`latte refill rawhide carrot cajun`);
   }
 
   return (
     numericModifier($item`latte lovers member's mug`, "Familiar Weight") === 5 &&
+    numericModifier($item`latte lovers member's mug`, "Item Drop") === 20 &&
     numericModifier($item`latte lovers member's mug`, "Meat Drop") === 40
   );
 }
 
-export function meatOutfit(
+export function nepOutfit(
   embezzlerUp: boolean,
   requirements: Requirement[] = [],
   sea?: boolean
@@ -147,7 +148,7 @@ export function meatOutfit(
   if (myInebriety() > inebrietyLimit()) {
     forceEquip.push($item`Drunkula's wineglass`);
   } else if (!embezzlerUp) {
-    if (getKramcoWandererChance() > 0.05 && have($item`Kramco Sausage-o-Matic™`)) {
+    if (getKramcoWandererChance() > 0.99 && have($item`Kramco Sausage-o-Matic™`)) {
       forceEquip.push($item`Kramco Sausage-o-Matic™`);
     }
     // TODO: Fix pointer finger ring construction.
@@ -180,36 +181,34 @@ export function meatOutfit(
     have($item`Buddy Bjorn`) && !forceEquip.some((item) => toSlot(item) === $slot`back`)
       ? $item`Buddy Bjorn`
       : $item`Crown of Thrones`;
-  const compiledRequirements = Requirement.merge([
+  let compiledRequirements = Requirement.merge([
     ...requirements,
-    new Requirement(
-      [
-        `${((embezzlerUp ? baseMeat + 750 : baseMeat) / 100).toFixed(2)} Meat Drop`,
-        `${embezzlerUp ? 0 : 0.72} Item Drop`,
-        ...additionalRequirements,
+    new Requirement([`5 Item Drop`, ...additionalRequirements], {
+      forceEquip,
+      preventEquip: [
+        ...$items`broken champagne bottle, unwrapped knock-off retro superhero cape`,
+        ...(embezzlerUp ? $items`cheap sunglasses` : []),
+        bjornAlike === $item`Buddy Bjorn` ? $item`Crown of Thrones` : $item`Buddy Bjorn`,
       ],
-      {
-        forceEquip,
-        preventEquip: [
-          ...$items`broken champagne bottle, unwrapped knock-off retro superhero cape`,
-          ...(embezzlerUp ? $items`cheap sunglasses` : []),
-          bjornAlike === $item`Buddy Bjorn` ? $item`Crown of Thrones` : $item`Buddy Bjorn`,
+      bonusEquip: new Map([
+        ...dropsItems(equipMode),
+        ...(embezzlerUp ? [] : pantsgiving()),
+        ...cheeses(embezzlerUp),
+        [
+          bjornAlike,
+          !bjornChoice.dropPredicate || bjornChoice.dropPredicate()
+            ? bjornChoice.meatVal() * bjornChoice.probability
+            : 0,
         ],
-        bonusEquip: new Map([
-          ...dropsItems(equipMode),
-          ...(embezzlerUp ? [] : pantsgiving()),
-          ...cheeses(embezzlerUp),
-          [
-            bjornAlike,
-            !bjornChoice.dropPredicate || bjornChoice.dropPredicate()
-              ? bjornChoice.meatVal() * bjornChoice.probability
-              : 0,
-          ],
-        ]),
-        preventSlot: $slots`crown-of-thrones, buddy-bjorn`,
-      }
-    ),
+      ]),
+      preventSlot: $slots`crown-of-thrones, buddy-bjorn`,
+    }),
   ]);
+
+  const freeRun = findRun(compiledRequirements);
+  if (freeRun?.familiar) useFamiliar(freeRun.familiar);
+  if (freeRun?.requirement) compiledRequirements = freeRun.requirement;
+  if (freeRun?.prepare) freeRun.prepare();
 
   maximizeCached(compiledRequirements.maximizeParameters(), compiledRequirements.maximizeOptions());
 
@@ -291,6 +290,7 @@ function cheeses(embezzlerUp: boolean) {
       )
     : [];
 }
+
 function snowSuit(equipMode: BonusEquipMode) {
   // Ignore for EMBEZZLER
   // Ignore for DMT, assuming mafia might get confused about the drop by the weird combats
@@ -303,6 +303,7 @@ function snowSuit(equipMode: BonusEquipMode) {
 
   return new Map<Item, number>([[$item`Snow Suit`, saleValue($item`carrot nose`) / 10]]);
 }
+
 function mayflowerBouquet(equipMode: BonusEquipMode) {
   // +40% meat drop 12.5% of the time (effectively 5%)
   // Drops flowers 50% of the time, wiki says 5-10 a day.
@@ -330,8 +331,9 @@ function mayflowerBouquet(equipMode: BonusEquipMode) {
     ],
   ]);
 }
+
 function dropsItems(equipMode: BonusEquipMode) {
-  const isFree = [BonusEquipMode.FREE, BonusEquipMode.DMT].some((mode) => mode === equipMode);
+  const isFree = [BonusEquipMode.FREE, BonusEquipMode.DMT].includes(equipMode);
   return new Map<Item, number>([
     [$item`mafia thumb ring`, !isFree ? 300 : 0],
     [$item`lucky gold ring`, 400],

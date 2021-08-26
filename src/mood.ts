@@ -1,16 +1,9 @@
 import {
   cliExecute,
-  getCampground,
   getClanLounge,
-  getFuel,
-  haveEffect,
-  haveSkill,
   itemAmount,
-  myClass,
   myEffects,
-  mySpleenUse,
   numericModifier,
-  spleenLimit,
   toSkill,
   use,
   useSkill,
@@ -29,56 +22,39 @@ import {
   set,
   Witchess,
 } from "libram";
-import { baseMeat, questStep, setChoice } from "./lib";
+import { questStep, setChoice } from "./lib";
 import { withStash } from "./clan";
-import { potionSetup } from "./potions";
 
 Mood.setDefaultOptions({
+  mpSources: [],
   songSlots: [
-    $effects`Polka of Plenty`,
-    $effects`Fat Leon's Phat Loot Lyric, Ur-Kel's Aria of Annoyance`,
+    $effects`Polka of Plenty, Ode to Booze`,
+    $effects`Fat Leon's Phat Loot Lyric`,
     $effects`Chorale of Companionship`,
     $effects`The Ballad of Richie Thingfinder`,
   ],
 });
 
-export function meatMood(urKels = false, embezzlers = false): Mood {
+export function itemMood(): Mood {
   const mood = new Mood();
-
-  mood.potion($item`How to Avoid Scams`, 3 * baseMeat);
-  mood.potion($item`resolution: be wealthier`, 0.3 * baseMeat);
-  mood.potion($item`resolution: be happier`, 0.15 * 0.45 * 0.8 * 200);
-  mood.potion($item`Flaskfull of Hollow`, 5);
 
   mood.skill($skill`Blood Bond`);
   mood.skill($skill`Leash of Linguini`);
   mood.skill($skill`Empathy of the Newt`);
 
   mood.skill($skill`The Polka of Plenty`);
-  mood.skill($skill`Disco Leer`);
-  mood.skill(urKels ? $skill`Ur-Kel's Aria of Annoyance` : $skill`Fat Leon's Phat Loot Lyric`);
+  mood.skill($skill`The Spirit of Taking`);
+  mood.skill($skill`Fat Leon's Phat Loot Lyric`);
   mood.skill($skill`Singer's Faithful Ocelot`);
   mood.skill($skill`The Spirit of Taking`);
   mood.skill($skill`Drescher's Annoying Noise`);
   mood.skill($skill`Pride of the Puffin`);
-  if (myClass() !== $class`Pastamancer`) mood.skill($skill`Bind Lasagmbie`);
-
-  if (haveSkill($skill`Sweet Synthesis`)) {
-    mood.effect($effect`Synthesis: Greed`, () => {
-      if (mySpleenUse() < spleenLimit()) cliExecute("synthesize greed");
-    });
-  }
-
-  if (getCampground()["Asdon Martin keyfob"] !== undefined) {
-    if (getFuel() < 37) cliExecute("asdonmartin fuel 1 pie man was not meant to eat");
-    mood.effect($effect`Driving Observantly`);
-  }
 
   if (have($item`Kremlin's Greatest Briefcase`)) {
-    mood.effect($effect`A View to Some Meat`, () => {
+    mood.effect($effect`Items Are Forever`, () => {
       if (get("_kgbClicksUsed") < 22) {
         const buffTries = Math.ceil((22 - get("_kgbClicksUsed")) / 3);
-        cliExecute(`Briefcase buff ${new Array<string>(buffTries).fill("meat").join(" ")}`);
+        cliExecute(`Briefcase buff ${new Array<string>(buffTries).fill("item").join(" ")}`);
       }
     });
   }
@@ -115,8 +91,6 @@ export function meatMood(urKels = false, embezzlers = false): Mood {
     }
   }
 
-  potionSetup(embezzlers);
-
   return mood;
 }
 
@@ -131,20 +105,13 @@ export function freeFightMood(): Mood {
     });
   }
 
-  if (!get("_glennGoldenDiceUsed")) {
-    if (have($item`Glenn's golden dice`)) use($item`Glenn's golden dice`);
-  }
-
   if (getClanLounge()["Clan pool table"] !== undefined) {
     while (get("_poolGames") < 3) cliExecute("pool aggressive");
   }
 
-  if (haveEffect($effect`Blue Swayed`) < 50) {
-    use(Math.ceil((50 - haveEffect($effect`Blue Swayed`)) / 10), $item`pulled blue taffy`);
-  }
   mood.potion($item`white candy heart`, 30);
 
-  const goodSongs = $skills`Chorale of Companionship, The Ballad of Richie Thingfinder, Ur-Kel's Aria of Annoyance, The Polka of Plenty`;
+  const goodSongs = $skills`Chorale of Companionship, The Ballad of Richie Thingfinder, The Polka of Plenty`;
   for (const effectName of Object.keys(myEffects())) {
     const effect = Effect.get(effectName);
     const skill = toSkill(effect);

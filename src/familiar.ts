@@ -1,34 +1,9 @@
-import {
-  familiarWeight,
-  haveEffect,
-  inebrietyLimit,
-  myFamiliar,
-  myInebriety,
-  weightAdjustment,
-} from "kolmafia";
+import { familiarWeight, haveEffect, myFamiliar, weightAdjustment } from "kolmafia";
 import { $effect, $familiar, $familiars, $item, $items, get, have } from "libram";
-import { argmax, fairyMultiplier, leprechaunMultiplier, saleValue } from "./lib";
+import { argmax, saleValue } from "./lib";
 
-let _meatFamiliar: Familiar;
-export function meatFamiliar(): Familiar {
-  if (!_meatFamiliar) {
-    if (
-      myInebriety() > inebrietyLimit() &&
-      have($familiar`Trick-or-Treating Tot`) &&
-      have($item`li'l pirate costume`)
-    ) {
-      _meatFamiliar = $familiar`Trick-or-Treating Tot`;
-    } else {
-      const bestLeps = Familiar.all()
-        .filter(have)
-        .sort((a, b) => leprechaunMultiplier(b) - leprechaunMultiplier(a));
-      const bestLepMult = leprechaunMultiplier(bestLeps[0]);
-      _meatFamiliar = bestLeps
-        .filter((familiar) => leprechaunMultiplier(familiar) === bestLepMult)
-        .sort((a, b) => fairyMultiplier(b) - fairyMultiplier(a))[0];
-    }
-  }
-  return _meatFamiliar;
+export function fairyFamiliar(): Familiar {
+  return $familiar`Jumpsuited Hound Dog`;
 }
 
 function myFamiliarWeight(familiar: Familiar | null = null) {

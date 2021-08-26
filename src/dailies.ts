@@ -34,7 +34,6 @@ import {
   $items,
   $skill,
   $skills,
-  $stat,
   $thrall,
   ChateauMantegna,
   get,
@@ -43,10 +42,9 @@ import {
   SongBoom,
   SourceTerminal,
 } from "libram";
-import { meatFamiliar } from "./familiar";
-import { baseMeat, coinmasterPrice, ensureEffect, saleValue, tryFeast } from "./lib";
+import { fairyFamiliar } from "./familiar";
+import { coinmasterPrice, ensureEffect, saleValue, tryFeast } from "./lib";
 import { withStash } from "./clan";
-import { estimatedTurns } from "./globalvars";
 import { refreshLatte } from "./outfit";
 
 export function dailySetup(): void {
@@ -90,8 +88,8 @@ function voterSetup(): void {
   ];
 
   const initPriority = new Map<string, number>([
-    ["Meat Drop: +30", 10],
-    ["Item Drop: +15", 9],
+    ["Item Drop: +15", 10],
+    ["Meat Drop: +30", 9],
     ["Familiar Experience: +2", 8],
     ["Adventures: +1", 7],
     ["Monster Level: +10", 5],
@@ -125,24 +123,6 @@ function voterSetup(): void {
 }
 
 function configureGear(): void {
-  if (have($familiar`Cornbeefadon`) && !have($item`amulet coin`)) {
-    useFamiliar($familiar`Cornbeefadon`);
-    use($item`box of Familiar Jacks`);
-  }
-
-  if (have($item`portable pantogram`) && !have($item`pantogram pants`)) {
-    retrieveItem($item`ten-leaf clover`);
-    retrieveItem($item`porquoise`);
-    retrieveItem($item`bubblin' crude`);
-    const m = new Map([
-      [$stat`Muscle`, 1],
-      [$stat`Mysticality`, 2],
-      [$stat`Moxie`, 3],
-    ]).get(myPrimestat());
-    visitUrl("inv_use.php?pwd&whichitem=9573");
-    visitUrl(`choice.php?whichchoice=1270&pwd&option=1&m=${m}&e=5&s1=5789,1&s2=706,1&s3=24,1`);
-  }
-
   if (have($item`Fourth of May Cosplay Saber`) && get("_saberMod") === 0) {
     // Get familiar weight.
     visitUrl("main.php?action=may4");
@@ -166,16 +146,16 @@ function prepFamiliars(): void {
   }
 
   if (have($item`mumming trunk`) && !get("_mummeryMods").includes("Meat Drop")) {
-    useFamiliar(meatFamiliar());
+    useFamiliar(fairyFamiliar());
     cliExecute("mummery meat");
   }
 
   if (
     have($item`mumming trunk`) &&
     !get("_mummeryMods").includes("Item Drop") &&
-    have($familiar`Trick-or-Treating Tot`)
+    have($familiar`Jumpsuited Hound Dog`)
   ) {
-    useFamiliar($familiar`Trick-or-Treating Tot`);
+    useFamiliar($familiar`Jumpsuited Hound Dog`);
     cliExecute("mummery item");
   }
 
@@ -184,7 +164,7 @@ function prepFamiliars(): void {
       if (have($item`moveable feast`))
         [
           ...$familiars`Pocket Professor, Frumious Bandersnatch, Pair of Stomping Boots`,
-          meatFamiliar(),
+          fairyFamiliar(),
         ].forEach(tryFeast);
     });
   }
@@ -203,25 +183,21 @@ function dailyBuffs(): void {
     have($item`Clan VIP Lounge key`) &&
     getClanLounge()["Clan Carnival Game"] !== undefined
   ) {
-    cliExecute("fortune buff meat");
-  }
-
-  if (!get("demonSummoned") && get("demonName2", false) && get("questL11Manor") === "finished") {
-    cliExecute("summon Preternatural Greed");
+    cliExecute("fortune buff familiar");
   }
 
   while (SourceTerminal.have() && SourceTerminal.getEnhanceUses() < 3) {
-    cliExecute("terminal enhance meat.enh");
+    cliExecute("terminal enhance item.enh");
   }
   if (!get("_madTeaParty")) {
-    retrieveItem($item`filthy knitted dread sack`);
+    retrieveItem($item`reinforced beaded headband`);
     ensureEffect($effect`Down the Rabbit Hole`);
-    cliExecute("hatter 22");
+    cliExecute("hatter 24");
   }
 }
 
 function configureMisc(): void {
-  if (SongBoom.songChangesLeft() > 0) SongBoom.setSong("Total Eclipse of Your Meat");
+  if (SongBoom.songChangesLeft() > 0) SongBoom.setSong("Food Vibrations");
   if (SourceTerminal.have()) {
     SourceTerminal.educate([$skill`Extract`, $skill`Digitize`]);
     SourceTerminal.enquiry($effect`familiar.enq`);
@@ -232,31 +208,16 @@ function configureMisc(): void {
   }
 
   if (get("_VYKEACompanionLevel") === 0) {
-    const vykeas: [number, number][] = [
-      [1, 0],
-      [2, 1],
-      [3, 11],
-    ]; //excluding 4 and 5 as per bean's suggestion
-    const vykeaProfit = (level: number, cost: number) =>
-      estimatedTurns() * baseMeat * 0.1 * level -
-      5 * mallPrice($item`VYKEA rail`) +
-      cost * mallPrice($item`VYKEA dowel`) +
-      5 * mallPrice($item`VYKEA plank`) +
-      1 * mallPrice($item`VYKEA hex key`);
-
-    if (vykeas.some(([level, cost]) => vykeaProfit(level, cost) > 0)) {
-      const level = vykeas.sort((a, b) => vykeaProfit(...b) - vykeaProfit(...a))[0][0];
-      retrieveItem($item`VYKEA hex key`);
-      cliExecute(`create level ${level} couch`);
-    }
+    retrieveItem($item`VYKEA hex key`);
+    cliExecute(`create level 3 lamp`);
   }
 
   if (
     myClass() === $class`Pastamancer` &&
     myThrall() !== $thrall`Lasagmbie` &&
-    haveSkill($skill`Bind Lasagmbie`)
+    haveSkill($skill`Bind Spice Ghost`)
   ) {
-    useSkill($skill`Bind Lasagmbie`);
+    useSkill($skill`Bind Spice Ghost`);
   }
 
   if (
@@ -427,7 +388,7 @@ function gin(): void {
       get("timeSpinnerMedals") >= 5 &&
       get("_timeSpinnerMinutesUsed") <= 8
     ) {
-      cliExecute("FarFuture drink");
+      cliExecute("FarFuture mall");
     }
   }
 }

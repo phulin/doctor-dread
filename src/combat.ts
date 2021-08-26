@@ -11,6 +11,7 @@ import {
   myClass,
   myFamiliar,
   myFury,
+  myLocation,
   myMp,
   mySoulsauce,
   print,
@@ -21,10 +22,13 @@ import {
   $class,
   $effect,
   $familiar,
+  $familiars,
   $item,
+  $location,
   $monster,
   $skill,
   $slot,
+  Bandersnatch,
   get,
   have,
   Macro as LibramMacro,
@@ -47,8 +51,16 @@ function shouldRedigitize() {
 
 export class Macro extends LibramMacro {
   submit(): string {
-    print(this.components.join("\n"));
+    print(this.components.join("; "));
     return super.submit();
+  }
+
+  pickpocket(): Macro {
+    return this.step("pickpocket");
+  }
+
+  static pickpocket(): Macro {
+    return new Macro().pickpocket();
   }
 
   tryHaveSkill(skill: Skill | null): Macro {
@@ -145,8 +157,6 @@ export class Macro extends LibramMacro {
       get("retroCapeWashingInstructions") === "kill" &&
       itemType(equippedItem($slot`weapon`)) === "pistol";
 
-    const willCrit = sealClubberSetup || opsSetup || katanaSetup || capeSetup;
-
     return this.externalIf(
       shouldRedigitize(),
       Macro.if_(
@@ -154,47 +164,40 @@ export class Macro extends LibramMacro {
         Macro.trySkill($skill`Digitize`)
       )
     )
-      .tryHaveSkill($skill`Sing Along`)
       .externalIf(
-        myAdventures() < 150 && have($skill`Meteor Lore`) && get("_meteorShowerUses") < 5,
-        Macro.if_(
-          `monstername ${$monster`Knob Goblin Embezzler`}`,
-          Macro.trySkill($skill`Meteor Shower`)
-        )
+        have($skill`Meteor Lore`) &&
+          get("_meteorShowerUses") < 5 &&
+          $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()) &&
+          !Bandersnatch.canRunaway(),
+        Macro.if_(`monstername jock`, Macro.trySkill($skill`Meteor Shower`))
       )
       .externalIf(
         !have($effect`On the Trail`) && have($skill`Transcendent Olfaction`),
-        Macro.if_("monstername garbage tourist", Macro.trySkill($skill`Transcendent Olfaction`))
+        Macro.if_("monstername jock", Macro.trySkill($skill`Transcendent Olfaction`))
       )
       .externalIf(
         get("_gallapagosMonster") !== $monster`garbage tourist` &&
           have($skill`Gallapagosian Mating Call`),
-        Macro.if_("monstername garbage tourist", Macro.trySkill($skill`Gallapagosian Mating Call`))
+        Macro.if_("monstername jock", Macro.trySkill($skill`Gallapagosian Mating Call`))
       )
       .externalIf(
         !get("_latteCopyUsed") &&
-          (get("_latteMonster") !== $monster`garbage tourist` ||
+          (get("_latteMonster") !== $monster`jock` ||
             getCounters("Latte Monster", 0, 30).trim() === "") &&
           have($item`latte lovers member's mug`),
-        Macro.if_("monstername garbage tourist", Macro.trySkill($skill`Offer Latte to Opponent`))
+        Macro.if_("monstername jock", Macro.trySkill($skill`Offer Latte to Opponent`))
       )
       .externalIf(
         get("_feelNostalgicUsed") < 3 &&
-          get("lastCopyableMonster") === $monster`garbage tourist` &&
+          get("lastCopyableMonster") === $monster`jock` &&
           have($skill`Feel Nostalgic`),
-        Macro.if_("!monstername garbage tourist", Macro.trySkill($skill`Feel Nostalgic`))
+        Macro.if_("!monstername jock", Macro.trySkill($skill`Feel Nostalgic`))
       )
-      .meatStasis(willCrit)
+      .meatStasis(true)
       .externalIf(sealClubberSetup, Macro.trySkill($skill`Furious Wallop`))
       .externalIf(opsSetup, Macro.trySkill($skill`Throw Shield`).attack())
       .externalIf(katanaSetup, Macro.trySkill($skill`Summer Siesta`))
       .externalIf(capeSetup, Macro.trySkill($skill`Precision Shot`))
-      .externalIf(
-        myClass() === $class`Disco Bandit`,
-        Macro.trySkill($skill`Disco Dance of Doom`)
-          .trySkill($skill`Disco Dance II: Electric Boogaloo`)
-          .trySkill($skill`Disco Dance 3: Back in the Habit`)
-      )
       .kill();
   }
 
@@ -279,8 +282,7 @@ export class Macro extends LibramMacro {
   }
 
   startCombat(): Macro {
-    return this.tryHaveSkill($skill`Sing Along`)
-      .tryHaveSkill($skill`Curse of Weaksauce`)
+    return this.tryHaveSkill($skill`Curse of Weaksauce`)
       .trySkill($skill`Pocket Crumbs`)
       .trySkill($skill`Extract`)
       .tryHaveItem($item`porquoise-handled sixgun`)
@@ -314,12 +316,35 @@ export class Macro extends LibramMacro {
     return new Macro().startCombat();
   }
 
+  tryFreeKill(): Macro {
+    return this.externalIf(
+      !(
+        myLocation() === $location`The Neverending Party` && get("_neverendingPartyFreeTurns") < 10
+      ) && !(myLocation() === $location`The Deep Machine Tunnels` && get("_machineTunnelsAdv") < 5),
+      Macro.externalIf(
+        haveEquipped($item`Lil' Doctor™ bag`) && get("_chestXRayUsed") < 3,
+        Macro.skill($skill`Chest X-Ray`)
+      )
+        .externalIf(
+          haveEquipped($item`The Jokester's gun`) && !get("_firedJokestersGun"),
+          Macro.skill($skill`Fire the Jokester's Gun`)
+        )
+        .externalIf(get("_shatteringPunchUsed") < 3, Macro.skill($skill`Shattering Punch`))
+        .externalIf(!get("_gingerbreadMobHitUsed"), Macro.skill($skill`Gingerbread Mob Hit`))
+    );
+  }
+
+  static tryFreeKill(): Macro {
+    return new Macro().tryFreeKill();
+  }
+
   kill(): Macro {
     return (
-      this.externalIf(
-        myClass() === $class`Sauceror` && have($skill`Curse of Weaksauce`),
-        Macro.trySkill($skill`Curse of Weaksauce`)
-      )
+      this.tryFreeKill()
+        .externalIf(
+          myClass() === $class`Sauceror` && have($skill`Curse of Weaksauce`),
+          Macro.trySkill($skill`Curse of Weaksauce`)
+        )
         .externalIf(
           !(myClass() === $class`Sauceror` && have($skill`Curse of Weaksauce`)),
           Macro.while_("!pastround 20 && !hppercentbelow 25 && !missed 1", Macro.attack())
