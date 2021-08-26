@@ -69,7 +69,7 @@ import {
 import { acquire } from "./acquire";
 import { withStash } from "./clan";
 import { Macro, withMacro } from "./combat";
-import { freeFightFamiliar, fairyFamiliar } from "./familiar";
+import { fairyFamiliar, freeFightFamiliar } from "./familiar";
 import {
   clamp,
   determineDraggableZoneAndEnsureAccess,
