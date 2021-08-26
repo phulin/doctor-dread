@@ -119,7 +119,7 @@ function nepTurn() {
 
     if (!get("banishedMonsters").includes("human musk")) retrieveItem($item`human musk`);
 
-    adventureMacro(
+    adventureMacroAuto(
       location,
       Macro.pickpocket()
         .if_(

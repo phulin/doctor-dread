@@ -82,7 +82,7 @@ function fillStomach() {
 
   const count = fullnessLimit() - myFullness();
   if (getWorkshed() === $item`portable Mayo Clinic` && myFullness() < fullnessLimit()) {
-    mindMayo(Mayo.nex, count);
+    mindMayo(Mayo.flex, count);
   }
   // TODO: use munchies pills?
   acquire(count, $item`Special Seasoning`, MPA, false);

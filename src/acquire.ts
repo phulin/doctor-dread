@@ -34,14 +34,14 @@ export function acquire(qty: number, item: Item, maxPrice?: number, throwOnFail 
   if (maxPrice === undefined) maxPrice = priceCaps[item.name];
   if (maxPrice === undefined) throw `No price cap for ${item.name}.`;
 
-  print(`Trying to acquire ${qty} ${item.plural}; max price ${maxPrice.toFixed(0)}.`, "green");
-
   if (qty * mallPrice(item) > 1000000) throw "bad get!";
 
   const startAmount = itemAmount(item);
 
   let remaining = qty - startAmount;
   if (remaining <= 0) return qty;
+
+  print(`Trying to acquire ${qty} ${item.plural}; max price ${maxPrice.toFixed(0)}.`, "green");
 
   const getCloset = Math.min(remaining, closetAmount(item));
   if (!takeCloset(getCloset, item) && throwOnFail) throw "failed to remove from closet";
