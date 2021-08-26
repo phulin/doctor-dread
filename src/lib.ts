@@ -277,14 +277,6 @@ function testZoneAndUsePotionToAccess() {
     forbiddenZones.push("Spring Break Beach");
   }
 
-  zonePotions.forEach((place) => {
-    if (guzzlZone.zone === place.zone && !have(place.effect)) {
-      if (!have(place.potion)) {
-        buy(1, place.potion, 10000);
-      }
-      use(1, place.potion);
-    }
-  });
   const blacklist = $locations`The Oasis, The Bubblin' Caldera, Barrrney's Barrr, The F'c'le, The Poop Deck, Belowdecks, 8-Bit Realm, Madness Bakery, The Secret Government Laboratory`;
   if (
     forbiddenZones.includes(guzzlZone.zone) ||

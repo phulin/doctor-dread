@@ -22,13 +22,11 @@ import {
   $class,
   $effect,
   $familiar,
-  $familiars,
   $item,
   $location,
   $monster,
   $skill,
   $slot,
-  Bandersnatch,
   get,
   have,
   Macro as LibramMacro,
@@ -164,13 +162,6 @@ export class Macro extends LibramMacro {
         Macro.trySkill($skill`Digitize`)
       )
     )
-      .externalIf(
-        have($skill`Meteor Lore`) &&
-          get("_meteorShowerUses") < 5 &&
-          $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()) &&
-          !Bandersnatch.canRunaway(),
-        Macro.if_(`monstername jock`, Macro.trySkill($skill`Meteor Shower`))
-      )
       .externalIf(
         !have($effect`On the Trail`) && have($skill`Transcendent Olfaction`),
         Macro.if_("monstername jock", Macro.trySkill($skill`Transcendent Olfaction`))
@@ -340,11 +331,10 @@ export class Macro extends LibramMacro {
 
   kill(): Macro {
     return (
-      this.tryFreeKill()
-        .externalIf(
-          myClass() === $class`Sauceror` && have($skill`Curse of Weaksauce`),
-          Macro.trySkill($skill`Curse of Weaksauce`)
-        )
+      this.externalIf(
+        myClass() === $class`Sauceror` && have($skill`Curse of Weaksauce`),
+        Macro.trySkill($skill`Curse of Weaksauce`)
+      )
         .externalIf(
           !(myClass() === $class`Sauceror` && have($skill`Curse of Weaksauce`)),
           Macro.while_("!pastround 20 && !hppercentbelow 25 && !missed 1", Macro.attack())

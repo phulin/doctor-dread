@@ -1,7 +1,6 @@
 import {
   adv1,
   availableAmount,
-  booleanModifier,
   chatPrivate,
   cliExecute,
   equip,
@@ -66,7 +65,6 @@ import {
   TunnelOfLove,
   Witchess,
 } from "libram";
-import { acquire } from "./acquire";
 import { withStash } from "./clan";
 import { Macro, withMacro } from "./combat";
 import { fairyFamiliar, freeFightFamiliar } from "./familiar";
@@ -76,7 +74,6 @@ import {
   draggableFight,
   ensureEffect,
   kramcoGuaranteed,
-  mapMonster,
   propertyManager,
   questStep,
   Requirement,
@@ -86,12 +83,7 @@ import {
   sum,
 } from "./lib";
 import { freeFightMood, itemMood } from "./mood";
-import {
-  familiarWaterBreathingEquipment,
-  freeFightOutfit,
-  nepOutfit,
-  waterBreathingEquipment,
-} from "./outfit";
+import { freeFightOutfit } from "./outfit";
 import { estimatedTurns, log } from "./globalvars";
 
 function checkFax(): boolean {
@@ -358,14 +350,17 @@ function chainSetup() {
   itemMood().execute(estimatedTurns());
   safeRestore();
   freeFightMood().execute(50);
-  withStash($items`Platinum Yendorian Express Card, Bag o' Tricks`, () => {
-    if (have($item`Platinum Yendorian Express Card`) && !get("expressCardUsed")) {
-      use($item`Platinum Yendorian Express Card`);
-    }
-    if (have($item`Bag o' Tricks`) && !get("_bagOTricksUsed")) {
-      use($item`Bag o' Tricks`);
-    }
-  });
+  if (!get<boolean>("_duffo_pyecUsed", false)) {
+    withStash($items`Platinum Yendorian Express Card, Bag o' Tricks`, () => {
+      if (have($item`Platinum Yendorian Express Card`) && !get("expressCardUsed")) {
+        use($item`Platinum Yendorian Express Card`);
+      }
+      if (have($item`Bag o' Tricks`) && !get("_bagOTricksUsed")) {
+        use($item`Bag o' Tricks`);
+      }
+      set("_duffo_pyecUsed", true);
+    });
+  }
   if (have($item`License to Chill`) && !get("_licenseToChillUsed")) use($item`License to Chill`);
 
   if (SourceTerminal.have()) SourceTerminal.educate([$skill`Extract`, $skill`Digitize`]);
@@ -447,7 +442,7 @@ export function dailyFights(): void {
         const fightSource = getCopierFight();
         if (!fightSource) return;
         useFamiliar($familiar`Pocket Professor`);
-        nepOutfit(true, [
+        freeFightOutfit([
           new Requirement([], { forceEquip: $items`Pocket Professor memory chip` }),
         ]);
         if (
@@ -513,33 +508,17 @@ export function dailyFights(): void {
               else useFamiliar($familiar`Reanimated Reanimator`);
             }
 
-            if (
-              nextFight.draggable &&
-              !get("_envyfishEggUsed") &&
-              (booleanModifier("Adventure Underwater") || waterBreathingEquipment.some(have)) &&
-              (booleanModifier("Underwater Familiar") ||
-                familiarWaterBreathingEquipment.some(have)) &&
-              (have($effect`Fishy`) || (have($item`fishy pipe`) && !get("_fishyPipeUsed"))) &&
-              !have($item`envyfish egg`)
-            ) {
-              setLocation($location`The Briny Deeps`);
-              nepOutfit(true, nextFight.requirements, true);
-              if (get("questS01OldGuy") === "unstarted") {
-                visitUrl("place.php?whichplace=sea_oldman&action=oldman_oldman");
-              }
-              retrieveItem($item`pulled green taffy`);
-              if (!have($effect`Fishy`)) use($item`fishy pipe`);
-              nextFight.run({ location: $location`The Briny Deeps` });
-            } else if (nextFight.draggable) {
+            if (nextFight.draggable) {
+              print(`RUNNING NEXT FIGHT: ${nextFight.name}.`, "blue");
               const type =
                 nextFight.name === "Backup" ? draggableFight.BACKUP : draggableFight.WANDERER;
               const location = determineDraggableZoneAndEnsureAccess(type);
               setLocation(location);
-              nepOutfit(true, nextFight.requirements);
+              freeFightOutfit(nextFight.requirements);
               nextFight.run({ location });
             } else {
               setLocation($location`Noob Cave`);
-              nepOutfit(true, nextFight.requirements);
+              freeFightOutfit(nextFight.requirements);
               nextFight.run({ location: $location`Noob Cave` });
             }
           }
@@ -905,58 +884,10 @@ const freeFightSources = [
     }
   ),
 
-  new FreeFight(
-    () => (have($familiar`Machine Elf`) ? clamp(5 - get("_machineTunnelsAdv"), 0, 5) : 0),
-    () => {
-      propertyManager.setChoices({
-        1119: 6, //escape DMT
-      });
-      const thought =
-        saleValue($item`abstraction: certainty`) >= saleValue($item`abstraction: thought`);
-      const action = saleValue($item`abstraction: joy`) >= saleValue($item`abstraction: action`);
-      const sensation =
-        saleValue($item`abstraction: motion`) >= saleValue($item`abstraction: sensation`);
-
-      if (thought) {
-        acquire(1, $item`abstraction: thought`, saleValue($item`abstraction: certainty`), false);
-      }
-      if (action) {
-        acquire(1, $item`abstraction: action`, saleValue($item`abstraction: joy`), false);
-      }
-      if (sensation) {
-        acquire(1, $item`abstraction: sensation`, saleValue($item`abstraction: motion`), false);
-      }
-      adventureMacro(
-        $location`The Deep Machine Tunnels`,
-        Macro.externalIf(
-          thought,
-          Macro.if_(
-            "monstername Perceiver of Sensations",
-            Macro.tryItem($item`abstraction: thought`)
-          )
-        )
-          .externalIf(
-            action,
-            Macro.if_("monstername Thinker of Thoughts", Macro.tryItem($item`abstraction: action`))
-          )
-          .externalIf(
-            sensation,
-            Macro.if_(
-              "monstername Performer of Actions",
-              Macro.tryItem($item`abstraction: sensation`)
-            )
-          )
-          .basicCombat()
-      );
-    },
-    {
-      familiar: () => $familiar`Machine Elf`,
-    }
-  ),
-
   // 28	5	0	0	Witchess pieces	must have a Witchess Set; can copy for more
+  // Save one for digitizing later?
   new FreeFight(
-    () => (Witchess.have() ? clamp(5 - Witchess.fightsDone(), 0, 5) : 0),
+    () => (Witchess.have() ? clamp(4 - Witchess.fightsDone(), 0, 4) : 0),
     () => Witchess.fightPiece(bestWitchessPiece)
   ),
 
@@ -982,64 +913,6 @@ const freeFightSources = [
         $location`The Neverending Party`,
         Macro.trySkill($skill`Feel Pride`).basicCombat()
       );
-    },
-    {
-      requirements: () => [
-        new Requirement(
-          [
-            ...(get("_questPartyFairQuest") === "trash" ? ["100 Item Drop"] : []),
-            ...(get("_questPartyFairQuest") === "dj" ? ["100 Meat Drop"] : []),
-          ],
-          {
-            forceEquip: [
-              ...(have($item`January's Garbage Tote`) ? $items`makeshift garbage shirt` : []),
-              ...(get("_questPartyFairQuest") === "woots" ? $items`cosmetic football` : []),
-            ],
-          }
-        ),
-      ],
-    }
-  ),
-
-  // Get a li'l ninja costume for 150% item drop
-  new FreeFight(
-    () =>
-      !have($item`li'l ninja costume`) &&
-      have($familiar`Trick-or-Treating Tot`) &&
-      !get("_firedJokestersGun") &&
-      have($item`The Jokester's gun`) &&
-      questStep("questL08Trapper") >= 2,
-    () =>
-      adventureMacro(
-        $location`Lair of the Ninja Snowmen`,
-        Macro.skill($skill`Fire the Jokester's Gun`).abort()
-      ),
-    {
-      requirements: () => [new Requirement([], { forceEquip: $items`The Jokester's gun` })],
-    }
-  ),
-
-  // Fallback for li'l ninja costume if Lair of the Ninja Snowmen is unavailable
-  new FreeFight(
-    () =>
-      !have($item`li'l ninja costume`) &&
-      have($familiar`Trick-or-Treating Tot`) &&
-      !get("_firedJokestersGun") &&
-      have($item`The Jokester's gun`) &&
-      have($skill`Comprehensive Cartography`) &&
-      get("_monstersMapped") < 3,
-    () => {
-      try {
-        Macro.skill($skill`Fire the Jokester's Gun`)
-          .abort()
-          .setAutoAttack();
-        mapMonster($location`The Haiku Dungeon`, $monster`amateur ninja`);
-      } finally {
-        setAutoAttack(0);
-      }
-    },
-    {
-      requirements: () => [new Requirement([], { forceEquip: $items`The Jokester's gun` })],
     }
   ),
 ];

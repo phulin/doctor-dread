@@ -37,6 +37,7 @@ import {
   maximizeCached,
 } from "libram";
 import { pickBjorn } from "./bjorn";
+import { fairyFamiliar } from "./familiar";
 import { estimatedTurns, globalOptions } from "./globalvars";
 import { baseMeat, BonusEquipMode, Requirement, saleValue } from "./lib";
 import { findRun } from "./runs";
@@ -206,7 +207,11 @@ export function nepOutfit(
   ]);
 
   const freeRun = findRun(compiledRequirements);
-  if (freeRun?.familiar) useFamiliar(freeRun.familiar);
+  if (freeRun?.familiar) {
+    useFamiliar(freeRun.familiar);
+  } else {
+    useFamiliar(fairyFamiliar());
+  }
   if (freeRun?.requirement) compiledRequirements = freeRun.requirement;
   if (freeRun?.prepare) freeRun.prepare();
 
@@ -335,7 +340,7 @@ function mayflowerBouquet(equipMode: BonusEquipMode) {
 function dropsItems(equipMode: BonusEquipMode) {
   const isFree = [BonusEquipMode.FREE, BonusEquipMode.DMT].includes(equipMode);
   return new Map<Item, number>([
-    [$item`mafia thumb ring`, !isFree ? 300 : 0],
+    [$item`mafia thumb ring`, !isFree ? 500 : 0],
     [$item`lucky gold ring`, 400],
     [$item`Mr. Cheeng's spectacles`, 250],
     [$item`pantogram pants`, get("_pantogramModifier").includes("Drops Items") ? 100 : 0],

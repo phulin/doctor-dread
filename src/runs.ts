@@ -1,5 +1,6 @@
 import { getWorkshed, restoreMp, retrieveItem, visitUrl } from "kolmafia";
 import {
+  $effect,
   $familiar,
   $item,
   $items,
@@ -8,10 +9,9 @@ import {
   get,
   have,
   Macro,
-  Mood,
   set,
 } from "libram";
-import { Requirement } from "./lib";
+import { ensureEffect, Requirement } from "./lib";
 
 export class FreeRun {
   name: string;
@@ -107,7 +107,7 @@ export function findRun(currentRequirement: Requirement): {
         requirement: new Requirement(["100 Familiar Weight"], {}),
         prepare: () => {
           if (runFamiliar === $familiar`Frumious Bandersnatch`) {
-            new Mood().skill($skill`The Ode to Booze`).execute();
+            ensureEffect($effect`Ode to Booze`);
           }
         },
       };

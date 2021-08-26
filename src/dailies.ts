@@ -18,7 +18,6 @@ import {
   putCloset,
   retrieveItem,
   runChoice,
-  toInt,
   use,
   useFamiliar,
   useSkill,
@@ -28,7 +27,6 @@ import {
   $class,
   $coinmaster,
   $effect,
-  $familiar,
   $familiars,
   $item,
   $items,
@@ -43,7 +41,7 @@ import {
   SourceTerminal,
 } from "libram";
 import { fairyFamiliar } from "./familiar";
-import { coinmasterPrice, ensureEffect, saleValue, tryFeast } from "./lib";
+import { coinmasterPrice, saleValue, tryFeast } from "./lib";
 import { withStash } from "./clan";
 import { refreshLatte } from "./outfit";
 
@@ -135,7 +133,7 @@ function configureGear(): void {
 }
 
 function prepFamiliars(): void {
-  if (have($familiar`Robortender`)) {
+  /* if (have($familiar`Robortender`)) {
     for (const drink of $items`Newark, drive-by shooting, Feliz Navidad, single entendre, Bloody Nora`) {
       if (get("_roboDrinks").includes(drink.name)) continue;
       useFamiliar($familiar`Robortender`);
@@ -143,19 +141,10 @@ function prepFamiliars(): void {
       print(`Feeding robortender ${drink}.`, "blue");
       visitUrl(`inventory.php?action=robooze&which=1&whichitem=${toInt(drink)}`);
     }
-  }
+  } */
 
-  if (have($item`mumming trunk`) && !get("_mummeryMods").includes("Meat Drop")) {
+  if (have($item`mumming trunk`) && !get("_mummeryMods").includes("Item Drop")) {
     useFamiliar(fairyFamiliar());
-    cliExecute("mummery meat");
-  }
-
-  if (
-    have($item`mumming trunk`) &&
-    !get("_mummeryMods").includes("Item Drop") &&
-    have($familiar`Jumpsuited Hound Dog`)
-  ) {
-    useFamiliar($familiar`Jumpsuited Hound Dog`);
     cliExecute("mummery item");
   }
 
@@ -188,11 +177,6 @@ function dailyBuffs(): void {
 
   while (SourceTerminal.have() && SourceTerminal.getEnhanceUses() < 3) {
     cliExecute("terminal enhance item.enh");
-  }
-  if (!get("_madTeaParty")) {
-    retrieveItem($item`reinforced beaded headband`);
-    ensureEffect($effect`Down the Rabbit Hole`);
-    cliExecute("hatter 24");
   }
 }
 
@@ -347,11 +331,11 @@ function checkVolcanoQuest() {
 function cheat(): void {
   if (have($item`Deck of Every Card`)) {
     [
+      "Island",
+      "Ancestral Recall",
       saleValue($item`gift card`) >= saleValue($item`1952 Mickey Mantle card`)
         ? "Gift Card"
         : "1952 Mickey Mantle",
-      "Island",
-      "Ancestral Recall",
     ].forEach((card) => {
       if (get("_deckCardsDrawn") <= 10 && !get("_deckCardsSeen").includes(card))
         cliExecute(`cheat ${card}`);

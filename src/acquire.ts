@@ -27,6 +27,7 @@ const priceCaps: { [index: string]: number } = {
   "Ambitious Turkey": 20000,
   "Special Seasoning": 20000,
   "astral pilsner": 0,
+  "bottle of vodka": 500,
 };
 
 export function acquire(qty: number, item: Item, maxPrice?: number, throwOnFail = true): number {

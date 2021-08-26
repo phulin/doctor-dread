@@ -1,5 +1,4 @@
 import {
-  abort,
   cliExecute,
   getCampground,
   getCounters,
@@ -20,7 +19,6 @@ import {
   toItem,
   use,
   useFamiliar,
-  userConfirm,
   visitUrl,
   xpath,
 } from "kolmafia";
@@ -43,7 +41,7 @@ import {
 } from "libram";
 import { Macro } from "./combat";
 import { runDiet } from "./diet";
-import { fairyFamiliar, freeFightFamiliar } from "./familiar";
+import { freeFightFamiliar } from "./familiar";
 import { dailyFights, freeFights, safeRestore } from "./fights";
 import {
   determineDraggableZoneAndEnsureAccess,
@@ -108,17 +106,20 @@ function nepTurn() {
     adventureMacroAuto(determineDraggableZoneAndEnsureAccess(), Macro.basicCombat());
   } else {
     // c. set up familiar
-    useFamiliar(fairyFamiliar());
     const location = digitizeUp
       ? determineDraggableZoneAndEnsureAccess()
-      : $location`Barf Mountain`;
+      : $location`The Neverending Party`;
 
     // d. get dressed
-    nepOutfit(digitizeUp, [], false);
+    if (digitizeUp) {
+      freeFightOutfit([]);
+    } else {
+      nepOutfit(false);
+    }
 
     if (!get("banishedMonsters").includes("human musk")) retrieveItem($item`human musk`);
 
-    adventureMacroAuto(
+    adventureMacro(
       location,
       Macro.pickpocket()
         .if_(
@@ -134,11 +135,17 @@ function nepTurn() {
         )
         .if_(
           "monstername plain || monstername party girl || monstername biker",
-          Macro.trySkill(
-            ...$skills`Asdon Martin: Spring-Loaded Front Bumper, Reflex Hammer, Snokebomb`,
-            ...$skills`Feel Hatred, KGB tranquilizer dart, Show them your ring, Use the Force`
-          ).tryHaveItem($item`Louder Than Bomb`)
+          Macro.externalIf(
+            $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()),
+            Macro.step("runaway")
+          )
+            .trySkill(
+              ...$skills`Asdon Martin: Spring-Loaded Front Bumper, Reflex Hammer, Snokebomb`,
+              ...$skills`Feel Hatred, KGB tranquilizer dart, Show them your ring, Use the Force`
+            )
+            .tryHaveItem($item`Louder Than Bomb`)
         )
+        .externalIf(get("_neverendingPartyFreeTurns") === 10, Macro.tryFreeKill())
         .meatKill()
     );
   }
@@ -160,19 +167,13 @@ export function canContinue(): boolean {
 
 export function main(argString = ""): void {
   sinceKolmafiaRevision(20815);
-  if (!get("duffo_skipAscensionCheck", false) && (!get("kingLiberated") || myLevel() < 13)) {
-    const proceedRegardless = userConfirm(
-      "Looks like your ascension may not be done yet. Are you sure you want to duffo?"
-    );
-    if (!proceedRegardless) abort();
-  }
 
   if (get("valueOfAdventure") <= 3500) {
     throw `Your valueOfAdventure is set to ${get(
       "valueOfAdventure"
     )}, which is too low for barf farming to be worthwhile. If you forgot to set it, use "set valueOfAdventure = XXXX" to set it to your marginal turn meat value.`;
   }
-  if (get("valueOfAdventure") >= 10000) {
+  if (get("valueOfAdventure") >= 20000) {
     throw `Your valueOfAdventure is set to ${get(
       "valueOfAdventure"
     )}, which is definitely incorrect. Please set it to your reliable marginal turn value.`;
@@ -211,7 +212,7 @@ export function main(argString = ""): void {
       : 0;
 
   try {
-    print("Collecting garbage!", "blue");
+    print("Collecting duffels!", "blue");
     if (globalOptions.stopTurncount !== null) {
       print(`Stopping in ${globalOptions.stopTurncount - myTurncount()}`, "blue");
     }

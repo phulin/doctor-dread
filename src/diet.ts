@@ -110,10 +110,16 @@ function fillLiver() {
   }
 
   const count = inebrietyLimit() - myInebriety();
+  if (count === 0) return;
   if (getWorkshed() === $item`portable Mayo Clinic` && myFullness() < fullnessLimit()) {
     mindMayo(Mayo.diol, count);
     acquire(count, $item`Special Seasoning`, MPA, false);
-    eat(count, $item`devil hair pasta`);
+    while (myInebriety() < inebrietyLimit()) {
+      eat(
+        Math.min(inebrietyLimit() - myInebriety(), fullnessLimit() - myFullness()),
+        $item`devil hair pasta`
+      );
+    }
   } else {
     acquire(count, $item`black label`, 3 * MPA);
     drinkSafe(count, $item`bottle of vodka`);
