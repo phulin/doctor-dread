@@ -262,7 +262,7 @@ export function main(argString = ""): void {
       autoSatisfyWithCoinmasters: true,
       dontStopForCounters: true,
       maximizerFoldables: true,
-      hpAutoRecoveryTarget: 1.0,
+      hpAutoRecoveryTarget: 0.95,
     });
     if (get("hpAutoRecovery") < 0.35) propertyManager.set({ hpAutoRecovery: 0.35 });
 

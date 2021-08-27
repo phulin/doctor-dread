@@ -3,6 +3,7 @@ import {
   buy,
   changeMcd,
   cliExecute,
+  currentMcd,
   getCampground,
   getClanLounge,
   haveSkill,
@@ -229,7 +230,7 @@ function configureMisc(): void {
     });
   }
 
-  changeMcd(10);
+  if (currentMcd() < 10) changeMcd(10);
 }
 
 function volcanoDailies(): void {

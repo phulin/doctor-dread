@@ -139,7 +139,7 @@ export function runDiet(): void {
     cliExecute("barrelprayer buff");
   }
 
-  useIfUnused($item`fancy chocolate car`, get("_chocolatesUsed") === 0, 2 * MPA);
+  useIfUnused($item`fancy chocolate car`, get("_chocolatesUsed") !== 0, 2 * MPA);
 
   const loveChocolateCount = Math.max(3 - Math.floor(20000 / MPA) - get("_loveChocolatesUsed"), 0);
   const loveChocolateEat = Math.min(

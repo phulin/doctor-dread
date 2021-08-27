@@ -79,6 +79,7 @@ export class StashManager {
   }
 
   take(...items: Item[]): void {
+    if (items.every((item) => have(item))) return;
     withClan(this.clanIdOrName, () => {
       for (const item of items) {
         if (have(item)) continue;
