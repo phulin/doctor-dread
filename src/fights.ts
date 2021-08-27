@@ -64,7 +64,7 @@ import {
   TunnelOfLove,
   Witchess,
 } from "libram";
-import { withStash } from "./clan";
+import { withStash, withVIPClan } from "./clan";
 import { Macro, withMacro } from "./combat";
 import { fairyFamiliar, freeFightFamiliar } from "./familiar";
 import {
@@ -234,7 +234,7 @@ const copierSources = [
     () => have($item`Clan VIP Lounge key`) && !get("_photocopyUsed"),
     () => (have($item`Clan VIP Lounge key`) && !get("_photocopyUsed") ? 1 : 0),
     () => {
-      faxWitchess();
+      withVIPClan(() => faxWitchess());
       use($item`photocopied monster`);
     }
   ),

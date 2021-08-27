@@ -26,6 +26,7 @@ import { withStash } from "./clan";
 
 Mood.setDefaultOptions({
   mpSources: [],
+  reserveMp: 50,
   /* songSlots: [
     $effects`Polka of Plenty, Ode to Booze`,
     $effects`Fat Leon's Phat Loot Lyric`,

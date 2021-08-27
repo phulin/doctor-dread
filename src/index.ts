@@ -56,7 +56,7 @@ import {
 } from "./lib";
 import { itemMood } from "./mood";
 import { freeFightOutfit, nepOutfit, tryFillLatte } from "./outfit";
-import { withStash, withVIPClan } from "./clan";
+import { withStash } from "./clan";
 import { estimatedTurns, globalOptions, log } from "./globalvars";
 import { dailySetup } from "./dailies";
 
@@ -298,31 +298,29 @@ export function main(argString = ""): void {
     }
     // FIXME: Dynamically figure out pointer ring approach.
     withStash(stashItems, () => {
-      withVIPClan(() => {
-        // 0. diet stuff.
-        runDiet();
+      // 0. diet stuff.
+      runDiet();
 
-        // 2. make an outfit (amulet coin, pantogram, etc), misc other stuff (VYKEA, songboom, robortender drinks)
-        dailySetup();
+      // 2. make an outfit (amulet coin, pantogram, etc), misc other stuff (VYKEA, songboom, robortender drinks)
+      dailySetup();
 
-        setDefaultMaximizeOptions({
-          preventEquip: $items`broken champagne bottle, Spooky Putty snake, Spooky Putty mitre, Spooky Putty leotard, Spooky Putty ball, papier-mitre, smoke ball`,
-        });
-
-        // 4. do some embezzler stuff
-        freeFights();
-        dailyFights();
-
-        // 5. burn turns at barf
-        try {
-          while (canContinue()) {
-            nepTurn();
-            safeInterrupt();
-          }
-        } finally {
-          setAutoAttack(0);
-        }
+      setDefaultMaximizeOptions({
+        preventEquip: $items`broken champagne bottle, Spooky Putty snake, Spooky Putty mitre, Spooky Putty leotard, Spooky Putty ball, papier-mitre, smoke ball`,
       });
+
+      // 4. do some embezzler stuff
+      freeFights();
+      dailyFights();
+
+      // 5. burn turns at barf
+      try {
+        while (canContinue()) {
+          nepTurn();
+          safeInterrupt();
+        }
+      } finally {
+        setAutoAttack(0);
+      }
     });
   } finally {
     propertyManager.resetAll();

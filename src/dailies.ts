@@ -43,7 +43,7 @@ import {
 } from "libram";
 import { fairyFamiliar } from "./familiar";
 import { coinmasterPrice, saleValue, tryFeast } from "./lib";
-import { withStash } from "./clan";
+import { withStash, withVIPClan } from "./clan";
 import { refreshLatte } from "./outfit";
 
 export function dailySetup(): void {
@@ -173,12 +173,12 @@ function horse(): void {
 }
 
 function dailyBuffs(): void {
-  if (
-    !get("_clanFortuneBuffUsed") &&
-    have($item`Clan VIP Lounge key`) &&
-    getClanLounge()["Clan Carnival Game"] !== undefined
-  ) {
-    cliExecute("fortune buff familiar");
+  if (!get("_clanFortuneBuffUsed") && have($item`Clan VIP Lounge key`)) {
+    withVIPClan(() => {
+      if (getClanLounge()["Clan Carnival Game"] !== undefined) {
+        cliExecute("fortune buff familiar");
+      }
+    });
   }
 
   while (SourceTerminal.have() && SourceTerminal.getEnhanceUses() < 3) {
@@ -221,12 +221,12 @@ function configureMisc(): void {
     use($item`experimental carbon fiber pasta additive`);
   }
 
-  if (
-    getClanLounge()["Olympic-sized Clan crate"] !== undefined &&
-    !get("_olympicSwimmingPoolItemFound") &&
-    have($item`Clan VIP Lounge key`)
-  ) {
-    cliExecute("swim item");
+  if (!get("_olympicSwimmingPoolItemFound") && have($item`Clan VIP Lounge key`)) {
+    withVIPClan(() => {
+      if (getClanLounge()["Olympic-sized Clan crate"] !== undefined) {
+        cliExecute("swim item");
+      }
+    });
   }
 
   changeMcd(10);
