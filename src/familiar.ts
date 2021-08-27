@@ -3,7 +3,11 @@ import { $effect, $familiar, $familiars, $item, $items, get, have } from "libram
 import { argmax, saleValue } from "./lib";
 
 export function fairyFamiliar(): Familiar {
-  return $familiar`Jumpsuited Hound Dog`;
+  if (get("_catBurglarHeistsComplete") < 4) return $familiar`Cat Burglar`;
+  return (
+    $familiars`Reagnimated Gnome, Jumpsuited Hound Dog`.find((familiar) => have(familiar)) ??
+    $familiar`Baby Gravy Fairy`
+  );
 }
 
 function myFamiliarWeight(familiar: Familiar | null = null) {
@@ -146,7 +150,13 @@ export function freeFightFamiliar(): Familiar {
 
   if (have($familiar`Robortender`)) familiarValue.push([$familiar`Robortender`, 200]);
 
-  for (const familiar of $familiars`Hobo Monkey, Cat Burglar, Urchin Urchin, Leprechaun`) {
+  if (have($familiar`Cat Burglar`)) {
+    const heistsCharged = get("_catBurglarHeistsComplete");
+    const nextHeistTurns = 10 * 2 ** heistsCharged;
+    familiarValue.push([$familiar`Cat Burglar`, 12000 / nextHeistTurns]);
+  }
+
+  for (const familiar of $familiars`Hobo Monkey, Urchin Urchin, Leprechaun`) {
     if (have(familiar)) familiarValue.push([familiar, 1]);
   }
 
