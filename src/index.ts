@@ -37,6 +37,7 @@ import {
   adventureMacroAuto,
   get,
   have,
+  set,
   setDefaultMaximizeOptions,
   sinceKolmafiaRevision,
   SourceTerminal,
@@ -125,6 +126,7 @@ function nepTurn() {
       $location`The Haunted Kitchen`,
       Macro.skill($skill`Back-Up to your Last Enemy`).item($item`spooky sound effects record`)
     );
+    set("_duffo_spookySoundEffectsRecordUsed", true);
   } else if (
     have($familiar`Machine Elf`) &&
     get("_machineTunnelsAdv") < 5 &&
