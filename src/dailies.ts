@@ -27,6 +27,7 @@ import {
   $class,
   $coinmaster,
   $effect,
+  $familiar,
   $familiars,
   $item,
   $items,
@@ -121,6 +122,11 @@ function voterSetup(): void {
 }
 
 function configureGear(): void {
+  if (!have($item`luck incense`) && have($familiar`Mu`)) {
+    useFamiliar($familiar`Mu`);
+    use($item`box of Familiar Jacks`);
+  }
+
   if (have($item`Fourth of May Cosplay Saber`) && get("_saberMod") === 0) {
     // Get familiar weight.
     visitUrl("main.php?action=may4");
@@ -184,7 +190,9 @@ function configureMisc(): void {
   if (SongBoom.songChangesLeft() > 0) SongBoom.setSong("Food Vibrations");
   if (SourceTerminal.have()) {
     SourceTerminal.educate([$skill`Extract`, $skill`Digitize`]);
-    SourceTerminal.enquiry($effect`familiar.enq`);
+    if (get("sourceTerminalEnquiry") !== "familiar.enq") {
+      SourceTerminal.enquiry($effect`familiar.enq`);
+    }
   }
 
   if (have($item`BittyCar MeatCar`) && get("_bittycar") !== "meatcar") {

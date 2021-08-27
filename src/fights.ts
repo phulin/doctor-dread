@@ -32,7 +32,6 @@ import {
   setAutoAttack,
   setLocation,
   toInt,
-  totalTurnsPlayed,
   toUrl,
   use,
   useFamiliar,
@@ -207,8 +206,8 @@ const copierSources = [
     () =>
       get("lastCopyableMonster") === bestWitchessPiece &&
       have($item`backup camera`) &&
-      get<number>("_backUpUses") < 11,
-    () => (have($item`backup camera`) ? 11 - get<number>("_backUpUses") : 0),
+      get<number>("_backUpUses") < 5,
+    () => (have($item`backup camera`) ? clamp(5 - get<number>("_backUpUses"), 0, 5) : 0),
     (options: CopierFightOptions) => {
       const realLocation =
         options.location && options.location.combatPercent >= 100
@@ -493,7 +492,6 @@ export function dailyFights(): void {
       // REMAINING EMBEZZLER FIGHTS
       let nextFight = getCopierFight();
       while (nextFight !== null) {
-        const startTurns = totalTurnsPlayed();
         if (have($skill`Musk of the Moose`) && !have($effect`Musk of the Moose`))
           useSkill($skill`Musk of the Moose`);
         withMacro(copierMacro(), () => {
@@ -523,13 +521,6 @@ export function dailyFights(): void {
             }
           }
         });
-        if (
-          totalTurnsPlayed() - startTurns === 1 &&
-          get("lastCopyableMonster") === $monster`Knob Goblin Embezzler` &&
-          (nextFight.name === "Backup" || get("lastEncounter") === "Knob Goblin Embezzler")
-        ) {
-          log.initialEmbezzlersFought++;
-        }
         nextFight = getCopierFight();
         if (
           kramcoGuaranteed() &&

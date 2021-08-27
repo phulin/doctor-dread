@@ -41,7 +41,7 @@ import {
 } from "libram";
 import { Macro } from "./combat";
 import { runDiet } from "./diet";
-import { freeFightFamiliar } from "./familiar";
+import { fairyFamiliar, freeFightFamiliar } from "./familiar";
 import { dailyFights, freeFights, safeRestore } from "./fights";
 import {
   determineDraggableZoneAndEnsureAccess,
@@ -115,12 +115,16 @@ function nepTurn() {
 
     // d. get dressed
     if (digitizeUp) {
+      useFamiliar(freeFightFamiliar());
       freeFightOutfit([]);
     } else {
+      useFamiliar(fairyFamiliar());
       nepOutfit(false);
     }
 
-    if (!get("banishedMonsters").includes("human musk")) retrieveItem($item`human musk`);
+    if (!get("banishedMonsters").includes("human musk") && get("_humanMuskUses") === 0) {
+      retrieveItem($item`human musk`);
+    }
 
     adventureMacroAuto(
       location,
@@ -133,7 +137,7 @@ function nepTurn() {
           ).tryHaveItem($item`Louder Than Bomb`)
         )
         .externalIf(
-          !get("banishedMonsters").includes("human musk"),
+          !get("banishedMonsters").includes("human musk") && get("_humanMuskUses") === 0,
           Macro.if_("monstername party girl", Macro.item($item`human musk`))
         )
         .if_(
