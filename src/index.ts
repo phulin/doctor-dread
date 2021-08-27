@@ -50,6 +50,7 @@ import {
   questStep,
   Requirement,
   safeInterrupt,
+  setChoice,
 } from "./lib";
 import { itemMood } from "./mood";
 import { freeFightOutfit, nepOutfit, tryFillLatte } from "./outfit";
@@ -72,6 +73,8 @@ function nepTurn() {
     cliExecute("retrocape robot kill");
   }
   tryFillLatte();
+
+  setChoice(1324, 5); // pick a fight at NEP NC
 
   const digitizeUp = getCounters("Digitize Monster", 0, 0).trim() !== "";
 
@@ -267,7 +270,7 @@ export function main(argString = ""): void {
     ) {
       visitUrl("guild.php?action=buyskill&skillid=32", true);
     }
-    const stashItems = $items`repaid diaper, Buddy Bjorn, Crown of Thrones, origami pasties, Pantsgiving`;
+    const stashItems = $items`Buddy Bjorn`;
     if (
       myInebriety() <= inebrietyLimit() &&
       (myClass() !== $class`Seal Clubber` || !have($skill`Furious Wallop`))

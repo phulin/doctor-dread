@@ -11,7 +11,6 @@ import {
 import {
   $class,
   $effect,
-  $effects,
   $item,
   $items,
   $skill,
@@ -27,12 +26,12 @@ import { withStash } from "./clan";
 
 Mood.setDefaultOptions({
   mpSources: [],
-  songSlots: [
+  /* songSlots: [
     $effects`Polka of Plenty, Ode to Booze`,
     $effects`Fat Leon's Phat Loot Lyric`,
     $effects`Chorale of Companionship`,
     $effects`The Ballad of Richie Thingfinder`,
-  ],
+  ], */
 });
 
 export function itemMood(): Mood {
@@ -42,7 +41,6 @@ export function itemMood(): Mood {
   mood.skill($skill`Leash of Linguini`);
   mood.skill($skill`Empathy of the Newt`);
 
-  mood.skill($skill`The Polka of Plenty`);
   mood.skill($skill`The Spirit of Taking`);
   mood.skill($skill`Fat Leon's Phat Loot Lyric`);
   mood.skill($skill`Singer's Faithful Ocelot`);
@@ -111,7 +109,7 @@ export function freeFightMood(): Mood {
 
   mood.potion($item`white candy heart`, 30);
 
-  const goodSongs = $skills`Chorale of Companionship, The Ballad of Richie Thingfinder, The Polka of Plenty`;
+  const goodSongs = $skills`Chorale of Companionship, The Ballad of Richie Thingfinder, Fat Leon's Phat Loot Lyric`;
   for (const effectName of Object.keys(myEffects())) {
     const effect = Effect.get(effectName);
     const skill = toSkill(effect);

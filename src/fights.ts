@@ -887,7 +887,7 @@ const freeFightSources = [
   // 28	5	0	0	Witchess pieces	must have a Witchess Set; can copy for more
   // Save one for digitizing later?
   new FreeFight(
-    () => (Witchess.have() ? clamp(4 - Witchess.fightsDone(), 0, 4) : 0),
+    () => (Witchess.have() ? clamp(5 - Witchess.fightsDone(), 0, 5) : 0),
     () => Witchess.fightPiece(bestWitchessPiece)
   ),
 

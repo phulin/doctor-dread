@@ -87,6 +87,13 @@ const freeRuns: FreeRun[] = [
     Macro.skill("Show Your Boring Familiar Pictures"),
     new Requirement([], { forceEquip: $items`familiar scrapbook` })
   ),
+
+  new FreeRun(
+    "Saber",
+    () => have($item`Fourth of May Cosplay Saber`) && get("_saberForceUses") < 5,
+    Macro.skill("Use the Force"),
+    new Requirement([], { forceEquip: $items`Fourth of May Cosplay Saber` })
+  ),
 ];
 
 export function findRun(currentRequirement: Requirement): {
