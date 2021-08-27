@@ -100,6 +100,7 @@ export function findRun(currentRequirement: Requirement): {
   familiar?: Familiar;
   requirement: Requirement;
   prepare?: () => void;
+  name: string;
 } | null {
   // Try bander or boots.
   const runFamiliar = have($familiar`Frumious Bandersnatch`)
@@ -117,6 +118,7 @@ export function findRun(currentRequirement: Requirement): {
             ensureEffect($effect`Ode to Booze`);
           }
         },
+        name: "Bander",
       };
     } else {
       set("_duffo_runFamiliarUsed", true);
@@ -129,6 +131,7 @@ export function findRun(currentRequirement: Requirement): {
   ) {
     return {
       requirement: currentRequirement,
+      name: "Front Bumper",
     };
   }
 
@@ -136,6 +139,7 @@ export function findRun(currentRequirement: Requirement): {
   if (freeRun) {
     return {
       requirement: currentRequirement.merge(freeRun.requirement ?? Requirement.empty),
+      name: freeRun.name,
     };
   }
 

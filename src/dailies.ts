@@ -177,13 +177,13 @@ function dailyBuffs(): void {
   if (!get("_clanFortuneBuffUsed") && have($item`Clan VIP Lounge key`)) {
     withVIPClan(() => {
       if (getClanLounge()["Clan Carnival Game"] !== undefined) {
-        cliExecute("fortune buff familiar");
+        cliExecute("fortune buff item");
       }
     });
   }
 
   while (SourceTerminal.have() && SourceTerminal.getEnhanceUses() < 3) {
-    cliExecute("terminal enhance item.enh");
+    SourceTerminal.enhance($effect`items.enh`);
   }
 }
 

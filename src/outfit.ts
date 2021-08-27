@@ -16,6 +16,7 @@ import {
   myFullness,
   myInebriety,
   numericModifier,
+  print,
   retrieveItem,
   toSlot,
   totalTurnsPlayed,
@@ -207,6 +208,7 @@ export function nepOutfit(
   ]);
 
   const freeRun = findRun(compiledRequirements);
+  if (freeRun) print(`Found run ${freeRun.name}.`, "blue");
   if (freeRun?.familiar) {
     useFamiliar(freeRun.familiar);
   } else {
