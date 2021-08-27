@@ -9,7 +9,6 @@ import {
   myFamiliar,
   myGardenType,
   myInebriety,
-  myLevel,
   myTurncount,
   print,
   retrieveItem,
@@ -25,10 +24,13 @@ import {
 import {
   $class,
   $effect,
+  $familiar,
   $familiars,
   $item,
   $items,
   $location,
+  $monster,
+  $monsters,
   $skill,
   $skills,
   adventureMacro,
@@ -107,27 +109,44 @@ function nepTurn() {
     useFamiliar(freeFightFamiliar());
     freeFightOutfit([new Requirement([], { forceEquip: $items`Kramco Sausage-o-Matic™` })]);
     adventureMacroAuto(determineDraggableZoneAndEnsureAccess(), Macro.basicCombat());
+  } else if (digitizeUp) {
+    useFamiliar(freeFightFamiliar());
+    freeFightOutfit([]);
+    adventureMacroAuto(determineDraggableZoneAndEnsureAccess(), Macro.basicCombat());
+  } else if (
+    get("_backUpUses") < 11 &&
+    !get<boolean>("_duffo_spookySoundEffectsRecordUsed", false) &&
+    get("lastCopyableMonster") === $monster`biker`
+  ) {
+    useFamiliar(freeFightFamiliar());
+    freeFightOutfit([new Requirement([], { forceEquip: $items`backup camera` })]);
+    retrieveItem($item`spooky sound effects record`);
+    adventureMacro(
+      $location`The Haunted Kitchen`,
+      Macro.skill($skill`Back-Up to your Last Enemy`).item($item`spooky sound effects record`)
+    );
+  } else if (
+    have($familiar`Machine Elf`) &&
+    get("_machineTunnelsAdv") < 5 &&
+    get("_backUpUses") < 11 &&
+    ($monsters`burnout, jock` as (Monster | null)[]).includes(get("lastCopyableMonster"))
+  ) {
+    useFamiliar($familiar`Machine Elf`);
+    nepOutfit(false, [new Requirement([], { forceEquip: $items`backup camera` })]);
+    adventureMacro(
+      $location`The Deep Machine Tunnels`,
+      Macro.skill($skill`Back-Up to your Last Enemy`).meatKill()
+    );
   } else {
-    // c. set up familiar
-    const location = digitizeUp
-      ? determineDraggableZoneAndEnsureAccess()
-      : $location`The Neverending Party`;
+    useFamiliar(fairyFamiliar());
+    nepOutfit(false);
 
-    // d. get dressed
-    if (digitizeUp) {
-      useFamiliar(freeFightFamiliar());
-      freeFightOutfit([]);
-    } else {
-      useFamiliar(fairyFamiliar());
-      nepOutfit(false);
-    }
-
-    if (!get("banishedMonsters").includes("human musk") && get("_humanMuskUses") === 0) {
+    if (get("_humanMuskUses") === 0) {
       retrieveItem($item`human musk`);
     }
 
     adventureMacroAuto(
-      location,
+      $location`The Neverending Party`,
       Macro.pickpocket()
         .if_(
           'match "unremarkable duffel bag" || match "van key"',
@@ -137,7 +156,7 @@ function nepTurn() {
           ).tryHaveItem($item`Louder Than Bomb`)
         )
         .externalIf(
-          !get("banishedMonsters").includes("human musk") && get("_humanMuskUses") === 0,
+          get("_humanMuskUses") === 0,
           Macro.if_("monstername party girl", Macro.item($item`human musk`))
         )
         .if_(
@@ -246,10 +265,6 @@ export function main(argString = ""): void {
       hpAutoRecoveryTarget: 1.0,
     });
     if (get("hpAutoRecovery") < 0.35) propertyManager.set({ hpAutoRecovery: 0.35 });
-    if (get("mpAutoRecovery") < 0.25) propertyManager.set({ mpAutoRecovery: 0.25 });
-    const mpTarget = myLevel() < 18 ? 0.5 : 0.3;
-    if (get("mpAutoRecoveryTarget") < mpTarget)
-      propertyManager.set({ mpAutoRecoveryTarget: mpTarget });
 
     cliExecute("mood apathetic");
     cliExecute("ccs duffo");

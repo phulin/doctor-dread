@@ -810,6 +810,9 @@ const freeFightSources = [
     () => {
       retrieveItem(5 - get("_glarkCableUses"), $item`glark cable`);
       adventureMacro($location`The Red Zeppelin`, Macro.item($item`glark cable`));
+    },
+    {
+      cost: () => mallPrice($item`glark cable`),
     }
   ),
 

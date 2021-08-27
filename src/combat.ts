@@ -17,6 +17,9 @@ import {
   print,
   runCombat,
   setAutoAttack,
+  toUrl,
+  useSkill,
+  visitUrl,
 } from "kolmafia";
 import {
   $class,
@@ -452,6 +455,30 @@ export function withMacro<T>(macro: Macro, action: () => T): T {
   } finally {
     Macro.clearSaved();
   }
+}
+
+export function mapMonster(location: Location, monster: Monster, macro: Macro): string {
+  return withMacro(macro, () => {
+    if (
+      haveSkill($skill`Map the Monsters`) &&
+      !get("mappingMonsters") &&
+      get("_monstersMapped") < 3
+    ) {
+      useSkill($skill`Map the Monsters`);
+    }
+
+    if (!get("mappingMonsters")) throw "Failed to setup Map the Monsters.";
+
+    const mapPage = visitUrl(toUrl(location), false, true);
+    if (!mapPage.includes("Leading Yourself Right to Them")) throw "Something went wrong mapping.";
+
+    const fightPage = visitUrl(
+      `choice.php?pwd&whichchoice=1435&option=1&heyscriptswhatsupwinkwink=${monster.id}`
+    );
+    if (!fightPage.includes(monster.name)) throw "Something went wrong starting the fight.";
+
+    return runCombat();
+  });
 }
 
 export function main(): void {
