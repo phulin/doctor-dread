@@ -23,6 +23,7 @@ import {
   runChoice,
   setAutoAttack,
   toItem,
+  totalTurnsPlayed,
   use,
   useFamiliar,
   visitUrl,
@@ -158,7 +159,7 @@ function nepTurn() {
   } else if (
     myInebriety() <= inebrietyLimit() &&
     have($item`"I Voted!" sticker`) &&
-    getCounters("Vote", 0, 0) !== "" &&
+    totalTurnsPlayed() % 11 === 1 &&
     get("_voteFreeFights") < 3
   ) {
     useFamiliar(freeFightFamiliar());
