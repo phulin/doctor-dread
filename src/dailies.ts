@@ -19,6 +19,7 @@ import {
   putCloset,
   retrieveItem,
   runChoice,
+  toInt,
   use,
   useFamiliar,
   useSkill,
@@ -43,11 +44,12 @@ import {
   SourceTerminal,
 } from "libram";
 import { fairyFamiliar } from "./familiar";
-import { coinmasterPrice, saleValue, tryFeast } from "./lib";
+import { coinmasterPrice, saleValue, setChoice, tryFeast } from "./lib";
 import { withStash, withVIPClan } from "./clan";
 import { refreshLatte } from "./outfit";
 
 export function dailySetup(): void {
+  getGnomeGear();
   voterSetup();
   martini();
   chateauDesk();
@@ -72,6 +74,23 @@ export function dailySetup(): void {
   putCloset(itemAmount($item`sand dollar`), $item`sand dollar`);
   putCloset(itemAmount($item`4-d camera`), $item`4-d camera`);
   putCloset(itemAmount($item`unfinished ice sculpture`), $item`unfinished ice sculpture`);
+}
+
+function getGnomeGear(): void {
+  if(!have($familiar`Reagnimated Gnome`)) return;
+
+  useFamiliar($familiar`Reagnimated Gnome`);
+  const gnomeGear = $items`gnomish housemaid's kgnee, gnomish coal miner's lung, gnomish athlete's foot, gnomish tennis elbow, gnomish swimmer's ears`;
+
+  gnomeGear.forEach((gearItem) => {
+    if (have(gearItem)) return;
+    const selection = toInt(gearItem) - toInt($item`gnomish swimmer's ears`) +1;
+    setChoice(597, selection);
+    visitUrl("arena.php");
+  });
+
+  return;
+
 }
 
 function voterSetup(): void {
