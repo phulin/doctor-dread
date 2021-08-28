@@ -170,8 +170,7 @@ export class Macro extends LibramMacro {
         Macro.if_("monstername jock", Macro.trySkill($skill`Transcendent Olfaction`))
       )
       .externalIf(
-        get("_gallapagosMonster") !== $monster`garbage tourist` &&
-          have($skill`Gallapagosian Mating Call`),
+        get("_gallapagosMonster") !== $monster`jock` && have($skill`Gallapagosian Mating Call`),
         Macro.if_("monstername jock", Macro.trySkill($skill`Gallapagosian Mating Call`))
       )
       .externalIf(
@@ -235,7 +234,7 @@ export class Macro extends LibramMacro {
 
     // Ignore unexpected monsters, holiday scaling monsters seem to abort with monsterhpabove
     return this.if_(
-      "monstername angry tourist || monstername garbage tourist || monstername horrible tourist family || monstername Knob Goblin Embezzler || monstername sausage goblin",
+      "monstername jock || monstername burnout || monstername party girl || monstername plain || monstername biker || monstername sausage goblin",
       Macro.if_(`monsterhpabove ${passiveDamage}`, Macro.trySkill($skill`Pocket Crumbs`))
         .if_(`monsterhpabove ${passiveDamage}`, Macro.trySkill($skill`Extract`))
         .externalIf(

@@ -1,6 +1,5 @@
 import {
   cliExecute,
-  getClanLounge,
   itemAmount,
   myEffects,
   numericModifier,
@@ -8,19 +7,7 @@ import {
   use,
   useSkill,
 } from "kolmafia";
-import {
-  $class,
-  $effect,
-  $item,
-  $items,
-  $skill,
-  $skills,
-  get,
-  have,
-  Mood,
-  set,
-  Witchess,
-} from "libram";
+import { $class, $effect, $item, $items, $skill, $skills, get, have, Mood, set } from "libram";
 import { questStep, setChoice } from "./lib";
 import { withStash } from "./clan";
 
@@ -103,10 +90,6 @@ export function freeFightMood(): Mood {
     });
   }
 
-  if (getClanLounge()["Clan pool table"] !== undefined) {
-    while (get("_poolGames") < 3) cliExecute("pool aggressive");
-  }
-
   mood.potion($item`white candy heart`, 30);
 
   const goodSongs = $skills`Chorale of Companionship, The Ballad of Richie Thingfinder, Fat Leon's Phat Loot Lyric`;
@@ -124,13 +107,7 @@ export function freeFightMood(): Mood {
   if (have($item`redwood rain stick`) && !get("_redwoodRainStickUsed")) {
     use($item`redwood rain stick`);
   }
-  const beachHeadsUsed: number | string = get("_beachHeadsUsed");
-  if (have($item`Beach Comb`) && !beachHeadsUsed.toString().split(",").includes("10")) {
-    mood.effect($effect`Do I Know You From Somewhere?`);
-  }
-  if (Witchess.have() && !get("_witchessBuff")) {
-    mood.effect($effect`Puzzle Champ`);
-  }
+
   if (questStep("questL06Friar") === 999 && !get("friarsBlessingReceived")) {
     cliExecute("friars familiar");
   }

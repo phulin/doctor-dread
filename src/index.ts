@@ -1,9 +1,13 @@
 import {
+  adv1,
   cliExecute,
   getCampground,
   getCounters,
   guildStoreAvailable,
+  haveEquipped,
   inebrietyLimit,
+  lastChoice,
+  lastDecision,
   myAdventures,
   myClass,
   myFamiliar,
@@ -29,12 +33,12 @@ import {
   $item,
   $items,
   $location,
-  $monster,
   $monsters,
   $skill,
   $skills,
   adventureMacro,
   adventureMacroAuto,
+  Bandersnatch,
   get,
   have,
   set,
@@ -48,6 +52,7 @@ import { fairyFamiliar, freeFightFamiliar } from "./familiar";
 import { dailyFights, freeFights, safeRestore } from "./fights";
 import {
   determineDraggableZoneAndEnsureAccess,
+  ensureEffect,
   kramcoGuaranteed,
   propertyManager,
   questStep,
@@ -56,17 +61,65 @@ import {
   setChoice,
 } from "./lib";
 import { itemMood } from "./mood";
-import { freeFightOutfit, nepOutfit, tryFillLatte } from "./outfit";
+import { freeFightOutfit, nepOutfit, tryConfigureBanderRuns } from "./outfit";
 import { withStash } from "./clan";
 import { estimatedTurns, globalOptions, log } from "./globalvars";
 import { dailySetup } from "./dailies";
+import { acquire } from "./acquire";
+import { findRun, tryFillLatte } from "./runs";
+
+function macroPreRun() {
+  return Macro.pickpocket()
+    .if_(
+      'match "unremarkable duffel bag" || match "van key"',
+      Macro.externalIf(
+        $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()),
+        Macro.externalIf(
+          get("_meteorShowerUses") < 5 && !Bandersnatch.couldRunaway(),
+          Macro.skill($skill`Meteor Shower`)
+        ).step("runaway")
+      )
+        .tryHaveItem($item`Louder Than Bomb`)
+        .tryHaveItem($item`divine champagne popper`)
+    )
+    .externalIf(
+      get("_humanMuskUses") === 0,
+      Macro.if_("monstername party girl", Macro.item($item`human musk`))
+    )
+    .externalIf(
+      !get("_duffo_tryptophanDartUsed", false),
+      Macro.if_("monstername biker", Macro.item($item`tryptophan dart`))
+    );
+}
+
+function macroPostRun() {
+  return Macro.if_(
+    "monstername plain || monstername party girl || monstername biker",
+    Macro.externalIf(
+      $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()),
+      Macro.step("runaway")
+    )
+      .trySkill(
+        ...$skills`Asdon Martin: Spring-Loaded Front Bumper, Reflex Hammer, Snokebomb`,
+        ...$skills`Feel Hatred, KGB tranquilizer dart, Show them your ring, Use the Force`,
+        ...$skills`Throw Latte on Opponent, Show your boring familiar pictures`
+      )
+      .tryHaveItem($item`Louder Than Bomb`)
+  )
+    .externalIf(get("_neverendingPartyFreeTurns") === 10, Macro.tryFreeKill())
+    .meatKill();
+}
 
 function nepTurn() {
   if (have($effect`Beaten Up`))
     throw "Hey, you're beaten up, and that's a bad thing. Lick your wounds, handle your problems, and run me again when you feel ready.";
 
   if (SourceTerminal.have()) {
-    SourceTerminal.educate([$skill`Extract`, $skill`Digitize`]);
+    if (SourceTerminal.getDuplicateUses() > 0) {
+      SourceTerminal.educate([$skill`Duplicate`, $skill`Digitize`]);
+    } else {
+      SourceTerminal.educate([$skill`Extract`, $skill`Digitize`]);
+    }
   }
 
   if (
@@ -115,67 +168,69 @@ function nepTurn() {
     freeFightOutfit([]);
     adventureMacroAuto(determineDraggableZoneAndEnsureAccess(), Macro.basicCombat());
   } else if (
-    get("_backUpUses") < 11 &&
-    !get<boolean>("_duffo_spookySoundEffectsRecordUsed", false) &&
-    get("lastCopyableMonster") === $monster`biker`
-  ) {
-    useFamiliar(freeFightFamiliar());
-    freeFightOutfit([new Requirement([], { forceEquip: $items`backup camera` })]);
-    retrieveItem($item`spooky sound effects record`);
-    adventureMacro(
-      $location`The Haunted Kitchen`,
-      Macro.skill($skill`Back-Up to your Last Enemy`).item($item`spooky sound effects record`)
-    );
-    set("_duffo_spookySoundEffectsRecordUsed", true);
-  } else if (
     have($familiar`Machine Elf`) &&
     get("_machineTunnelsAdv") < 5 &&
     get("_backUpUses") < 11 &&
     ($monsters`burnout, jock` as (Monster | null)[]).includes(get("lastCopyableMonster"))
   ) {
     useFamiliar($familiar`Machine Elf`);
-    nepOutfit(false, [new Requirement([], { forceEquip: $items`backup camera` })]);
+    nepOutfit(new Requirement(["5 Item Drop"], { forceEquip: $items`backup camera` }));
     adventureMacro(
       $location`The Deep Machine Tunnels`,
       Macro.skill($skill`Back-Up to your Last Enemy`).meatKill()
     );
   } else {
-    useFamiliar(fairyFamiliar());
-    nepOutfit(false);
+    if (tryConfigureBanderRuns()) {
+      print(`Using Bander/Boots at stage ${get("_duffo_runFamiliarStage", 0)}!`, "blue");
+      if (myFamiliar() === $familiar`Frumious Bandersnatch`) ensureEffect($effect`Ode to Booze`);
+    } else if (
+      $location`The Neverending Party`.turnsSpent >=
+      get("duffo_lastNepNcTurnsSpent", 0) + 6
+    ) {
+      tryFillLatte();
+
+      const freeRun = findRun();
+      if (freeRun) print(`Found run ${freeRun.name}.`, "blue");
+      if (freeRun?.prepare) freeRun.prepare();
+
+      useFamiliar(fairyFamiliar());
+      nepOutfit(
+        new Requirement(["5 Item Drop"], {}).merge(freeRun?.requirement ?? Requirement.empty)
+      );
+    } else {
+      useFamiliar(fairyFamiliar());
+      nepOutfit();
+    }
 
     if (get("_humanMuskUses") === 0) {
       retrieveItem($item`human musk`);
     }
 
+    if (!get("_duffo_tryptophanDartUsed", false)) {
+      acquire(1, $item`tryptophan dart`, 100000);
+    }
+
+    // If using saber, split macro into two chunks.
     adventureMacroAuto(
       $location`The Neverending Party`,
-      Macro.pickpocket()
-        .if_(
-          'match "unremarkable duffel bag" || match "van key"',
-          Macro.externalIf(
-            $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()),
-            Macro.step("runaway")
-          ).tryHaveItem($item`Louder Than Bomb`)
-        )
-        .externalIf(
-          get("_humanMuskUses") === 0,
-          Macro.if_("monstername party girl", Macro.item($item`human musk`))
-        )
-        .if_(
-          "monstername plain || monstername party girl || monstername biker",
-          Macro.externalIf(
-            $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()),
-            Macro.step("runaway")
-          )
-            .trySkill(
-              ...$skills`Asdon Martin: Spring-Loaded Front Bumper, Reflex Hammer, Snokebomb`,
-              ...$skills`Feel Hatred, KGB tranquilizer dart, Show them your ring, Use the Force`
-            )
-            .tryHaveItem($item`Louder Than Bomb`)
-        )
-        .externalIf(get("_neverendingPartyFreeTurns") === 10, Macro.tryFreeKill())
-        .meatKill()
+      haveEquipped($item`Fourth of May Cosplay Saber`)
+        ? macroPreRun()
+        : macroPreRun().step(macroPostRun()),
+      haveEquipped($item`Fourth of May Cosplay Saber`) ? macroPostRun().abort() : Macro.abort()
     );
+  }
+
+  if (get("banishedMonsters").includes("biker:tryptophan dart")) {
+    // This works around a mafia bug in tracking doubly-banished monsters..
+    set("_duffo_tryptophanDartUsed", true);
+  }
+
+  if (lastChoice() === 1324 && lastDecision() === 5) {
+    // Reset lastChoice() - this is a hack but whatever.
+    setChoice(781, 6);
+    adv1($location`An Overgrown Shrine (Northwest)`, -1, "");
+
+    set("duffo_lastNepNcTurnsSpent", $location`The Neverending Party`.turnsSpent);
   }
 
   if (

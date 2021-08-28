@@ -1,11 +1,13 @@
 import {
   bjornifyFamiliar,
-  booleanModifier,
   cliExecute,
   enthroneFamiliar,
   equip,
   equippedAmount,
+  familiarWeight,
   fullnessLimit,
+  getClanLounge,
+  getCounters,
   getWorkshed,
   haveEffect,
   haveEquipped,
@@ -16,12 +18,12 @@ import {
   myFullness,
   myInebriety,
   numericModifier,
-  print,
   retrieveItem,
   toSlot,
   totalTurnsPlayed,
   useFamiliar,
   visitUrl,
+  weightAdjustment,
 } from "kolmafia";
 import {
   $class,
@@ -29,6 +31,7 @@ import {
   $familiar,
   $item,
   $items,
+  $skill,
   $slot,
   $slots,
   get,
@@ -36,12 +39,13 @@ import {
   getKramcoWandererChance,
   have,
   maximizeCached,
+  set,
+  Witchess,
 } from "libram";
 import { pickBjorn } from "./bjorn";
-import { fairyFamiliar } from "./familiar";
+import { withVIPClan } from "./clan";
 import { estimatedTurns, globalOptions } from "./globalvars";
 import { baseMeat, BonusEquipMode, Requirement, saleValue } from "./lib";
-import { findRun } from "./runs";
 
 const bestAdventuresFromPants =
   Item.all()
@@ -62,7 +66,7 @@ export function freeFightOutfit(requirements: Requirement[] = []): void {
     new Requirement(
       myFamiliar() === $familiar`Pocket Professor` ? ["Familiar Experience"] : ["Familiar Weight"],
       {
-        bonusEquip: new Map([...dropsItems(equipMode), ...pantsgiving(), ...cheeses(false)]),
+        bonusEquip: new Map([...dropsItems(equipMode), ...pantsgiving(), ...cheeses()]),
       }
     ),
   ]);
@@ -107,49 +111,15 @@ export function refreshLatte(): boolean {
   return have($item`latte lovers member's mug`);
 }
 
-export function tryFillLatte(): boolean {
-  const badConfig =
-    numericModifier($item`latte lovers member's mug`, "Familiar Weight") !== 5 ||
-    numericModifier($item`latte lovers member's mug`, "Item Drop") !== 20 ||
-    numericModifier($item`latte lovers member's mug`, "Meat Drop") !== 40;
-  const allValueUsed = get("_latteBanishUsed") && get("_latteDrinkUsed") && get("_latteCopyUsed");
-  if (
-    have($item`latte lovers member's mug`) &&
-    (badConfig || allValueUsed) &&
-    get("_latteRefillsUsed") < 3
-  ) {
-    if (
-      !(
-        get("latteUnlocks").includes("rawhide") &&
-        get("latteUnlocks").includes("carrot") &&
-        get("latteUnlocks").includes("cajun")
-      )
-    ) {
-      throw "Go make sure rawhide, carrot, cajun unlocked.";
-    }
-    cliExecute(`latte refill rawhide carrot cajun`);
-  }
-
-  return (
-    numericModifier($item`latte lovers member's mug`, "Familiar Weight") === 5 &&
-    numericModifier($item`latte lovers member's mug`, "Item Drop") === 20 &&
-    numericModifier($item`latte lovers member's mug`, "Meat Drop") === 40
-  );
-}
-
-export function nepOutfit(
-  embezzlerUp: boolean,
-  requirements: Requirement[] = [],
-  sea?: boolean
-): void {
+export function nepOutfit(requirement = new Requirement(["5 Item Drop"], {})): void {
   const forceEquip = [];
-  const additionalRequirements = [];
-  const equipMode = embezzlerUp ? BonusEquipMode.EMBEZZLER : BonusEquipMode.BARF;
+  const equipMode =
+    getCounters("Digitize Monster", 0, 0) === "" ? BonusEquipMode.BARF : BonusEquipMode.FREE;
   const bjornChoice = pickBjorn(equipMode);
 
   if (myInebriety() > inebrietyLimit()) {
     forceEquip.push($item`Drunkula's wineglass`);
-  } else if (!embezzlerUp) {
+  } else {
     if (getKramcoWandererChance() > 0.99 && have($item`Kramco Sausage-o-Matic™`)) {
       forceEquip.push($item`Kramco Sausage-o-Matic™`);
     }
@@ -176,26 +146,17 @@ export function nepOutfit(
     forceEquip.push($item`quake of arrows`);
     if (!have($item`quake of arrows`)) retrieveItem($item`quake of arrows`);
   }
-  if (sea) {
-    additionalRequirements.push("sea");
-  }
   const bjornAlike =
     have($item`Buddy Bjorn`) && !forceEquip.some((item) => toSlot(item) === $slot`back`)
       ? $item`Buddy Bjorn`
       : $item`Crown of Thrones`;
-  let compiledRequirements = Requirement.merge([
-    ...requirements,
-    new Requirement([`5 Item Drop`, ...additionalRequirements], {
+  const compiledRequirements = requirement.merge(
+    new Requirement([], {
       forceEquip,
-      preventEquip: [
-        ...$items`broken champagne bottle, unwrapped knock-off retro superhero cape`,
-        ...(embezzlerUp ? $items`cheap sunglasses` : []),
-        bjornAlike === $item`Buddy Bjorn` ? $item`Crown of Thrones` : $item`Buddy Bjorn`,
-      ],
       bonusEquip: new Map([
         ...dropsItems(equipMode),
-        ...(embezzlerUp ? [] : pantsgiving()),
-        ...cheeses(embezzlerUp),
+        ...pantsgiving(),
+        ...cheeses(),
         [
           bjornAlike,
           !bjornChoice.dropPredicate || bjornChoice.dropPredicate()
@@ -203,19 +164,13 @@ export function nepOutfit(
             : 0,
         ],
       ]),
+      preventEquip: [
+        ...$items`broken champagne bottle, unwrapped knock-off retro superhero cape`,
+        bjornAlike === $item`Buddy Bjorn` ? $item`Crown of Thrones` : $item`Buddy Bjorn`,
+      ],
       preventSlot: $slots`crown-of-thrones, buddy-bjorn`,
-    }),
-  ]);
-
-  const freeRun = findRun(compiledRequirements);
-  if (freeRun) print(`Found run ${freeRun.name}.`, "blue");
-  if (freeRun?.familiar) {
-    useFamiliar(freeRun.familiar);
-  } else {
-    useFamiliar(fairyFamiliar());
-  }
-  if (freeRun?.requirement) compiledRequirements = freeRun.requirement;
-  if (freeRun?.prepare) freeRun.prepare();
+    })
+  );
 
   maximizeCached(compiledRequirements.maximizeParameters(), compiledRequirements.maximizeOptions());
 
@@ -225,29 +180,72 @@ export function nepOutfit(
   if (haveEquipped($item`Buddy Bjorn`)) bjornifyFamiliar(bjornChoice.familiar);
   if (haveEquipped($item`Crown of Thrones`)) enthroneFamiliar(bjornChoice.familiar);
   if (haveEquipped($item`Snow Suit`) && get("snowsuit") !== "nose") cliExecute("snowsuit nose");
-  if (sea) {
-    if (!booleanModifier("Adventure Underwater")) {
-      for (const airSource of waterBreathingEquipment) {
-        if (have(airSource)) {
-          if (airSource === $item`The Crown of Ed the Undying`) cliExecute("edpiece fish");
-          equip(airSource);
-          break;
-        }
-      }
-    }
-    if (!booleanModifier("Underwater Familiar")) {
-      for (const airSource of familiarWaterBreathingEquipment) {
-        if (have(airSource)) {
-          equip(airSource);
-          break;
-        }
-      }
-    }
-  }
 }
 
-export const waterBreathingEquipment = $items`The Crown of Ed the Undying, aerated diving helmet, crappy Mer-kin mask, Mer-kin gladiator mask, Mer-kin scholar mask, old SCUBA tank`;
-export const familiarWaterBreathingEquipment = $items`das boot, little bitty bathysphere`;
+function remainingRunaways(familiar: Familiar) {
+  const weight = familiarWeight(familiar) + weightAdjustment();
+  return Math.floor(weight / 5) - get("_banderRunaways");
+}
+
+export function tryConfigureBanderRuns(): boolean {
+  // Try bander or boots.
+  const runFamiliar = have($familiar`Pair of Stomping Boots`)
+    ? $familiar`Pair of Stomping Boots`
+    : $familiar`Frumious Bandersnatch`;
+
+  if (get("_duffo_runFamiliarStage", 0) === 0) {
+    useFamiliar(runFamiliar);
+    nepOutfit();
+    if (remainingRunaways(runFamiliar) > 0) {
+      return true;
+    } else {
+      set("_duffo_runFamiliarStage", 1);
+    }
+  }
+
+  if (get("_duffo_runFamiliarStage", 0) === 1) {
+    useFamiliar(runFamiliar);
+    nepOutfit(new Requirement(["100 Familiar Weight", "5 Item Drop"], {}));
+    if (remainingRunaways(runFamiliar) > 0) {
+      return true;
+    } else {
+      set("_duffo_runFamiliarStage", 2);
+    }
+  }
+
+  if (get("_duffo_runFamiliarStage", 0) === 2) {
+    useFamiliar(runFamiliar);
+    nepOutfit(new Requirement(["100 Familiar Weight", "5 Item Drop"], {}));
+    const beachHeadsUsed: number | string = get("_beachHeadsUsed");
+    if (have($item`Beach Comb`) && !beachHeadsUsed.toString().split(",").includes("10")) {
+      cliExecute("beach head familiar");
+    }
+    if (Witchess.have() && !get("_witchessBuff")) {
+      cliExecute("witchess");
+    }
+    if (get("_poolGames") < 3 && !get("_duffo_noPoolTable", false)) {
+      withVIPClan(() => {
+        if (getClanLounge()["Clan pool table"] !== undefined) {
+          while (get("_poolGames") < 3) cliExecute("pool aggressive");
+        } else set("_duffo_noPoolTable", true);
+      });
+    }
+
+    if (
+      remainingRunaways(runFamiliar) +
+        (have($skill`Meteor Lore`) && get("_meteorShowerUses") < 5 ? 4 : 0) >
+      0
+    ) {
+      return true;
+    } else {
+      set("_duffo_runFamiliarStage", 3);
+    }
+  }
+
+  // TODO: Add potions stage.
+
+  return false;
+}
 
 const pantsgivingBonuses = new Map<number, number>();
 function pantsgiving() {
@@ -283,12 +281,11 @@ function pantsgiving() {
   return new Map<Item, number>([[$item`Pantsgiving`, pantsgivingBonus]]);
 }
 const haveSomeCheese = getFoldGroup($item`stinky cheese diaper`).some((item) => have(item));
-function cheeses(embezzlerUp: boolean) {
+function cheeses() {
   return haveSomeCheese &&
     !globalOptions.ascending &&
     get("_stinkyCheeseCount") < 100 &&
-    estimatedTurns() >= 100 - get("_stinkyCheeseCount") &&
-    !embezzlerUp
+    estimatedTurns() >= 100 - get("_stinkyCheeseCount")
     ? new Map<Item, number>(
         getFoldGroup($item`stinky cheese diaper`).map((item) => [
           item,

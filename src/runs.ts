@@ -1,17 +1,45 @@
-import { getWorkshed, restoreMp, retrieveItem, visitUrl } from "kolmafia";
 import {
-  $effect,
-  $familiar,
-  $item,
-  $items,
-  $skill,
-  Bandersnatch,
-  get,
-  have,
-  Macro,
-  set,
-} from "libram";
-import { ensureEffect, Requirement } from "./lib";
+  cliExecute,
+  getFuel,
+  getWorkshed,
+  numericModifier,
+  restoreMp,
+  retrieveItem,
+  visitUrl,
+} from "kolmafia";
+import { $item, $items, $skill, get, have, Macro } from "libram";
+import { fillAsdonMartinTo } from "./asdon";
+import { Requirement, setChoice } from "./lib";
+
+export function tryFillLatte(): boolean {
+  const badConfig =
+    numericModifier($item`latte lovers member's mug`, "Familiar Weight") !== 5 ||
+    numericModifier($item`latte lovers member's mug`, "Item Drop") !== 20 ||
+    numericModifier($item`latte lovers member's mug`, "Meat Drop") !== 40;
+  const allValueUsed = get("_latteBanishUsed") && get("_latteDrinkUsed") && get("_latteCopyUsed");
+  if (
+    have($item`latte lovers member's mug`) &&
+    (badConfig || allValueUsed) &&
+    get("_latteRefillsUsed") < 3
+  ) {
+    if (
+      !(
+        get("latteUnlocks").includes("rawhide") &&
+        get("latteUnlocks").includes("carrot") &&
+        get("latteUnlocks").includes("cajun")
+      )
+    ) {
+      throw "Go make sure rawhide, carrot, cajun unlocked.";
+    }
+    cliExecute(`latte refill rawhide carrot cajun`);
+  }
+
+  return (
+    numericModifier($item`latte lovers member's mug`, "Familiar Weight") === 5 &&
+    numericModifier($item`latte lovers member's mug`, "Item Drop") === 20 &&
+    numericModifier($item`latte lovers member's mug`, "Meat Drop") === 40
+  );
+}
 
 export class FreeRun {
   name: string;
@@ -36,6 +64,18 @@ export class FreeRun {
 }
 
 const freeRuns: FreeRun[] = [
+  new FreeRun(
+    "Asdon Bumper",
+    () =>
+      getWorkshed() === $item`Asdon Martin keyfob` &&
+      !get("banishedMonsters").includes("Spring-Loaded Front Bumper"),
+    Macro.skill("Asdon Martin: Spring-Loaded Front Bumper"),
+    Requirement.empty,
+    () => {
+      if (getFuel() < 50) fillAsdonMartinTo(50);
+    }
+  ),
+
   new FreeRun(
     "Snokebomb",
     () => get("_snokebombUsed") < 3 && have($skill`Snokebomb`),
@@ -65,7 +105,7 @@ const freeRuns: FreeRun[] = [
   ),
 
   new FreeRun(
-    "Docbag",
+    "Doc Bag",
     () => have($item`Lil' Doctor™ bag`) && get("_reflexHammerUsed") < 3,
     Macro.skill($skill`Reflex Hammer`),
     new Requirement([], { forceEquip: $items`Lil' Doctor™ bag` })
@@ -92,59 +132,10 @@ const freeRuns: FreeRun[] = [
     "Saber",
     () => have($item`Fourth of May Cosplay Saber`) && get("_saberForceUses") < 5,
     Macro.skill("Use the Force"),
-    new Requirement([], { forceEquip: $items`Fourth of May Cosplay Saber` })
+    new Requirement([], { forceEquip: $items`Fourth of May Cosplay Saber` }),
+    () => setChoice(1387, 3)
   ),
 ];
-
-export function findRun(currentRequirement: Requirement): {
-  familiar?: Familiar;
-  requirement: Requirement;
-  prepare?: () => void;
-  name: string;
-} | null {
-  // Try bander or boots.
-  const runFamiliar = have($familiar`Frumious Bandersnatch`)
-    ? $familiar`Frumious Bandersnatch`
-    : $familiar`Pair of Stomping Boots`;
-
-  if (!get<boolean>("_duffo_runFamiliarUsed")) {
-    new Requirement(["100 Familiar Weight"], {}).maximize();
-    if (Bandersnatch.couldRunaway()) {
-      return {
-        familiar: runFamiliar,
-        requirement: new Requirement(["100 Familiar Weight"], {}),
-        prepare: () => {
-          if (runFamiliar === $familiar`Frumious Bandersnatch`) {
-            ensureEffect($effect`Ode to Booze`);
-          }
-        },
-        name: "Bander",
-      };
-    } else {
-      set("_duffo_runFamiliarUsed", true);
-    }
-  }
-
-  if (
-    getWorkshed() === $item`Asdon Martin keyfob` &&
-    !get("banishedMonsters").includes("Spring-Loaded Front Bumper")
-  ) {
-    return {
-      requirement: currentRequirement,
-      name: "Front Bumper",
-    };
-  }
-
-  const freeRun = freeRuns.find((run) => run.available());
-  if (freeRun) {
-    return {
-      requirement: currentRequirement.merge(freeRun.requirement ?? Requirement.empty),
-      name: freeRun.name,
-    };
-  }
-
-  return null;
-}
 
 export const ltbRun = new FreeRun(
   "LTB",
@@ -153,3 +144,7 @@ export const ltbRun = new FreeRun(
   new Requirement([], {}),
   () => retrieveItem($item`Louder Than Bomb`)
 );
+
+export function findRun(): FreeRun | null {
+  return freeRuns.find((run) => run.available()) ?? null;
+}

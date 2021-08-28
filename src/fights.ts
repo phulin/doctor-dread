@@ -201,13 +201,15 @@ const copierSources = [
     [],
     true
   ),
+
+  // Backup camera: save 5 uses to put NEP monsters in the DMT.
   new CopierFight(
     "Backup",
     () =>
       get("lastCopyableMonster") === bestWitchessPiece &&
       have($item`backup camera`) &&
       get<number>("_backUpUses") < 5,
-    () => (have($item`backup camera`) ? clamp(5 - get<number>("_backUpUses"), 0, 5) : 0),
+    () => (have($item`backup camera`) ? clamp(6 - get<number>("_backUpUses"), 0, 6) : 0),
     (options: CopierFightOptions) => {
       const realLocation =
         options.location && options.location.combatPercent >= 100
@@ -431,7 +433,7 @@ const bestWitchessPiece = witchessPieces.sort((a, b) => saleValue(b.drop) - sale
 
 export function dailyFights(): void {
   if (myInebriety() > inebrietyLimit()) return;
-  if (Witchess.fightsDone() < 5) {
+  if (!get("_photocopyUsed")) {
     withStash($items`Spooky Putty sheet`, () => {
       chainSetup();
 
@@ -969,7 +971,11 @@ function deliverThesis(): void {
 
   useFamiliar($familiar`Pocket Professor`);
   freeFightMood().execute();
-  freeFightOutfit([new Requirement(["100 muscle"], {})]);
+  freeFightOutfit([
+    new Requirement(["100 muscle"], {
+      forceEquip: $items`Kramco Sausage-o-Matic™`,
+    }),
+  ]);
   safeRestore();
 
   if (
@@ -983,7 +989,14 @@ function deliverThesis(): void {
     outfit("checkpoint");
   }
   cliExecute("gain 1800 muscle");
-  adventureMacro($location`The Neverending Party`, Macro.skill($skill`deliver your thesis!`));
+  do {
+    adventureMacro(
+      $location`The Neverending Party`,
+      Macro.if_("monstername time-spinner prank", Macro.meatKill()).skill(
+        $skill`deliver your thesis!`
+      )
+    );
+  } while (get("lastEncounter") === "time-spinner prank" && !get("_thesisDelivered"));
 }
 
 export function safeRestore(): void {
