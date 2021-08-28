@@ -55,7 +55,6 @@ export function dailySetup(): void {
   configureGear();
   horse();
   prepFamiliars();
-  dailyBuffs();
   configureMisc();
   volcanoDailies();
   cheat();
@@ -158,10 +157,9 @@ function prepFamiliars(): void {
   if (get("_feastUsed") === 0) {
     withStash($items`moveable feast`, () => {
       if (have($item`moveable feast`))
-        [
-          ...$familiars`Pocket Professor, Frumious Bandersnatch, Pair of Stomping Boots`,
-          fairyFamiliar(),
-        ].forEach(tryFeast);
+        $familiars`Pocket Professor, Frumious Bandersnatch, Pair of Stomping Boots, Cat Burglar, Jumpsuited Hound Dog`.forEach(
+          tryFeast
+        );
     });
   }
 }
@@ -173,24 +171,9 @@ function horse(): void {
   }
 }
 
-function dailyBuffs(): void {
-  if (!get("_clanFortuneBuffUsed") && have($item`Clan VIP Lounge key`)) {
-    withVIPClan(() => {
-      if (getClanLounge()["Clan Carnival Game"] !== undefined) {
-        cliExecute("fortune buff item");
-      }
-    });
-  }
-
-  while (SourceTerminal.have() && SourceTerminal.getEnhanceUses() < 3) {
-    SourceTerminal.enhance($effect`items.enh`);
-  }
-}
-
 function configureMisc(): void {
   if (SongBoom.songChangesLeft() > 0) SongBoom.setSong("Food Vibrations");
   if (SourceTerminal.have()) {
-    SourceTerminal.educate([$skill`Extract`, $skill`Digitize`]);
     if (get("sourceTerminalEnquiry") !== "familiar.enq") {
       SourceTerminal.enquiry($effect`familiar.enq`);
     }

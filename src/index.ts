@@ -13,7 +13,10 @@ import {
   myFamiliar,
   myGardenType,
   myInebriety,
+  myMaxmp,
+  myMp,
   myTurncount,
+  numericModifier,
   print,
   retrieveItem,
   reverseNumberology,
@@ -60,7 +63,7 @@ import {
   safeInterrupt,
   setChoice,
 } from "./lib";
-import { itemMood } from "./mood";
+import { boostItemDrop, itemMood } from "./mood";
 import { freeFightOutfit, nepOutfit, tryConfigureBanderRuns } from "./outfit";
 import { withStash } from "./clan";
 import { estimatedTurns, globalOptions, log } from "./globalvars";
@@ -72,13 +75,14 @@ function macroPreRun() {
   return Macro.pickpocket()
     .if_(
       'match "unremarkable duffel bag" || match "van key"',
-      Macro.externalIf(
-        $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()),
-        Macro.externalIf(
-          get("_meteorShowerUses") < 5 && !Bandersnatch.couldRunaway(),
-          Macro.skill($skill`Meteor Shower`)
-        ).step("runaway")
-      )
+      Macro.meatStasis(true)
+        .externalIf(
+          $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()),
+          Macro.externalIf(
+            get("_meteorShowerUses") < 5 && !Bandersnatch.couldRunaway(),
+            Macro.skill($skill`Meteor Shower`)
+          ).step("runaway")
+        )
         .tryHaveItem($item`Louder Than Bomb`)
         .tryHaveItem($item`divine champagne popper`)
     )
@@ -95,10 +99,11 @@ function macroPreRun() {
 function macroPostRun() {
   return Macro.if_(
     "monstername plain || monstername party girl || monstername biker",
-    Macro.externalIf(
-      $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()),
-      Macro.step("runaway")
-    )
+    Macro.meatStasis(true)
+      .externalIf(
+        $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()),
+        Macro.step("runaway")
+      )
       .trySkill(
         ...$skills`Asdon Martin: Spring-Loaded Front Bumper, Reflex Hammer, Snokebomb`,
         ...$skills`Feel Hatred, KGB tranquilizer dart, Show them your ring, Use the Force`,
@@ -200,6 +205,19 @@ function nepTurn() {
     } else {
       useFamiliar(fairyFamiliar());
       nepOutfit();
+    }
+
+    // Apply synth only later in the day when our item drop drops.
+    if (numericModifier("Item Drop") < 1850) {
+      boostItemDrop();
+    }
+
+    if (
+      haveEquipped($item`latte lovers member's mug`) &&
+      !get("_latteDrinkUsed") &&
+      myMp() > 0.5 * myMaxmp()
+    ) {
+      cliExecute(`burn ${(-0.4 * myMaxmp()).toFixed(0)}`);
     }
 
     if (get("_humanMuskUses") === 0) {

@@ -177,8 +177,12 @@ export class Macro extends LibramMacro {
         !get("_latteCopyUsed") &&
           (get("_latteMonster") !== $monster`jock` ||
             getCounters("Latte Monster", 0, 30).trim() === "") &&
-          have($item`latte lovers member's mug`),
-        Macro.if_("monstername jock", Macro.trySkill($skill`Offer Latte to Opponent`))
+          haveEquipped($item`latte lovers member's mug`),
+        Macro.if_("monstername jock", Macro.skill($skill`Offer Latte to Opponent`))
+      )
+      .externalIf(
+        haveEquipped($item`latte lovers member's mug`) && !get("_latteDrinkUsed"),
+        Macro.skill("Gulp Latte")
       )
       .externalIf(
         get("_feelNostalgicUsed") < 3 &&

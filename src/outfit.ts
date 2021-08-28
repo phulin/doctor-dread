@@ -339,6 +339,7 @@ function mayflowerBouquet(equipMode: BonusEquipMode) {
 function dropsItems(equipMode: BonusEquipMode) {
   const isFree = [BonusEquipMode.FREE, BonusEquipMode.DMT].includes(equipMode);
   return new Map<Item, number>([
+    [$item`familiar scrapbook`, 50],
     [$item`mafia thumb ring`, !isFree ? 500 : 0],
     [$item`lucky gold ring`, 400],
     [$item`Mr. Cheeng's spectacles`, 250],

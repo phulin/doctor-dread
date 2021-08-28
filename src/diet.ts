@@ -1,5 +1,4 @@
 import {
-  availableAmount,
   buy,
   cliExecute,
   drink,
@@ -17,12 +16,9 @@ import {
   myFullness,
   myInebriety,
   myLevel,
-  mySpleenUse,
   print,
   retrieveItem,
   setProperty,
-  spleenLimit,
-  sweetSynthesis,
   toInt,
   use,
   useFamiliar,
@@ -30,7 +26,6 @@ import {
 } from "kolmafia";
 import { $class, $classes, $effect, $familiar, $item, $skill, get, have } from "libram";
 import { acquire } from "./acquire";
-import { globalOptions } from "./globalvars";
 import { clamp, ensureEffect, setChoice } from "./lib";
 
 const MPA = get("valueOfAdventure");
@@ -64,13 +59,6 @@ function useIfUnused(item: Item, prop: string | boolean, maxPrice: number) {
       print(`Skipping ${item.name}; too expensive (${mallPrice(item)} > ${maxPrice}).`);
     }
   }
-}
-
-function fillSomeSpleen() {
-  const needed = Math.floor(
-    (haveEffect($effect`Riboflavin'`) - haveEffect($effect`Synthesis: Collection`)) / 30
-  );
-  sweetSynthesis(Math.min(needed, spleenLimit() - mySpleenUse()), $effect`Synthesis: Collection`);
 }
 
 function fillStomach() {
@@ -197,7 +185,7 @@ export function runDiet(): void {
     useSkill(casts, $skill`Ancestral Recall`);
   }
 
-  if (globalOptions.ascending) useIfUnused($item`borrowed time`, "_borrowedTimeUsed", 5 * MPA);
+  useIfUnused($item`borrowed time`, "_borrowedTimeUsed", 5 * MPA);
 
   fillLiver();
   fillStomach();
@@ -224,14 +212,6 @@ export function runDiet(): void {
 
   fillLiver();
   fillStomach();
-
-  fillSomeSpleen();
-  const mojoFilterCount = 3 - get("currentMojoFilters");
-  acquire(mojoFilterCount, $item`mojo filter`, 15000, false);
-  if (have($item`mojo filter`)) {
-    use(Math.min(mojoFilterCount, availableAmount($item`mojo filter`)), $item`mojo filter`);
-    fillSomeSpleen();
-  }
 }
 
 const Mayo = {

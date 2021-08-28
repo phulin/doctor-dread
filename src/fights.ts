@@ -85,9 +85,20 @@ import { freeFightMood, itemMood } from "./mood";
 import { freeFightOutfit } from "./outfit";
 import { estimatedTurns, log } from "./globalvars";
 
+const witchessPieces = [
+  { piece: $monster`Witchess Bishop`, drop: $item`Sacramento wine` },
+  { piece: $monster`Witchess Knight`, drop: $item`jumping horseradish` },
+  { piece: $monster`Witchess Pawn`, drop: $item`armored prawn` },
+  { piece: $monster`Witchess Rook`, drop: $item`Greek fire` },
+];
+
+const bestWitchessPiece = witchessPieces.sort((a, b) => saleValue(b.drop) - saleValue(a.drop))[0]
+  .piece;
+const copiedMonster = bestWitchessPiece;
+
 function checkFax(): boolean {
   if (!have($item`photocopied monster`)) cliExecute("fax receive");
-  if (property.getString("photocopyMonster") === bestWitchessPiece.name) return true;
+  if (property.getString("photocopyMonster") === copiedMonster.name) return true;
   cliExecute("fax send");
   return false;
 }
@@ -95,12 +106,12 @@ function checkFax(): boolean {
 function faxWitchess(): void {
   if (!get("_photocopyUsed")) {
     if (checkFax()) return;
-    chatPrivate("cheesefax", bestWitchessPiece.name);
+    chatPrivate("cheesefax", copiedMonster.name);
     for (let i = 0; i < 3; i++) {
       wait(10);
       if (checkFax()) return;
     }
-    throw `Failed to acquire photocopied ${bestWitchessPiece.name}`;
+    throw `Failed to acquire photocopied ${copiedMonster.name}`;
   }
 }
 
@@ -136,11 +147,11 @@ class CopierFight {
 
 const firstChainMacro = () =>
   Macro.if_(
-    `monstername ${bestWitchessPiece}`,
+    `monstername ${copiedMonster}`,
     Macro.if_(
       "!hasskill Lecture on Relativity",
       Macro.externalIf(
-        get("_sourceTerminalDigitizeMonster") !== bestWitchessPiece,
+        get("_sourceTerminalDigitizeMonster") !== copiedMonster,
         Macro.tryCopier($skill`Digitize`)
       )
         .tryCopier($item`Spooky Putty sheet`)
@@ -152,14 +163,14 @@ const firstChainMacro = () =>
 
 const secondChainMacro = () =>
   Macro.if_(
-    `monstername ${bestWitchessPiece}`,
+    `monstername ${copiedMonster}`,
     Macro.externalIf(
       myFamiliar() === $familiar`Pocket Professor`,
       Macro.if_("!hasskill Lecture on Relativity", Macro.trySkill($skill`Meteor Shower`))
         .if_(
           "!hasskill Lecture on Relativity",
           Macro.externalIf(
-            get("_sourceTerminalDigitizeMonster") !== bestWitchessPiece,
+            get("_sourceTerminalDigitizeMonster") !== copiedMonster,
             Macro.tryCopier($skill`Digitize`)
           )
             .tryCopier($item`Spooky Putty sheet`)
@@ -173,12 +184,12 @@ const secondChainMacro = () =>
 
 const copierMacro = () =>
   Macro.if_(
-    `monstername ${bestWitchessPiece}`,
+    `monstername ${copiedMonster}`,
     Macro.if_("snarfblat 186", Macro.tryCopier($item`pulled green taffy`))
       .trySkill($skill`Wink at`)
       .trySkill($skill`Fire a badly romantic arrow`)
       .externalIf(
-        get("_sourceTerminalDigitizeMonster") !== bestWitchessPiece,
+        get("_sourceTerminalDigitizeMonster") !== copiedMonster,
         Macro.tryCopier($skill`Digitize`)
       )
       .tryCopier($item`Spooky Putty sheet`)
@@ -192,7 +203,7 @@ const copierSources = [
   new CopierFight(
     "Digitize",
     () =>
-      get("_sourceTerminalDigitizeMonster") === bestWitchessPiece &&
+      get("_sourceTerminalDigitizeMonster") === copiedMonster &&
       getCounters("Digitize Monster", 0, 0).trim() !== "",
     () => (SourceTerminal.have() && get("_sourceTerminalDigitizeUses") === 0 ? 1 : 0),
     (options: CopierFightOptions) => {
@@ -206,7 +217,7 @@ const copierSources = [
   new CopierFight(
     "Backup",
     () =>
-      get("lastCopyableMonster") === bestWitchessPiece &&
+      get("lastCopyableMonster") === copiedMonster &&
       have($item`backup camera`) &&
       get<number>("_backUpUses") < 5,
     () => (have($item`backup camera`) ? clamp(6 - get<number>("_backUpUses"), 0, 6) : 0),
@@ -218,7 +229,7 @@ const copierSources = [
       adventureMacro(
         realLocation,
         Macro.if_(
-          `!monstername ${bestWitchessPiece}`,
+          `!monstername ${copiedMonster}`,
           Macro.skill($skill`Back-Up to your Last Enemy`)
         ).step(options.macro || copierMacro())
       );
@@ -257,8 +268,8 @@ const copierSources = [
   new CopierFight(
     "Spooky Putty & Rain-Doh",
     () =>
-      (have($item`Spooky Putty monster`) && get("spookyPuttyMonster") === bestWitchessPiece) ||
-      (have($item`Rain-Doh box full of monster`) && get("rainDohMonster") === bestWitchessPiece),
+      (have($item`Spooky Putty monster`) && get("spookyPuttyMonster") === copiedMonster) ||
+      (have($item`Rain-Doh box full of monster`) && get("rainDohMonster") === copiedMonster),
     () => {
       if (
         (have($item`Spooky Putty sheet`) || have($item`Spooky Putty monster`)) &&
@@ -287,11 +298,11 @@ const copierSources = [
     "4-d Camera",
     () =>
       have($item`shaking 4-d camera`) &&
-      get("cameraMonster") === bestWitchessPiece &&
+      get("cameraMonster") === copiedMonster &&
       !get("_cameraUsed"),
     () =>
       have($item`shaking 4-d camera`) &&
-      get("cameraMonster") === bestWitchessPiece &&
+      get("cameraMonster") === copiedMonster &&
       !get("_cameraUsed")
         ? 1
         : 0,
@@ -301,11 +312,11 @@ const copierSources = [
     "Ice Sculpture",
     () =>
       have($item`ice sculpture`) &&
-      get("iceSculptureMonster") === bestWitchessPiece &&
+      get("iceSculptureMonster") === copiedMonster &&
       !get("_iceSculptureUsed"),
     () =>
       have($item`ice sculpture`) &&
-      get("iceSculptureMonster") === bestWitchessPiece &&
+      get("iceSculptureMonster") === copiedMonster &&
       !get("_iceSculptureUsed")
         ? 1
         : 0,
@@ -315,11 +326,11 @@ const copierSources = [
     "Green Taffy",
     () =>
       have($item`envyfish egg`) &&
-      get("envyfishMonster") === bestWitchessPiece &&
+      get("envyfishMonster") === copiedMonster &&
       !get("_envyfishEggUsed"),
     () =>
       have($item`envyfish egg`) &&
-      get("envyfishMonster") === bestWitchessPiece &&
+      get("envyfishMonster") === copiedMonster &&
       !get("_envyfishEggUsed")
         ? 1
         : 0,
@@ -409,7 +420,7 @@ function getCopierFight(): CopierFight | null {
         retrieveItem($item`pocket wish`);
         visitUrl(`inv_use.php?pwd=${myHash()}&which=3&whichitem=9537`, false, true);
         visitUrl(
-          `choice.php?pwd&whichchoice=1267&option=1&wish=to fight a ${bestWitchessPiece}`,
+          `choice.php?pwd&whichchoice=1267&option=1&wish=to fight a ${copiedMonster}`,
           true,
           true
         );
@@ -420,16 +431,6 @@ function getCopierFight(): CopierFight | null {
   }
   return null;
 }
-
-const witchessPieces = [
-  { piece: $monster`Witchess Bishop`, drop: $item`Sacramento wine` },
-  { piece: $monster`Witchess Knight`, drop: $item`jumping horseradish` },
-  { piece: $monster`Witchess Pawn`, drop: $item`armored prawn` },
-  { piece: $monster`Witchess Rook`, drop: $item`Greek fire` },
-];
-
-const bestWitchessPiece = witchessPieces.sort((a, b) => saleValue(b.drop) - saleValue(a.drop))[0]
-  .piece;
 
 export function dailyFights(): void {
   if (myInebriety() > inebrietyLimit()) return;
@@ -464,7 +465,6 @@ export function dailyFights(): void {
 
       // SECOND EMBEZZLER CHAIN
       if (have($familiar`Pocket Professor`) && !get<boolean>("_duffo_weightChain", false)) {
-        const startLectures = get("_pocketProfessorLectures");
         const fightSource = getCopierFight();
         if (!fightSource) return;
         useFamiliar($familiar`Pocket Professor`);
@@ -485,7 +485,6 @@ export function dailyFights(): void {
               macro: secondChainMacro(),
             })
           );
-          log.initialEmbezzlersFought += 1 + get("_pocketProfessorLectures") - startLectures;
         }
         set("_duffo_weightChain", true);
         safeInterrupt();
@@ -884,7 +883,7 @@ const freeFightSources = [
   // Save one for digitizing later?
   new FreeFight(
     () => (Witchess.have() ? clamp(5 - Witchess.fightsDone(), 0, 5) : 0),
-    () => Witchess.fightPiece(bestWitchessPiece)
+    () => Witchess.fightPiece(copiedMonster)
   ),
 
   new FreeFight(
