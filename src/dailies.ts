@@ -44,7 +44,7 @@ import {
   SourceTerminal,
 } from "libram";
 import { fairyFamiliar } from "./familiar";
-import { coinmasterPrice, saleValue, setChoice, tryFeast } from "./lib";
+import { coinmasterPrice, saleValue, tryFeast } from "./lib";
 import { withStash, withVIPClan } from "./clan";
 import { refreshLatte } from "./outfit";
 
@@ -85,8 +85,8 @@ function getGnomeGear(): void {
   gnomeGear.forEach((gearItem) => {
     if (have(gearItem)) return;
     const selection = toInt(gearItem) - toInt($item`gnomish swimmer's ears`) +1;
-    setChoice(597, selection);
     visitUrl("arena.php");
+    runChoice(selection)
   });
 
   return;

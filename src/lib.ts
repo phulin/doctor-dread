@@ -191,9 +191,18 @@ function digitizedMonstersRemaining(): number {
   return untangleDigitizes(turnsAtLastDigitize, digitizesLeft + 1);
 }
 
+export function setDefaultChoiceHandling(): void {
+  // Black forest noncombats; fight blackberry bush
+  setChoice(923, 1);
+  setChoice(924, 1);
+}
+
 export function determineDraggableZoneAndEnsureAccess(
   type: draggableFight = draggableFight.WANDERER
 ): Location {
+  // Set choice handling to ensure script doesn't throw up on an NC
+  setDefaultChoiceHandling();
+
   const defaultLocation =
     get("_spookyAirportToday") || get("spookyAirportAlways")
       ? $location`The Deep Dark Jungle`
