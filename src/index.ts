@@ -37,7 +37,7 @@ import {
   $item,
   $items,
   $location,
-  $monsters,
+  $monster,
   $skill,
   $skills,
   adventureMacro,
@@ -177,7 +177,7 @@ function nepTurn() {
     have($familiar`Machine Elf`) &&
     get("_machineTunnelsAdv") < 5 &&
     get("_backUpUses") < 11 &&
-    ($monsters`burnout, jock` as (Monster | null)[]).includes(get("lastCopyableMonster"))
+    get("lastCopyableMonster") === $monster`jock`
   ) {
     useFamiliar($familiar`Machine Elf`);
     nepOutfit(new Requirement(["5 Item Drop"], { forceEquip: $items`backup camera` }));
@@ -205,7 +205,16 @@ function nepTurn() {
       );
     } else {
       useFamiliar(fairyFamiliar());
-      nepOutfit();
+      nepOutfit(
+        new Requirement(["5 Item Drop"], {
+          forceEquip:
+            have($item`Lil' Doctor™ bag`) && get("_chestXRayUsed") < 3
+              ? $items`Lil' Doctor™ bag`
+              : have($item`The Jokester's gun`) && get("_firedJokestersGun")
+              ? $items`The Jokester's gun`
+              : [],
+        })
+      );
     }
 
     // Apply synth only later in the day when our item drop drops.

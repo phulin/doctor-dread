@@ -150,13 +150,9 @@ const zonePotions: ZonePotion[] = [
 
 function acceptBestGuzzlrQuest() {
   if (!Guzzlr.isQuestActive()) {
-    if (
-      Guzzlr.canPlatinum() &&
-      (!Guzzlr.haveFullPlatinumBonus() ||
-        (Guzzlr.haveFullBronzeBonus() && Guzzlr.haveFullGoldBonus()))
-    ) {
-      Guzzlr.acceptPlatinum();
-    } else if (Guzzlr.canGold() && (!Guzzlr.haveFullGoldBonus() || Guzzlr.haveFullBronzeBonus())) {
+    if (!Guzzlr.haveFullBronzeBonus()) {
+      Guzzlr.acceptBronze();
+    } else if (Guzzlr.canGold()) {
       Guzzlr.acceptGold();
     } else {
       Guzzlr.acceptBronze();

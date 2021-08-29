@@ -331,6 +331,10 @@ export class Macro extends LibramMacro {
           !get("_gingerbreadMobHitUsed"),
           Macro.trySkill($skill`Duplicate`).skill($skill`Gingerbread Mob Hit`)
         )
+        .externalIf(
+          have($item`replica bat-oomerang`) && get("_usedReplicaBatoomerang") < 3,
+          Macro.item($item`replica bat-oomerang`)
+        )
     );
   }
 
