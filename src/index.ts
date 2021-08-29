@@ -82,10 +82,10 @@ function macroPreRun() {
     .externalIf(
       myFamiliar() === $familiar`XO Skeleton`,
       Macro.while_(
-        'hasskill "Macrometeorite" && (match "unremarkable duffel bag" || match "van key")',
+        'hasskill "Macrometeorite" && !pastround 25 && (match "unremarkable duffel bag" || match "van key")',
         Macro.skill("CLEESH").skill("Macrometeorite").skill("Hugs and Kisses!")
       ).while_(
-        'hasskill "CHEAT CODE: Replace Enemy" && (match "unremarkable duffel bag" || match "van key")',
+        'hasskill "CHEAT CODE: Replace Enemy" && !pastround 25 && (match "unremarkable duffel bag" || match "van key")',
         Macro.skill("CLEESH").skill("CHEAT CODE: Replace Enemy").skill("Hugs and Kisses!")
       )
     )
