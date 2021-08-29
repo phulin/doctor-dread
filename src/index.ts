@@ -134,6 +134,8 @@ function macroPostRun() {
         ...$skills`Throw Latte on Opponent, Show your boring familiar pictures`
       )
       .tryHaveItem($item`Louder Than Bomb`)
+      .tryHaveItem($item`divine champagne popper`)
+      .meatKill()
   )
     .externalIf(get("_neverendingPartyFreeTurns") === 10, Macro.tryFreeKill())
     .externalIf(SourceTerminal.getDuplicateUses() === 0, Macro.trySkill($skill`Duplicate`))

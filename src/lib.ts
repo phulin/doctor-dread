@@ -283,11 +283,12 @@ function testZoneAndUsePotionToAccess() {
     forbiddenZones.push("Spring Break Beach");
   }
 
-  if (myPath() == "Two Crazy Random Summer") { // can't access these zones in 2CRS
-    forbiddenZones.push(" Domed City of Grimacia, Domed City of Ronaldus, Hamburglaris Shield Generator, The Red Queen's Garden,The Mouldering Mansion, The Rogue Windmill, The Stately Pleasure Dome");
+  const blacklist = $locations`The Oasis, The Bubblin' Caldera, Barrrney's Barrr, The F'c'le, The Poop Deck, Belowdecks, 8-Bit Realm, Madness Bakery, The Secret Government Laboratory`;
+
+  if (myPath() === "Two Crazy Random Summer") { // can't access these zones in 2CRS
+    blacklist.concat($locations`Domed City of Grimacia, Domed City of Ronaldus, Hamburglaris Shield Generator, The Red Queen's Garden, The Mouldering Mansion, The Rogue Windmill, The Stately Pleasure Dome`);
   }
 
-  const blacklist = $locations`The Oasis, The Bubblin' Caldera, Barrrney's Barrr, The F'c'le, The Poop Deck, Belowdecks, 8-Bit Realm, Madness Bakery, The Secret Government Laboratory`;
   if (
     forbiddenZones.includes(guzzlZone.zone) ||
     blacklist.includes(guzzlZone) ||

@@ -63,6 +63,12 @@ export function freeFightOutfit(requirements: Requirement[] = []): void {
     myFamiliar() === $familiar`Machine Elf` ? BonusEquipMode.DMT : BonusEquipMode.FREE;
   const bjornChoice = pickBjorn(equipMode);
 
+  const forceEquip = [];
+  if (myFamiliar() === $familiar`Reagnimated Gnome`) {
+    // It is assumed you have the kgnee because I added gnome equips to dailies.
+    forceEquip.push($item`gnomish housemaid's kgnee`);
+  }
+
   const compiledRequirements = Requirement.merge([
     ...requirements,
     new Requirement(
@@ -88,6 +94,7 @@ export function freeFightOutfit(requirements: Requirement[] = []): void {
       : $item`Crown of Thrones`;
   const finalRequirements = compiledRequirements.merge(
     new Requirement([], {
+      forceEquip,
       bonusEquip: new Map([
         [
           bjornAlike,
