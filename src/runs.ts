@@ -7,8 +7,9 @@ import {
   retrieveItem,
   visitUrl,
 } from "kolmafia";
-import { $item, $items, $skill, get, have, Macro } from "libram";
+import { $item, $items, $skill, get, have } from "libram";
 import { fillAsdonMartinTo } from "./asdon";
+import { Macro } from "./combat";
 import { Requirement, setChoice } from "./lib";
 
 export function tryFillLatte(): boolean {
@@ -64,6 +65,16 @@ export class FreeRun {
 }
 
 const freeRuns: FreeRun[] = [
+  new FreeRun(
+    "Backup Free",
+    () =>
+      have($item`backup camera`) &&
+      !!get("lastCopyableMonster")?.attributes.includes("FREE") &&
+      get("_backUpUses") < 11,
+    Macro.skill("Back-Up to your Last Enemy").basicCombat(),
+    new Requirement([], { forceEquip: $items`backup camera` })
+  ),
+
   new FreeRun(
     "Asdon Bumper",
     () =>
