@@ -146,6 +146,10 @@ export function nepOutfit(requirement = new Requirement(["5 Item Drop"], {})): v
     forceEquip.push($item`quake of arrows`);
     if (!have($item`quake of arrows`)) retrieveItem($item`quake of arrows`);
   }
+  if (myFamiliar() === $familiar`Reagnimated Gnome`) {
+    // It is assumed you have the kgnee because I added gnome equips to dailies.
+    forceEquip.push($item`gnomish housemaid's kgnee`);
+  }
   const bjornAlike =
     have($item`Buddy Bjorn`) && !forceEquip.some((item) => toSlot(item) === $slot`back`)
       ? $item`Buddy Bjorn`

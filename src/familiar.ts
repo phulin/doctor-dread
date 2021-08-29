@@ -3,7 +3,7 @@ import { $effect, $familiar, $familiars, $item, $items, get, have } from "libram
 import { argmax, saleValue } from "./lib";
 
 export function fairyFamiliar(): Familiar {
-  if (have($familiar`Cat Burglar`) && get("_catBurglarCharge") < 150) return $familiar`Cat Burglar`;
+  if (have($familiar`Cat Burglar`) && get("_catBurglarCharge") < 30) return $familiar`Cat Burglar`;
   return (
     $familiars`Reagnimated Gnome, Jumpsuited Hound Dog`.find((familiar) => have(familiar)) ??
     $familiar`Baby Gravy Fairy`

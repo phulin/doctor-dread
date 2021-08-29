@@ -30,16 +30,16 @@ import { questStep, setChoice } from "./lib";
 import { withStash, withVIPClan } from "./clan";
 import { acquire } from "./acquire";
 
-Mood.setDefaultOptions({
-  mpSources: [],
-  reserveMp: 50,
-  /* songSlots: [
-    $effects`Polka of Plenty, Ode to Booze`,
-    $effects`Fat Leon's Phat Loot Lyric`,
-    $effects`Chorale of Companionship`,
-    $effects`The Ballad of Richie Thingfinder`,
-  ], */
-});
+// Mood.setDefaultOptions({
+//   mpSources: [],
+//   reserveMp: 50,
+//   /* songSlots: [
+//     $effects`Polka of Plenty, Ode to Booze`,
+//     $effects`Fat Leon's Phat Loot Lyric`,
+//     $effects`Chorale of Companionship`,
+//     $effects`The Ballad of Richie Thingfinder`,
+//   ], */
+// });
 
 export function itemMood(): Mood {
   const mood = new Mood();
