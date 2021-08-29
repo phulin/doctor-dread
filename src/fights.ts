@@ -54,7 +54,6 @@ import {
   $skill,
   $slot,
   adventureMacro,
-  adventureMacroAuto,
   ChateauMantegna,
   get,
   have,
