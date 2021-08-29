@@ -42,12 +42,15 @@ function clamp(n: number, min: number, max: number) {
 }
 
 function shouldRedigitize() {
-  const digitizesLeft = clamp(3 - get("_sourceTerminalDigitizeUses"), 0, 3);
-  const monsterCount = get("_sourceTerminalDigitizeMonsterCount") + 1;
+  const digitizesLeft = clamp(3 - SourceTerminal.getDigitizeUses(), 0, 3);
+  const monsterCount = SourceTerminal.getDigitizeMonsterCount() + 1;
   // triangular number * 10 - 3
   const digitizeAdventuresUsed = monsterCount * (monsterCount + 1) * 5 - 3;
   // Redigitize if fewer adventures than this digitize usage.
-  return SourceTerminal.have() && myAdventures() * 1.04 < digitizesLeft * digitizeAdventuresUsed;
+  const thumbRingMultiplier = 1 / 0.96;
+  const gnomeMultiplier = have($familiar`Reagnimated Gnome`) ? 1 / 0.85 : 1;
+  const expectedAdventures = myAdventures() * thumbRingMultiplier * gnomeMultiplier;
+  return SourceTerminal.have() && expectedAdventures < digitizesLeft * digitizeAdventuresUsed;
 }
 
 export class Macro extends LibramMacro {
@@ -161,7 +164,7 @@ export class Macro extends LibramMacro {
     return this.externalIf(
       shouldRedigitize(),
       Macro.if_(
-        `monstername ${get("_sourceTerminalDigitizeMonster")}`,
+        `monstername ${SourceTerminal.getDigitizeMonster()}`,
         Macro.trySkill($skill`Digitize`)
       )
     )
@@ -287,6 +290,13 @@ export class Macro extends LibramMacro {
       .tryHaveItem($item`Time-Spinner`)
       .tryHaveItem($item`Rain-Doh indigo cup`)
       .tryHaveItem($item`Rain-Doh blue balls`)
+      .externalIf(
+        shouldRedigitize(),
+        Macro.if_(
+          `monstername ${SourceTerminal.getDigitizeMonster()}`,
+          Macro.trySkill($skill`Digitize`)
+        )
+      )
       .externalIf(
         haveEquipped($item`Buddy Bjorn`) || haveEquipped($item`Crown of Thrones`),
         Macro.while_("!pastround 3 && !hppercentbelow 25", Macro.item($item`seal tooth`))
