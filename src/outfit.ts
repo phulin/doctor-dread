@@ -66,7 +66,11 @@ export function freeFightOutfit(requirements: Requirement[] = []): void {
   const compiledRequirements = Requirement.merge([
     ...requirements,
     new Requirement(
-      myFamiliar() === $familiar`Pocket Professor` ? ["Familiar Experience"] : ["Familiar Weight"],
+      myFamiliar() === $familiar`Reagnimated Gnome`
+        ? [`${(MPA * 0.001).toFixed(1)} Familiar Weight`]
+        : myFamiliar() === $familiar`Pocket Professor`
+        ? ["Familiar Experience"]
+        : ["Familiar Weight"],
       {
         bonusEquip: new Map([...dropsItems(equipMode), ...pantsgiving(), ...cheeses()]),
       }
