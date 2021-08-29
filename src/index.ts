@@ -79,9 +79,27 @@ import { findRun, tryFillLatte } from "./runs";
 
 function macroPreRun() {
   return Macro.pickpocket()
+    .externalIf(
+      myFamiliar() === $familiar`XO Skeleton`,
+      Macro.while_(
+        'hasskill "Macrometeorite" && (match "unremarkable duffel bag" || match "van key")',
+        Macro.skill("CLEESH").skill("Macrometeorite").skill("Hugs and Kisses!")
+      ).while_(
+        'hasskill "CHEAT CODE: Replace Enemy" && (match "unremarkable duffel bag" || match "van key")',
+        Macro.skill("CLEESH").skill("CHEAT CODE: Replace Enemy").skill("Hugs and Kisses!")
+      )
+    )
     .if_(
       'match "unremarkable duffel bag" || match "van key"',
       Macro.meatStasis(true)
+        .externalIf(
+          myFamiliar() === $familiar`XO Skeleton` && get("_macrometeoriteUses") < 10,
+          Macro.skill("CLEESH").skill("Macrometeorite")
+        )
+        .externalIf(
+          myFamiliar() === $familiar`XO Skeleton` && get("_powerfulGloveBatteryPowerUsed") <= 90,
+          Macro.skill("CLEESH").skill("CHEAT CODE: Replace Enemy")
+        )
         .externalIf(
           $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()),
           Macro.externalIf(
@@ -210,6 +228,19 @@ function nepTurn() {
 
       useFamiliar(fairyFamiliar());
       nepOutfit(nepDefaultRequirement.merge(freeRun?.requirement ?? Requirement.empty));
+    } else if (
+      have($familiar`XO Skeleton`) &&
+      get("_xoHugsUsed") < 11 &&
+      (get("_macrometeoriteUses") < 10 || get("_powerfulGloveBatteryPowerUsed") <= 90)
+    ) {
+      useFamiliar($familiar`XO Skeleton`);
+      nepOutfit(
+        nepDefaultRequirement.merge(
+          new Requirement([], {
+            forceEquip: get("_macrometeoriteUses") === 10 ? $items`Powerful Glove` : [],
+          })
+        )
+      );
     } else {
       useFamiliar(fairyFamiliar());
       nepOutfit(
