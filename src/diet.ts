@@ -232,3 +232,5 @@ function mindMayo(mayo: Item, quantity: number) {
     use($item`Mayo Minder™`);
   }
 }
+
+export function runNightcap() {}
