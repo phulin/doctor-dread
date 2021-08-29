@@ -2,6 +2,8 @@ import { familiarWeight, haveEffect, myFamiliar, weightAdjustment } from "kolmaf
 import { $effect, $familiar, $familiars, $item, $items, get, have } from "libram";
 import { argmax, saleValue } from "./lib";
 
+const MPA = get("valueOfAdventure");
+
 export function fairyFamiliar(): Familiar {
   if (have($familiar`Cat Burglar`) && get("_catBurglarCharge") < 30) return $familiar`Cat Burglar`;
   return (
@@ -153,7 +155,14 @@ export function freeFightFamiliar(): Familiar {
   if (have($familiar`Cat Burglar`)) {
     const heistsCharged = Math.floor(Math.log2(1 + get("_catBurglarCharge") / 10));
     const nextHeistTurns = 10 * 2 ** heistsCharged;
-    familiarValue.push([$familiar`Cat Burglar`, 12000 / nextHeistTurns]);
+    familiarValue.push([$familiar`Cat Burglar`, MPA / nextHeistTurns]);
+  }
+
+  if (have($familiar`Reagnimated Gnome`)) {
+    familiarValue.push([
+      $familiar`Reagnimated Gnome`,
+      MPA * myFamiliarWeight($familiar`Reagnimated Gnome`) * 0.001,
+    ]);
   }
 
   for (const familiar of $familiars`Hobo Monkey, Urchin Urchin, Leprechaun`) {

@@ -103,6 +103,7 @@ function fillLiver() {
   const count = inebrietyLimit() - myInebriety();
   if (count === 0) return;
   if (getWorkshed() === $item`portable Mayo Clinic` && myFullness() < fullnessLimit()) {
+    useIfUnused($item`milk of magnesium`, "_milkOfMagnesiumUsed", 5 * MPA);
     mindMayo(Mayo.diol, count);
     acquire(count, $item`Special Seasoning`, MPA, false);
     while (myInebriety() < inebrietyLimit()) {
