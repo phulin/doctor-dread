@@ -77,20 +77,19 @@ export function dailySetup(): void {
 }
 
 function getGnomeGear(): void {
-  if(!have($familiar`Reagnimated Gnome`)) return;
+  if (!have($familiar`Reagnimated Gnome`)) return;
 
   useFamiliar($familiar`Reagnimated Gnome`);
   const gnomeGear = $items`gnomish housemaid's kgnee, gnomish coal miner's lung, gnomish athlete's foot, gnomish tennis elbow, gnomish swimmer's ears`;
 
   gnomeGear.forEach((gearItem) => {
     if (have(gearItem)) return;
-    const selection = toInt(gearItem) - toInt($item`gnomish swimmer's ears`) +1;
+    const selection = toInt(gearItem) - toInt($item`gnomish swimmer's ears`) + 1;
     visitUrl("arena.php");
-    runChoice(selection)
+    runChoice(selection);
   });
 
   return;
-
 }
 
 function voterSetup(): void {
@@ -176,7 +175,7 @@ function prepFamiliars(): void {
   if (get("_feastUsed") === 0) {
     withStash($items`moveable feast`, () => {
       if (have($item`moveable feast`))
-        $familiars`Pocket Professor, Frumious Bandersnatch, Pair of Stomping Boots, Cat Burglar, Jumpsuited Hound Dog`.forEach(
+        $familiars`Pocket Professor, Frumious Bandersnatch, Pair of Stomping Boots, Cat Burglar, Reagnimated Gnome`.forEach(
           tryFeast
         );
     });

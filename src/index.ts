@@ -160,6 +160,7 @@ function nepTurn() {
     myInebriety() <= inebrietyLimit() &&
     have($item`"I Voted!" sticker`) &&
     totalTurnsPlayed() % 11 === 1 &&
+    get("lastVoteMonsterTurn") < totalTurnsPlayed() &&
     get("_voteFreeFights") < 3
   ) {
     useFamiliar(freeFightFamiliar());
