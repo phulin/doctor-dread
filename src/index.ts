@@ -65,7 +65,12 @@ import {
   setChoice,
 } from "./lib";
 import { boostItemDrop, itemMood } from "./mood";
-import { freeFightOutfit, nepOutfit, tryConfigureBanderRuns } from "./outfit";
+import {
+  freeFightOutfit,
+  nepDefaultRequirement,
+  nepOutfit,
+  tryConfigureBanderRuns,
+} from "./outfit";
 import { withStash } from "./clan";
 import { estimatedTurns, globalOptions, log } from "./globalvars";
 import { dailySetup } from "./dailies";
@@ -113,6 +118,7 @@ function macroPostRun() {
       .tryHaveItem($item`Louder Than Bomb`)
   )
     .externalIf(get("_neverendingPartyFreeTurns") === 10, Macro.tryFreeKill())
+    .externalIf(SourceTerminal.getDuplicateUses() === 0, Macro.trySkill($skill`Duplicate`))
     .meatKill();
 }
 
@@ -121,7 +127,7 @@ function nepTurn() {
     throw "Hey, you're beaten up, and that's a bad thing. Lick your wounds, handle your problems, and run me again when you feel ready.";
 
   if (SourceTerminal.have()) {
-    if (SourceTerminal.getDuplicateUses() > 0) {
+    if (SourceTerminal.getDuplicateUses() === 0) {
       SourceTerminal.educate([$skill`Duplicate`, $skill`Digitize`]);
     } else {
       SourceTerminal.educate([$skill`Extract`, $skill`Digitize`]);
@@ -181,7 +187,9 @@ function nepTurn() {
     get("lastCopyableMonster") === $monster`jock`
   ) {
     useFamiliar($familiar`Machine Elf`);
-    nepOutfit(new Requirement(["5 Item Drop"], { forceEquip: $items`backup camera` }));
+    nepOutfit(
+      nepDefaultRequirement.merge(new Requirement([], { forceEquip: $items`backup camera` }))
+    );
     adventureMacro(
       $location`The Deep Machine Tunnels`,
       Macro.skill($skill`Back-Up to your Last Enemy`).meatKill()
@@ -201,20 +209,20 @@ function nepTurn() {
       if (freeRun?.prepare) freeRun.prepare();
 
       useFamiliar(fairyFamiliar());
-      nepOutfit(
-        new Requirement(["5 Item Drop"], {}).merge(freeRun?.requirement ?? Requirement.empty)
-      );
+      nepOutfit(nepDefaultRequirement.merge(freeRun?.requirement ?? Requirement.empty));
     } else {
       useFamiliar(fairyFamiliar());
       nepOutfit(
-        new Requirement(["5 Item Drop"], {
-          forceEquip:
-            have($item`Lil' Doctor™ bag`) && get("_chestXRayUsed") < 3
-              ? $items`Lil' Doctor™ bag`
-              : have($item`The Jokester's gun`) && get("_firedJokestersGun")
-              ? $items`The Jokester's gun`
-              : [],
-        })
+        nepDefaultRequirement.merge(
+          new Requirement([], {
+            forceEquip:
+              have($item`Lil' Doctor™ bag`) && get("_chestXRayUsed") < 3
+                ? $items`Lil' Doctor™ bag`
+                : have($item`The Jokester's gun`) && !get("_firedJokestersGun")
+                ? $items`The Jokester's gun`
+                : [],
+          })
+        )
       );
     }
 

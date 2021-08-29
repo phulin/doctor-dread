@@ -47,6 +47,8 @@ import { withVIPClan } from "./clan";
 import { estimatedTurns, globalOptions } from "./globalvars";
 import { baseMeat, BonusEquipMode, Requirement, saleValue } from "./lib";
 
+const MPA = get("valueOfAdventure");
+
 const bestAdventuresFromPants =
   Item.all()
     .filter(
@@ -111,7 +113,9 @@ export function refreshLatte(): boolean {
   return have($item`latte lovers member's mug`);
 }
 
-export function nepOutfit(requirement = new Requirement(["5 Item Drop"], {})): void {
+export const nepDefaultRequirement = new Requirement(["5 Item Drop"], {});
+export function nepOutfit(requirement = nepDefaultRequirement): void {
+  const extraObjectives = [];
   const forceEquip = [];
   const equipMode =
     getCounters("Digitize Monster", 0, 0) === "" ? BonusEquipMode.BARF : BonusEquipMode.FREE;
@@ -149,13 +153,14 @@ export function nepOutfit(requirement = new Requirement(["5 Item Drop"], {})): v
   if (myFamiliar() === $familiar`Reagnimated Gnome`) {
     // It is assumed you have the kgnee because I added gnome equips to dailies.
     forceEquip.push($item`gnomish housemaid's kgnee`);
+    extraObjectives.push(`${(MPA * 0.001).toFixed(1)} Familiar Weight`);
   }
   const bjornAlike =
     have($item`Buddy Bjorn`) && !forceEquip.some((item) => toSlot(item) === $slot`back`)
       ? $item`Buddy Bjorn`
       : $item`Crown of Thrones`;
   const compiledRequirements = requirement.merge(
-    new Requirement([], {
+    new Requirement(extraObjectives, {
       forceEquip,
       bonusEquip: new Map([
         ...dropsItems(equipMode),
