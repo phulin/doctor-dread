@@ -5,6 +5,7 @@ import {
   cliExecute,
   equip,
   familiarWeight,
+  getAutoAttack,
   getCampground,
   getCounters,
   handlingChoice,
@@ -779,7 +780,9 @@ const freeFightSources = [
       get("_timeSpinnerMinutesUsed") < 8,
     () => {
       retrieveItem($item`Bowl of Scorpions`);
-      Macro.trySkill($skill`Extract`).trySkill($skill`Sing Along`).setAutoAttack;
+      Macro.trySkill($skill`Extract`)
+        .trySkill($skill`Sing Along`)
+        .setAutoAttack();
       visitUrl(`inv_use.php?whichitem=${toInt($item`Time-Spinner`)}`);
       runChoice(1);
       visitUrl(`choice.php?whichchoice=1196&monid=${$monster`drunk pygmy`.id}&option=1`);
@@ -1011,6 +1014,6 @@ function doSausage() {
   if (!kramcoGuaranteed()) return;
   useFamiliar(freeFightFamiliar());
   freeFightOutfit([new Requirement([], { forceEquip: $items`Kramco Sausage-o-Matic™` })]);
-  adventureMacroAuto(determineDraggableZoneAndEnsureAccess(), Macro.basicCombat());
-  setAutoAttack(0);
+  if (getAutoAttack() > 0) setAutoAttack(0);
+  adventureMacro(determineDraggableZoneAndEnsureAccess(), Macro.basicCombat());
 }

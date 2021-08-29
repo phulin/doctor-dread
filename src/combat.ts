@@ -1,6 +1,7 @@
 import {
   equippedAmount,
   equippedItem,
+  getAutoAttack,
   getCounters,
   haveEquipped,
   haveSkill,
@@ -468,7 +469,7 @@ export class Macro extends LibramMacro {
 }
 
 export function withMacro<T>(macro: Macro, action: () => T): T {
-  setAutoAttack(0);
+  if (getAutoAttack() > 0) setAutoAttack(0);
   macro.save();
   try {
     return action();

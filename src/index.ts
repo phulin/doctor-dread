@@ -51,7 +51,7 @@ import {
   SourceTerminal,
 } from "libram";
 import { Macro } from "./combat";
-import { runDiet } from "./diet";
+import { runDiet, runNightcap } from "./diet";
 import { fairyFamiliar, freeFightFamiliar } from "./familiar";
 import { dailyFights, freeFights, safeRestore } from "./fights";
 import {
@@ -304,9 +304,8 @@ export function main(argString = ""): void {
     if (arg.match(/\d+/)) {
       globalOptions.stopTurncount = myTurncount() + parseInt(arg, 10);
     }
-    if (arg.match(/ascend/)) {
-      globalOptions.ascending = true;
-    }
+    if (arg === "ascend") globalOptions.ascending = true;
+    if (arg === "nightcap") globalOptions.nightcap = true;
   }
   const gardens = $items`packet of pumpkin seeds, Peppermint Pip Packet, packet of dragon's teeth, packet of beer seeds, packet of winter seeds, packet of thanksgarden seeds, packet of tall grass seeds, packet of mushroom spores`;
   const startingGarden = gardens.find((garden) =>
@@ -412,6 +411,8 @@ export function main(argString = ""): void {
           nepTurn();
           safeInterrupt();
         }
+
+        if (myAdventures() === 0 && globalOptions.nightcap) runNightcap();
       } finally {
         setAutoAttack(0);
       }

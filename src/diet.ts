@@ -4,6 +4,8 @@ import {
   drink,
   eat,
   fullnessLimit,
+  getCampground,
+  getChateau,
   getFuel,
   getProperty,
   getWorkshed,
@@ -11,6 +13,7 @@ import {
   inebrietyLimit,
   itemAmount,
   mallPrice,
+  myAdventures,
   myClass,
   myFamiliar,
   myFullness,
@@ -233,4 +236,25 @@ function mindMayo(mayo: Item, quantity: number) {
   }
 }
 
-export function runNightcap() {}
+export function runNightcap(): void {
+  if (myAdventures() > 0) throw "Trying to nightcap with adventures remaining!";
+  useFamiliar($familiar`Stooper`);
+
+  if (myInebriety() + 1 === inebrietyLimit()) {
+    acquire(1, $item`black label`, 3 * MPA);
+    drinkSafe(1, $item`bottle of vodka`);
+  }
+
+  if (myInebriety() === inebrietyLimit()) {
+    acquire(1, $item`Frosty's frosty mug`, 15 * MPA);
+    drinkSafe(1, $item`Suffering Sinner`);
+  }
+
+  if (!getChateau()["artificial skylight"]) {
+    buy(1, $item`artificial skylight`);
+  }
+
+  if (!getCampground()["clockwork maid"]) {
+    use(1, $item`clockwork maid`);
+  }
+}

@@ -3,6 +3,7 @@ import {
   buy,
   changeMcd,
   cliExecute,
+  create,
   currentMcd,
   getCampground,
   getClanLounge,
@@ -44,7 +45,7 @@ import {
   SourceTerminal,
 } from "libram";
 import { fairyFamiliar } from "./familiar";
-import { coinmasterPrice, saleValue, tryFeast } from "./lib";
+import { argmax, coinmasterPrice, saleValue, tryFeast } from "./lib";
 import { withStash, withVIPClan } from "./clan";
 import { refreshLatte } from "./outfit";
 
@@ -52,6 +53,7 @@ export function dailySetup(): void {
   getGnomeGear();
   voterSetup();
   martini();
+  extrude();
   chateauDesk();
   gaze();
   configureGear();
@@ -67,7 +69,6 @@ export function dailySetup(): void {
   refreshLatte();
 
   if (myInebriety() > inebrietyLimit()) return;
-  retrieveItem($item`Half a Purse`);
   retrieveItem($item`seal tooth`);
   retrieveItem($item`The Jokester's gun`);
   putCloset(itemAmount($item`hobo nickel`), $item`hobo nickel`);
@@ -436,5 +437,14 @@ function martini(): void {
 function chateauDesk(): void {
   if (ChateauMantegna.have() && !get("_chateauDeskHarvested")) {
     visitUrl("place.php?whichplace=chateau&action=chateau_desk2", false);
+  }
+}
+
+function extrude(): void {
+  const bestExtrude = argmax(
+    $items`browser cookie, hacked gibson`.map((item) => [item, saleValue(item)])
+  );
+  if (SourceTerminal.have() && itemAmount($item`Source essence`) >= 30) {
+    create(3 - get("_sourceTerminalExtrudes"), bestExtrude);
   }
 }
