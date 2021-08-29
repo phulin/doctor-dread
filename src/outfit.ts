@@ -127,13 +127,16 @@ export function nepOutfit(requirement = nepDefaultRequirement): void {
     if (getKramcoWandererChance() > 0.99 && have($item`Kramco Sausage-o-Matic™`)) {
       forceEquip.push($item`Kramco Sausage-o-Matic™`);
     }
-    // TODO: Fix pointer finger ring construction.
-    if (myClass() !== $class`Seal Clubber`) {
+    // TODO: Fix pointer finger ring construction
+    if (
+      myClass() !== $class`Seal Clubber` &&
+      !requirement.maximizeOptions().forceEquip?.includes($item`The Jokester's gun`)
+    ) {
       if (have($item`haiku katana`)) {
-        forceEquip.push($item`haiku katana`);
+        forceEquip.push($item`haiku katana`, $item`mafia pointer finger ring`);
       } else if (have($item`unwrapped knock-off retro superhero cape`)) {
         if (!have($item`ice nine`)) retrieveItem($item`ice nine`);
-        forceEquip.push($item`ice nine`);
+        forceEquip.push($item`ice nine`, $item`mafia pointer finger ring`);
       }
     }
     if (
@@ -144,7 +147,6 @@ export function nepOutfit(requirement = nepDefaultRequirement): void {
     ) {
       forceEquip.push($item`protonic accelerator pack`);
     }
-    forceEquip.push($item`mafia pointer finger ring`);
   }
   if (myFamiliar() === $familiar`Obtuse Angel`) {
     forceEquip.push($item`quake of arrows`);
