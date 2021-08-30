@@ -1,4 +1,6 @@
 import {
+  adv1,
+  choiceFollowsFight,
   equippedAmount,
   equippedItem,
   getAutoAttack,
@@ -15,7 +17,7 @@ import {
   myLocation,
   myMp,
   mySoulsauce,
-  print,
+  printHtml,
   runCombat,
   setAutoAttack,
   toUrl,
@@ -34,6 +36,7 @@ import {
   get,
   have,
   Macro as LibramMacro,
+  set,
   SourceTerminal,
 } from "libram";
 import { maxPassiveDamage, monsterManuelAvailable } from "./lib";
@@ -55,11 +58,6 @@ function shouldRedigitize() {
 }
 
 export class Macro extends LibramMacro {
-  submit(): string {
-    print(this.components.join("; "));
-    return super.submit();
-  }
-
   pickpocket(): Macro {
     return this.step("pickpocket");
   }
@@ -502,11 +500,71 @@ export function mapMonster(location: Location, monster: Monster, macro: Macro): 
   });
 }
 
-export function main(): void {
-  if (have($effect`Eldritch Attunement`)) {
-    Macro.if_("monstername eldritch tentacle", Macro.basicCombat()).step(Macro.load()).submit();
-  } else {
-    Macro.load().submit();
+/**
+ * Adventure in a location and handle all combats with a given macro.
+ * To use this function you will need to create a consult script that runs Macro.load().submit() and a CCS that calls that consult script.
+ * See examples/consult.ts for an example.
+ *
+ * @category Combat
+ * @param loc Location to adventure in.
+ * @param macro Macro to execute.
+ */
+export function adventureMacro(loc: Location, macro: Macro): void {
+  if (getAutoAttack() !== 0) setAutoAttack(0);
+  macro.save();
+  try {
+    adv1(loc, 0, "");
+    while (inMultiFight()) runCombat();
+    if (choiceFollowsFight()) visitUrl("choice.php");
+  } catch (e) {
+    printHtml(get("_duffo_combatPage"));
+    throw "Combat exception!";
+  } finally {
+    Macro.clearSaved();
   }
+}
+
+/**
+ * Adventure in a location and handle all combats with a given autoattack and manual macro.
+ * To use the nextMacro parameter you will need to create a consult script that runs Macro.load().submit() and a CCS that calls that consult script.
+ * See examples/consult.ts for an example.
+ *
+ * @category Combat
+ * @param loc Location to adventure in.
+ * @param autoMacro Macro to execute via KoL autoattack.
+ * @param nextMacro Macro to execute manually after autoattack completes.
+ */
+export function adventureMacroAuto(
+  loc: Location,
+  autoMacro: Macro,
+  nextMacro = Macro.abort()
+): void {
+  autoMacro.setAutoAttack();
+  nextMacro.save();
+  try {
+    set("_duffo_combatPage", "");
+    adv1(loc, 0, "");
+    while (inMultiFight()) runCombat();
+    if (choiceFollowsFight()) visitUrl("choice.php");
+  } catch (e) {
+    printHtml(get("_duffo_combatPage"));
+    set("_duffo_combatPage", "");
+    throw "Combat exception!";
+  } finally {
+    Macro.clearSaved();
+  }
+}
+
+export function main(): void {
+  const response = Macro.load().submit();
+  const firstFart = response.indexOf("<!--faaaaaaart-->");
+  const lastFart = response.lastIndexOf("<!--faaaaaaart-->");
+  const extracted = response.substring(
+    firstFart >= 0 ? firstFart : 0,
+    lastFart > 0 ? lastFart : undefined
+  );
+  set("_duffo_combatPage", extracted);
+
   while (inMultiFight()) runCombat();
+  if (choiceFollowsFight()) visitUrl("choice.php");
 }

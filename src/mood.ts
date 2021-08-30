@@ -5,6 +5,7 @@ import {
   haveEffect,
   mallPrice,
   myEffects,
+  myFamiliar,
   mySpleenUse,
   numericModifier,
   spleenLimit,
@@ -16,6 +17,7 @@ import {
 import {
   $class,
   $effect,
+  $familiar,
   $item,
   $items,
   $skill,
@@ -156,7 +158,11 @@ export function boostItemDrop(): void {
     }
   }
 
-  if (numericModifier("Item Drop") < 1850 && mySpleenUse() < spleenLimit()) {
+  if (
+    numericModifier("Item Drop") < 1850 &&
+    mySpleenUse() < spleenLimit() &&
+    myFamiliar() !== $familiar`Frumious Bandersnatch`
+  ) {
     fillSpleenSynthesis();
     const mojoFilterCount = 3 - get("currentMojoFilters");
     acquire(mojoFilterCount, $item`mojo filter`, 15000, false);

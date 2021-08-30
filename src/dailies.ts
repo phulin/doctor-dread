@@ -169,7 +169,9 @@ function prepFamiliars(): void {
   } */
 
   if (have($item`mumming trunk`) && !get("_mummeryMods").includes("Item Drop")) {
-    useFamiliar(fairyFamiliar());
+    useFamiliar(
+      have($familiar`Reagnimated Gnome`) ? $familiar`Reagnimated Gnome` : fairyFamiliar()
+    );
     cliExecute("mummery item");
   }
 

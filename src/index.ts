@@ -40,8 +40,6 @@ import {
   $monster,
   $skill,
   $skills,
-  adventureMacro,
-  adventureMacroAuto,
   Bandersnatch,
   get,
   have,
@@ -50,10 +48,10 @@ import {
   sinceKolmafiaRevision,
   SourceTerminal,
 } from "libram";
-import { Macro } from "./combat";
+import { adventureMacro, adventureMacroAuto, Macro } from "./combat";
 import { runDiet, runNightcap } from "./diet";
 import { fairyFamiliar, freeFightFamiliar } from "./familiar";
-import { dailyFights, freeFights, safeRestore } from "./fights";
+import { dailyFights, freeFights, safeRestore, setNepQuestChoicesAndPrepItems } from "./fights";
 import {
   determineDraggableZoneAndEnsureAccess,
   ensureEffect,
@@ -138,7 +136,10 @@ function macroPostRun() {
       .meatKill()
   )
     .externalIf(get("_neverendingPartyFreeTurns") === 10, Macro.tryFreeKill())
-    .externalIf(SourceTerminal.getDuplicateUses() === 0, Macro.trySkill($skill`Duplicate`))
+    .externalIf(
+      SourceTerminal.getDuplicateUses() === 0,
+      Macro.trySkill($skill`Duplicate`).trySkill($skill`Disintegrate`)
+    )
     .meatKill();
 }
 
@@ -162,7 +163,7 @@ function nepTurn() {
   }
   tryFillLatte();
 
-  setChoice(1324, 5); // pick a fight at NEP NC
+  setNepQuestChoicesAndPrepItems();
 
   const digitizeUp = getCounters("Digitize Monster", 0, 0).trim() !== "";
 

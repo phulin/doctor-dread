@@ -16,7 +16,6 @@ import {
   myAscensions,
   myClass,
   myFamiliar,
-  myHash,
   myHp,
   myInebriety,
   myMaxhp,
@@ -33,10 +32,10 @@ import {
   setAutoAttack,
   setLocation,
   toInt,
+  toItem,
   toUrl,
   use,
   useFamiliar,
-  userConfirm,
   useSkill,
   visitUrl,
   wait,
@@ -53,7 +52,6 @@ import {
   $phyla,
   $skill,
   $slot,
-  adventureMacro,
   ChateauMantegna,
   get,
   have,
@@ -65,7 +63,7 @@ import {
   Witchess,
 } from "libram";
 import { withStash, withVIPClan } from "./clan";
-import { Macro, withMacro } from "./combat";
+import { adventureMacro, Macro, withMacro } from "./combat";
 import { fairyFamiliar, freeFightFamiliar } from "./familiar";
 import {
   clamp,
@@ -74,7 +72,6 @@ import {
   ensureEffect,
   kramcoGuaranteed,
   propertyManager,
-  questStep,
   Requirement,
   safeInterrupt,
   saleValue,
@@ -213,35 +210,6 @@ const copierSources = [
     true
   ),
 
-  // Backup camera: save 5 uses to put NEP monsters in the DMT.
-  new CopierFight(
-    "Backup",
-    () =>
-      get("lastCopyableMonster") === copiedMonster &&
-      have($item`backup camera`) &&
-      get<number>("_backUpUses") < 5,
-    () => (have($item`backup camera`) ? clamp(6 - get<number>("_backUpUses"), 0, 6) : 0),
-    (options: CopierFightOptions) => {
-      const realLocation =
-        options.location && options.location.combatPercent >= 100
-          ? options.location
-          : determineDraggableZoneAndEnsureAccess(draggableFight.BACKUP);
-      adventureMacro(
-        realLocation,
-        Macro.if_(
-          `!monstername ${copiedMonster}`,
-          Macro.skill($skill`Back-Up to your Last Enemy`)
-        ).step(options.macro || copierMacro())
-      );
-    },
-    [
-      new Requirement([], {
-        forceEquip: $items`backup camera`,
-        bonusEquip: new Map([[$item`backup camera`, 5000]]),
-      }),
-    ],
-    true
-  ),
   new CopierFight(
     "Fax",
     () => have($item`Clan VIP Lounge key`) && !get("_photocopyUsed"),
@@ -403,31 +371,6 @@ function chainSetup() {
 function getCopierFight(): CopierFight | null {
   for (const fight of copierSources) {
     if (fight.available()) return fight;
-  }
-  const potential = copierCount();
-  if (
-    potential > 0 &&
-    get("_genieFightsUsed") < 3 &&
-    userConfirm(
-      `duffo has detected you have ${potential} potential ways to copy an Embezzler, but no way to start a fight with one. Should we wish for an Embezzler?`
-    )
-  ) {
-    return new CopierFight(
-      "Pocket Wish",
-      () => false,
-      () => 0,
-      () => {
-        retrieveItem($item`pocket wish`);
-        visitUrl(`inv_use.php?pwd=${myHash()}&which=3&whichitem=9537`, false, true);
-        visitUrl(
-          `choice.php?pwd&whichchoice=1267&option=1&wish=to fight a ${copiedMonster}`,
-          true,
-          true
-        );
-        visitUrl("main.php", false);
-        runCombat();
-      }
-    );
   }
   return null;
 }
@@ -898,20 +841,6 @@ const freeFightSources = [
       adv1($location`The X-32-F Combat Training Snowman`, -1, "");
     }
   ),
-
-  new FreeFight(
-    () =>
-      get("neverendingPartyAlways") && questStep("_questPartyFair") < 999
-        ? clamp(10 - get("_neverendingPartyFreeTurns"), 0, 10)
-        : 0,
-    () => {
-      setNepQuestChoicesAndPrepItems();
-      adventureMacro(
-        $location`The Neverending Party`,
-        Macro.trySkill($skill`Feel Pride`).basicCombat()
-      );
-    }
-  ),
 ];
 
 export function freeFights(): void {
@@ -927,7 +856,7 @@ export function freeFights(): void {
   }
 }
 
-function setNepQuestChoicesAndPrepItems() {
+export function setNepQuestChoicesAndPrepItems(): void {
   let quest = get("_questPartyFairQuest");
   if (get("_questPartyFair") === "unstarted") {
     visitUrl(toUrl($location`The Neverending Party`));
@@ -942,9 +871,16 @@ function setNepQuestChoicesAndPrepItems() {
 
   if (get("lastEncounter") === "Gone Kitchin'" && lastDecision() === 3) {
     print("Found Geraldine!", "blue");
+    const partyFairInfo = get("_questPartyFairProgress").split(" ");
+    print(
+      `Geraldine wants ${partyFairInfo[0]} ${toItem(partyFairInfo[1]).plural}, please!`,
+      "blue"
+    );
   }
   if (get("lastEncounter") === "Forward to the Back" && lastDecision() === 3) {
     print("Found Gerald!", "blue");
+    const partyFairInfo = get("_questPartyFairProgress").split(" ");
+    print(`Gerald wants ${partyFairInfo[0]} ${toItem(partyFairInfo[1]).plural}, please!`, "blue");
   }
 
   if (quest === "food") {
