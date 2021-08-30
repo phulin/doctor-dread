@@ -128,7 +128,9 @@ export class StashManager {
   putBack(...items: Item[]): void {
     if (items.length === 0) return;
     if (visitUrl("fight.php").includes("You're fighting")) {
-      Macro.tryItem(...$items`Louder Than Bomb, divine champagne popper`).step("runaway");
+      Macro.tryItem(...$items`Louder Than Bomb, divine champagne popper`)
+        .step("runaway")
+        .submit();
     }
     withClan(this.clanIdOrName, () => {
       for (const item of items) {
