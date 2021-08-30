@@ -177,6 +177,7 @@ function nepTurn() {
     get("questPAGhost") !== "unstarted" &&
     ghostLocation
   ) {
+    // Bust ghost!
     useFamiliar(freeFightFamiliar());
     freeFightOutfit([new Requirement([], { forceEquip: $items`protonic accelerator pack` })]);
     adventureMacro(ghostLocation, Macro.ghostBustin());
@@ -187,14 +188,17 @@ function nepTurn() {
     get("lastVoteMonsterTurn") < totalTurnsPlayed() &&
     get("_voteFreeFights") < 3
   ) {
+    // Fight vote monster.
     useFamiliar(freeFightFamiliar());
     freeFightOutfit([new Requirement([], { forceEquip: $items`"I Voted!" sticker` })]);
     adventureMacroAuto(determineDraggableZoneAndEnsureAccess(), Macro.basicCombat());
   } else if (myInebriety() <= inebrietyLimit() && !digitizeUp && kramcoGuaranteed()) {
+    // Fight kramco.
     useFamiliar(freeFightFamiliar());
     freeFightOutfit([new Requirement([], { forceEquip: $items`Kramco Sausage-o-Matic™` })]);
     adventureMacroAuto(determineDraggableZoneAndEnsureAccess(), Macro.basicCombat());
   } else if (digitizeUp) {
+    // Digitize is up - fight it.
     useFamiliar(freeFightFamiliar());
     freeFightOutfit([]);
     adventureMacroAuto(determineDraggableZoneAndEnsureAccess(), Macro.basicCombat());
@@ -204,6 +208,7 @@ function nepTurn() {
     get("_backUpUses") < 11 &&
     get("lastCopyableMonster") === $monster`jock`
   ) {
+    // Back stuff up into the DMT.
     useFamiliar($familiar`Machine Elf`);
     nepOutfit(
       nepDefaultRequirement.merge(new Requirement([], { forceEquip: $items`backup camera` }))
@@ -213,12 +218,14 @@ function nepTurn() {
       Macro.skill($skill`Back-Up to your Last Enemy`).meatKill()
     );
   } else if (
+    $location`The Neverending Party`.turnsSpent < get("duffo_lastNepNcTurnsSpent", 0) + 6 &&
     haveEffect($effect`Puzzle Champ`) > 0 &&
     haveEffect($effect`Puzzle Champ`) <= 5 &&
     get("_duffo_runFamiliarStage", 0) < FINAL_BANDER_STAGE &&
     tryConfigureBanderRuns()
   ) {
-    // Blow all the rest of our bander runs on pickpockets
+    // Puzzle Champ almost out - blow all the rest of our bander runs on pickpockets
+    // Only triggers when not at an NC.
     if (myFamiliar() === $familiar`Frumious Bandersnatch`) ensureEffect($effect`Ode to Booze`);
     adventureMacroAuto(
       $location`The Neverending Party`,
