@@ -80,7 +80,7 @@ import {
 } from "./lib";
 import { freeFightMood, itemMood } from "./mood";
 import { freeFightOutfit } from "./outfit";
-import { estimatedTurns, log } from "./globalvars";
+import { estimatedTurns } from "./globalvars";
 
 const witchessPieces = [
   { piece: $monster`Witchess Bishop`, drop: $item`Sacramento wine` },
@@ -383,7 +383,6 @@ export function dailyFights(): void {
 
       // FIRST EMBEZZLER CHAIN
       if (have($familiar`Pocket Professor`) && !get<boolean>("_duffo_meatChain", false)) {
-        const startLectures = get("_pocketProfessorLectures");
         const fightSource = getCopierFight();
         if (!fightSource) return;
         useFamiliar($familiar`Pocket Professor`);
@@ -400,7 +399,6 @@ export function dailyFights(): void {
               macro: firstChainMacro(),
             })
           );
-          log.initialEmbezzlersFought += 1 + get("_pocketProfessorLectures") - startLectures;
         }
         set("_duffo_meatChain", true);
         safeInterrupt();
@@ -539,20 +537,6 @@ const freeFightSources = [
     () => cliExecute("cargo monster Mob Penguin Thug"),
     {
       familiar: () => $familiar`Robortender`,
-    }
-  ),
-
-  new FreeFight(
-    () => TunnelOfLove.have() && !TunnelOfLove.isUsed(),
-    () => {
-      TunnelOfLove.fightAll(
-        "LOV Epaulettes",
-        "Open Heart Surgery",
-        "LOV Extraterrestrial Chocolate"
-      );
-
-      visitUrl("choice.php");
-      if (handlingChoice()) throw "Did not get all the way through LOV.";
     }
   ),
 
@@ -855,6 +839,16 @@ export function freeFights(): void {
     freeFightSource.runAll();
   }
 }
+
+export const tunnelOfLove = new FreeFight(
+  () => TunnelOfLove.have() && !TunnelOfLove.isUsed(),
+  () => {
+    TunnelOfLove.fightAll("LOV Epaulettes", "Open Heart Surgery", "LOV Extraterrestrial Chocolate");
+
+    visitUrl("choice.php");
+    if (handlingChoice()) throw "Did not get all the way through LOV.";
+  }
+);
 
 export function setNepQuestChoicesAndPrepItems(): void {
   let quest = get("_questPartyFairQuest");

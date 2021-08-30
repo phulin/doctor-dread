@@ -17,6 +17,7 @@ import {
   myLocation,
   myMp,
   mySoulsauce,
+  print,
   printHtml,
   runCombat,
   setAutoAttack,
@@ -511,6 +512,7 @@ export function mapMonster(location: Location, monster: Monster, macro: Macro): 
  */
 export function adventureMacro(loc: Location, macro: Macro): void {
   if (getAutoAttack() !== 0) setAutoAttack(0);
+  print(macro.components.join("; "));
   macro.save();
   try {
     adv1(loc, 0, "");

@@ -59,6 +59,8 @@ export const baseMeat =
     ? 275
     : 250;
 
+const MPA = get("valueOfAdventure");
+
 export function safeInterrupt(): void {
   if (get<boolean>("duffo_interrupt", false)) {
     set("duffo_interrupt", false);
@@ -285,8 +287,11 @@ function testZoneAndUsePotionToAccess() {
 
   const blacklist = $locations`The Oasis, The Bubblin' Caldera, Barrrney's Barrr, The F'c'le, The Poop Deck, Belowdecks, 8-Bit Realm, Madness Bakery, The Secret Government Laboratory`;
 
-  if (myPath() === "Two Crazy Random Summer") { // can't access these zones in 2CRS
-    blacklist.concat($locations`Domed City of Grimacia, Domed City of Ronaldus, Hamburglaris Shield Generator, The Red Queen's Garden, The Mouldering Mansion, The Rogue Windmill, The Stately Pleasure Dome`);
+  if (myPath() === "Two Crazy Random Summer") {
+    // can't access these zones in 2CRS
+    blacklist.concat(
+      $locations`Domed City of Grimacia, Domed City of Ronaldus, Hamburglaris Shield Generator, The Red Queen's Garden, The Mouldering Mansion, The Rogue Windmill, The Stately Pleasure Dome`
+    );
   }
 
   if (
@@ -499,4 +504,10 @@ export function maxPassiveDamage(): number {
   const familiarMaxDamage = maxFamiliarDamage(myFamiliar());
 
   return vykeaMaxDamage + crownMaxDamage + bjornMaxDamage + familiarMaxDamage;
+}
+
+export function gnomeWeightValue(): number {
+  // Assume rough weight of 160
+  const gnomeWeight = 160;
+  return MPA * (0.001 / (1 - 0.001 * gnomeWeight) ** 2);
 }

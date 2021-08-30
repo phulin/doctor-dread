@@ -6,7 +6,6 @@ import {
   equippedAmount,
   familiarWeight,
   fullnessLimit,
-  getClanLounge,
   getCounters,
   getWorkshed,
   haveEffect,
@@ -43,11 +42,16 @@ import {
   Witchess,
 } from "libram";
 import { pickBjorn } from "./bjorn";
-import { withVIPClan } from "./clan";
+import { tunnelOfLove } from "./fights";
 import { estimatedTurns, globalOptions } from "./globalvars";
-import { baseMeat, BonusEquipMode, Requirement, saleValue } from "./lib";
-
-const MPA = get("valueOfAdventure");
+import {
+  baseMeat,
+  BonusEquipMode,
+  ensureEffect,
+  gnomeWeightValue,
+  Requirement,
+  saleValue,
+} from "./lib";
 
 const bestAdventuresFromPants =
   Item.all()
@@ -73,7 +77,7 @@ export function freeFightOutfit(requirements: Requirement[] = []): void {
     ...requirements,
     new Requirement(
       myFamiliar() === $familiar`Reagnimated Gnome`
-        ? [`${(MPA * 0.001).toFixed(1)} Familiar Weight`]
+        ? [`${gnomeWeightValue().toFixed(1)} Familiar Weight`]
         : myFamiliar() === $familiar`Pocket Professor`
         ? ["Familiar Experience"]
         : ["Familiar Weight"],
@@ -166,7 +170,7 @@ export function nepOutfit(requirement = nepDefaultRequirement): void {
   if (myFamiliar() === $familiar`Reagnimated Gnome`) {
     // It is assumed you have the kgnee because I added gnome equips to dailies.
     forceEquip.push($item`gnomish housemaid's kgnee`);
-    extraObjectives.push(`${(MPA * 0.001).toFixed(1)} Familiar Weight`);
+    extraObjectives.push(`${gnomeWeightValue().toFixed(1)} Familiar Weight`);
   }
   const bjornAlike =
     have($item`Buddy Bjorn`) && !forceEquip.some((item) => toSlot(item) === $slot`back`)
@@ -226,8 +230,9 @@ export function tryConfigureBanderRuns(): boolean {
   }
 
   if (get("_duffo_runFamiliarStage", 0) === 1) {
+    // Put on fam weight equipment.
     useFamiliar(runFamiliar);
-    nepOutfit(new Requirement(["100 Familiar Weight", "5 Item Drop"], {}));
+    nepOutfit(new Requirement(["20 Familiar Weight", "5 Item Drop"], {}));
     if (remainingRunaways(runFamiliar) > 0) {
       return true;
     } else {
@@ -236,22 +241,30 @@ export function tryConfigureBanderRuns(): boolean {
   }
 
   if (get("_duffo_runFamiliarStage", 0) === 2) {
+    // 50-turn buffs
+    tunnelOfLove.runAll();
+
     useFamiliar(runFamiliar);
     nepOutfit(new Requirement(["100 Familiar Weight", "5 Item Drop"], {}));
     const beachHeadsUsed: number | string = get("_beachHeadsUsed");
     if (have($item`Beach Comb`) && !beachHeadsUsed.toString().split(",").includes("10")) {
       cliExecute("beach head familiar");
     }
+
+    if (remainingRunaways(runFamiliar) > 0) {
+      return true;
+    } else {
+      set("_duffo_runFamiliarStage", 3);
+    }
+  }
+
+  if (get("_duffo_runFamiliarStage", 0) === 3) {
+    useFamiliar(runFamiliar);
+    nepOutfit(new Requirement(["100 Familiar Weight", "5 Item Drop"], {}));
     if (Witchess.have() && !get("_witchessBuff")) {
       cliExecute("witchess");
     }
-    if (get("_poolGames") < 3 && !get("_duffo_noPoolTable", false)) {
-      withVIPClan(() => {
-        if (getClanLounge()["Clan pool table"] !== undefined) {
-          while (get("_poolGames") < 3) cliExecute("pool aggressive");
-        } else set("_duffo_noPoolTable", true);
-      });
-    }
+    ensureEffect($effect`Human-Machine Hybrid`);
 
     if (
       remainingRunaways(runFamiliar) +
@@ -260,7 +273,7 @@ export function tryConfigureBanderRuns(): boolean {
     ) {
       return true;
     } else {
-      set("_duffo_runFamiliarStage", 3);
+      set("_duffo_runFamiliarStage", 4);
     }
   }
 

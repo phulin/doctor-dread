@@ -22,6 +22,7 @@ import {
   reverseNumberology,
   runChoice,
   setAutoAttack,
+  toInt,
   toItem,
   totalTurnsPlayed,
   use,
@@ -70,7 +71,8 @@ import {
   tryConfigureBanderRuns,
 } from "./outfit";
 import { withStash } from "./clan";
-import { estimatedTurns, globalOptions, log } from "./globalvars";
+import { estimatedTurns, globalOptions } from "./globalvars";
+import { log } from "./log";
 import { dailySetup } from "./dailies";
 import { acquire } from "./acquire";
 import { findRun, tryFillLatte } from "./runs";
@@ -80,24 +82,16 @@ function macroPreRun() {
     .externalIf(
       myFamiliar() === $familiar`XO Skeleton`,
       Macro.while_(
-        'hasskill "Macrometeorite" && !pastround 25 && (match "unremarkable duffel bag" || match "van key")',
-        Macro.skill("CLEESH").skill("Macrometeorite").skill("Hugs and Kisses!")
+        "hasskill Macrometeorite && !pastround 25",
+        Macro.skill("CLEESH").skill("Macrometeorite").trySkill("Hugs and Kisses!")
       ).while_(
-        'hasskill "CHEAT CODE: Replace Enemy" && !pastround 25 && (match "unremarkable duffel bag" || match "van key")',
-        Macro.skill("CLEESH").skill("CHEAT CODE: Replace Enemy").skill("Hugs and Kisses!")
+        `hasskill ${toInt($skill`CHEAT CODE: Replace Enemy`)} && !pastround 25`,
+        Macro.skill("CLEESH").skill("CHEAT CODE: Replace Enemy").trySkill("Hugs and Kisses!")
       )
     )
     .if_(
       'match "unremarkable duffel bag" || match "van key"',
       Macro.meatStasis(true)
-        .externalIf(
-          myFamiliar() === $familiar`XO Skeleton` && get("_macrometeoriteUses") < 10,
-          Macro.skill("CLEESH").skill("Macrometeorite")
-        )
-        .externalIf(
-          myFamiliar() === $familiar`XO Skeleton` && get("_powerfulGloveBatteryPowerUsed") <= 90,
-          Macro.skill("CLEESH").skill("CHEAT CODE: Replace Enemy")
-        )
         .externalIf(
           $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()),
           Macro.externalIf(
@@ -105,6 +99,7 @@ function macroPreRun() {
             Macro.skill($skill`Meteor Shower`)
           ).step("runaway")
         )
+        .trySkill($skill`Use the Force`)
         .tryHaveItem($item`Louder Than Bomb`)
         .tryHaveItem($item`divine champagne popper`)
     )
@@ -322,6 +317,9 @@ export function canContinue(): boolean {
 export function main(argString = ""): void {
   sinceKolmafiaRevision(20815);
 
+  log.familiarUsageFights = new Map(JSON.parse(get("_duffo_familiarUsageFights", "[]")));
+  log.familiarUsageTurns = new Map(JSON.parse(get("_duffo_familiarUsageTurns", "[]")));
+
   if (get("valueOfAdventure") <= 3500) {
     throw `Your valueOfAdventure is set to ${get(
       "valueOfAdventure"
@@ -462,9 +460,16 @@ export function main(argString = ""): void {
         "blue"
       );
     }
-    print(
-      `You fought ${log.initialEmbezzlersFought} KGEs at the beginning of the day, and an additional ${log.digitizedEmbezzlersFought} digitized KGEs throughout the day. Good work, probably!`,
-      "blue"
-    );
+
+    print("FAMILIAR USAGE (FIGHTS)", "blue");
+    for (const [familiar, usage] of log.familiarUsageFights) {
+      print(`${familiar} ${usage}`, "blue");
+    }
+
+    print();
+    print("FAMILIAR USAGE (TURNS)", "blue");
+    for (const [familiar, usage] of log.familiarUsageTurns) {
+      print(`${familiar} ${usage}`, "blue");
+    }
   }
 }

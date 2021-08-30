@@ -128,6 +128,7 @@ export class StashManager {
   putBack(...items: Item[]): void {
     if (items.length === 0) return;
     if (visitUrl("fight.php").includes("You're fighting")) {
+      print("In fight, trying to get away to return items to stash...", "blue");
       Macro.tryItem(...$items`Louder Than Bomb, divine champagne popper`)
         .step("runaway")
         .submit();

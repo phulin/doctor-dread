@@ -2,6 +2,7 @@ import {
   availableAmount,
   cliExecute,
   effectModifier,
+  getClanLounge,
   haveEffect,
   mallPrice,
   myEffects,
@@ -156,6 +157,14 @@ export function boostItemDrop(): void {
       setChoice(1399, 2);
       useSkill($skill`Seek out a Bird`, 6 - get("_birdsSoughtToday"));
     }
+  }
+
+  if (get("_poolGames") < 3 && !get("_duffo_noPoolTable", false) && !have($effect`Hustlin'`)) {
+    withVIPClan(() => {
+      if (getClanLounge()["Clan pool table"] !== undefined) {
+        while (get("_poolGames") < 3) cliExecute("pool stylish");
+      } else set("_duffo_noPoolTable", true);
+    });
   }
 
   if (
