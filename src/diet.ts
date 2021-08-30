@@ -248,6 +248,7 @@ export function runNightcap(): void {
 
   if (myInebriety() === inebrietyLimit()) {
     acquire(1, $item`Frosty's frosty mug`, 15 * MPA);
+    acquire(1, $item`Suffering Sinner`, 10000);
     drinkSafe(1, $item`Suffering Sinner`);
   }
 
