@@ -213,6 +213,7 @@ function remainingRunaways(familiar: Familiar) {
   return Math.floor(weight / 5) - get("_banderRunaways");
 }
 
+export const FINAL_BANDER_STAGE = 4;
 export function tryConfigureBanderRuns(): boolean {
   // Try bander or boots.
   const runFamiliar = have($familiar`Pair of Stomping Boots`)

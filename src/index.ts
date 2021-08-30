@@ -4,6 +4,7 @@ import {
   getCampground,
   getCounters,
   guildStoreAvailable,
+  haveEffect,
   haveEquipped,
   inebrietyLimit,
   lastChoice,
@@ -65,6 +66,7 @@ import {
 } from "./lib";
 import { boostItemDrop, itemMood } from "./mood";
 import {
+  FINAL_BANDER_STAGE,
   freeFightOutfit,
   nepDefaultRequirement,
   nepOutfit,
@@ -210,22 +212,40 @@ function nepTurn() {
       $location`The Deep Machine Tunnels`,
       Macro.skill($skill`Back-Up to your Last Enemy`).meatKill()
     );
+  } else if (
+    haveEffect($effect`Puzzle Champ`) > 0 &&
+    haveEffect($effect`Puzzle Champ`) <= 5 &&
+    get("_duffo_runFamiliarStage", 0) < FINAL_BANDER_STAGE &&
+    tryConfigureBanderRuns()
+  ) {
+    // Blow all the rest of our bander runs on pickpockets
+    if (myFamiliar() === $familiar`Frumious Bandersnatch`) ensureEffect($effect`Ode to Booze`);
+    adventureMacroAuto(
+      $location`The Neverending Party`,
+      Macro.pickpocket()
+        .meatStasis(true)
+        .externalIf(
+          get("_meteorShowerUses") < 5 && !Bandersnatch.couldRunaway(),
+          Macro.skill($skill`Meteor Shower`)
+        )
+        .step("runaway")
+    );
   } else {
-    if (tryConfigureBanderRuns()) {
-      print(`Using Bander/Boots at stage ${get("_duffo_runFamiliarStage", 0)}!`, "blue");
-      if (myFamiliar() === $familiar`Frumious Bandersnatch`) ensureEffect($effect`Ode to Booze`);
-    } else if (
-      $location`The Neverending Party`.turnsSpent >=
-      get("duffo_lastNepNcTurnsSpent", 0) + 6
-    ) {
-      tryFillLatte();
+    if ($location`The Neverending Party`.turnsSpent >= get("duffo_lastNepNcTurnsSpent", 0) + 6) {
+      // About to hit an NEP NC.
+      if (tryConfigureBanderRuns()) {
+        print(`Using Bander/Boots at stage ${get("_duffo_runFamiliarStage", 0)}!`, "blue");
+        if (myFamiliar() === $familiar`Frumious Bandersnatch`) ensureEffect($effect`Ode to Booze`);
+      } else {
+        tryFillLatte();
 
-      const freeRun = findRun();
-      if (freeRun) print(`Found run ${freeRun.name}.`, "blue");
-      if (freeRun?.prepare) freeRun.prepare();
+        const freeRun = findRun();
+        if (freeRun) print(`Found run ${freeRun.name}.`, "blue");
+        if (freeRun?.prepare) freeRun.prepare();
 
-      useFamiliar(fairyFamiliar());
-      nepOutfit(nepDefaultRequirement.merge(freeRun?.requirement ?? Requirement.empty));
+        useFamiliar(fairyFamiliar());
+        nepOutfit(nepDefaultRequirement.merge(freeRun?.requirement ?? Requirement.empty));
+      }
     } else if (
       have($familiar`XO Skeleton`) &&
       get("_xoHugsUsed") < 11 &&
