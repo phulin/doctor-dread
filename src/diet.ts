@@ -263,5 +263,6 @@ export function runNightcap(): void {
     use(1, $item`clockwork maid`);
   }
 
+  useFamiliar($familiar`Left-Hand Man`);
   maximize("Adventures", false);
 }
