@@ -308,9 +308,9 @@ function nepTurn() {
       $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar())
         ? Macro.step("runaway")
         : freeRun?.macro ??
-            Macro.tryItem("glob of Blank-Out")
-              .tryItem("Louder Than Bomb")
-              .tryItem("divine champagne popper")
+            Macro.tryHaveItem($item`glob of Blank-Out`)
+              .tryHaveItem($item`Louder Than Bomb`)
+              .tryHaveItem($item`divine champagne popper`)
     );
 
     // If using saber, split macro into two chunks.
