@@ -131,7 +131,6 @@ function macroPostRun() {
         ...$skills`Throw Latte on Opponent, Show your boring familiar pictures`
       )
       .tryHaveItem($item`glob of Blank-Out`)
-      .externalIf(get("parasolUsed") < 10, Macro.tryHaveItem($item`peppermint parasol`))
       .tryHaveItem($item`Louder Than Bomb`)
       .tryHaveItem($item`divine champagne popper`)
       .meatKill()
@@ -312,7 +311,7 @@ function nepTurn() {
       use($item`bottle of Blank-Out`);
     }
 
-    if (get("parasolUsed") < 10) {
+    if (get("_navelRunaways") < 10) {
       acquire(1, $item`peppermint parasol`);
     }
 
