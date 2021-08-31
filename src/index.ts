@@ -103,9 +103,9 @@ function macroPreRun() {
         )
         .trySkill($skill`Use the Force`)
         .tryHaveItem($item`glob of Blank-Out`)
-        .externalIf(get("_navelRunaways") < 10, Macro.tryHaveItem($item`peppermint parasol`))
         .tryHaveItem($item`Louder Than Bomb`)
         .tryHaveItem($item`divine champagne popper`)
+        .externalIf(get("_navelRunaways") < 10, Macro.tryHaveItem($item`peppermint parasol`))
     )
     .externalIf(
       get("_humanMuskUses") === 0,
