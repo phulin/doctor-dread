@@ -307,7 +307,10 @@ function nepTurn() {
     const endMacro = macroEndCombat(
       $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar())
         ? Macro.step("runaway")
-        : freeRun?.macro ?? Macro.tryItem("Louder Than Bomb").tryItem("divine champagne popper")
+        : freeRun?.macro ??
+            Macro.tryItem("glob of Blank-Out")
+              .tryItem("Louder Than Bomb")
+              .tryItem("divine champagne popper")
     );
 
     // If using saber, split macro into two chunks.
