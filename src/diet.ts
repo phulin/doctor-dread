@@ -2,6 +2,7 @@ import {
   buy,
   cliExecute,
   drink,
+  drinksilent,
   eat,
   fullnessLimit,
   getCampground,
@@ -13,6 +14,7 @@ import {
   inebrietyLimit,
   itemAmount,
   mallPrice,
+  maximize,
   myAdventures,
   myClass,
   myFamiliar,
@@ -249,7 +251,8 @@ export function runNightcap(): void {
   if (myInebriety() === inebrietyLimit()) {
     acquire(1, $item`Frosty's frosty mug`, 15 * MPA);
     acquire(1, $item`Suffering Sinner`, 10000);
-    drinkSafe(1, $item`Suffering Sinner`);
+    useSkill($skill`The Ode to Booze`);
+    drinksilent(1, $item`Suffering Sinner`);
   }
 
   if (!getChateau()["artificial skylight"]) {
@@ -259,4 +262,6 @@ export function runNightcap(): void {
   if (!getCampground()["clockwork maid"]) {
     use(1, $item`clockwork maid`);
   }
+
+  maximize("Adventures", false);
 }
