@@ -28,8 +28,8 @@ const priceCaps: { [index: string]: number } = {
   "Special Seasoning": 20000,
   "astral pilsner": 0,
   "bottle of vodka": 500,
-  "bottle of Blank-Out":25000,
-  "peppermint parasol":25000,
+  "bottle of Blank-Out": 25000,
+  "peppermint parasol": 25000,
 };
 
 export function acquire(qty: number, item: Item, maxPrice?: number, throwOnFail = true): number {
