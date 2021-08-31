@@ -5,7 +5,7 @@ import { argmax, saleValue } from "./lib";
 const MPA = get("valueOfAdventure");
 
 export function fairyFamiliar(): Familiar {
-  if (have($familiar`Cat Burglar`) && get("_catBurglarCharge") < 30) return $familiar`Cat Burglar`;
+  if (have($familiar`Cat Burglar`) && get("_catBurglarCharge") < 10) return $familiar`Cat Burglar`;
   return (
     $familiars`Reagnimated Gnome, Jumpsuited Hound Dog`.find((familiar) => have(familiar)) ??
     $familiar`Baby Gravy Fairy`

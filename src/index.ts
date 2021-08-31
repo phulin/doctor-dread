@@ -41,7 +41,6 @@ import {
   $location,
   $monster,
   $skill,
-  $skills,
   Bandersnatch,
   get,
   have,
@@ -117,22 +116,11 @@ function macroPreRun() {
     );
 }
 
-function macroPostRun() {
+function macroEndCombat(freeRunMacro: Macro | null) {
   return Macro.if_(
     "monstername plain || monstername party girl || monstername biker",
     Macro.meatStasis(true)
-      .externalIf(
-        $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar()),
-        Macro.step("runaway")
-      )
-      .trySkill(
-        ...$skills`Asdon Martin: Spring-Loaded Front Bumper, Reflex Hammer, Snokebomb`,
-        ...$skills`Feel Hatred, KGB tranquilizer dart, Show them your ring, Use the Force`,
-        ...$skills`Throw Latte on Opponent, Show your boring familiar pictures`
-      )
-      .tryHaveItem($item`glob of Blank-Out`)
-      .tryHaveItem($item`Louder Than Bomb`)
-      .tryHaveItem($item`divine champagne popper`)
+      .step(...(freeRunMacro ? [freeRunMacro] : []))
       .meatKill()
   )
     .externalIf(get("_neverendingPartyFreeTurns") === 10, Macro.tryFreeKill())
@@ -241,6 +229,7 @@ function nepTurn() {
         .step("runaway")
     );
   } else {
+    let freeRun = null;
     if ($location`The Neverending Party`.turnsSpent >= get("duffo_lastNepNcTurnsSpent", 0) + 6) {
       // About to hit an NEP NC.
       if (tryConfigureBanderRuns()) {
@@ -249,7 +238,7 @@ function nepTurn() {
       } else {
         tryFillLatte();
 
-        const freeRun = findRun();
+        freeRun = findRun();
         if (freeRun) print(`Found run ${freeRun.name}.`, "blue");
         if (freeRun?.prepare) freeRun.prepare();
 
@@ -311,17 +300,25 @@ function nepTurn() {
       use($item`bottle of Blank-Out`);
     }
 
-    if (get("_navelRunaways") < 10) {
-      acquire(1, $item`peppermint parasol`);
-    }
+    // if (get("_navelRunaways") < 10) {
+    //   acquire(1, $item`peppermint parasol`);
+    // }
+
+    const endMacro = macroEndCombat(
+      $familiars`Frumious Bandersnatch, Pair of Stomping Boots`.includes(myFamiliar())
+        ? Macro.step("runaway")
+        : freeRun?.macro ?? Macro.tryItem("Louder Than Bomb").tryItem("divine champagne popper")
+    );
 
     // If using saber, split macro into two chunks.
     adventureMacroAuto(
       $location`The Neverending Party`,
       haveEquipped($item`Fourth of May Cosplay Saber`)
         ? macroPreRun()
-        : macroPreRun().step(macroPostRun()),
-      haveEquipped($item`Fourth of May Cosplay Saber`) ? macroPostRun().abort() : Macro.abort()
+        : macroPreRun().step(macroEndCombat(endMacro)),
+      haveEquipped($item`Fourth of May Cosplay Saber`)
+        ? macroEndCombat(endMacro).abort()
+        : Macro.abort()
     );
   }
 

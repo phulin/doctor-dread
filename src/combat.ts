@@ -551,7 +551,7 @@ export function adventureMacroAuto(
   } catch (e) {
     printHtml(get("_duffo_combatPage"));
     set("_duffo_combatPage", "");
-    throw "Combat exception!";
+    throw `Combat exception! Last macro error: ${get("lastMacroError")}`;
   } finally {
     Macro.clearSaved();
   }
@@ -561,10 +561,9 @@ export function main(): void {
   const response = Macro.load().submit();
   const firstFart = response.indexOf("<!--faaaaaaart-->");
   const lastFart = response.lastIndexOf("<!--faaaaaaart-->");
-  const extracted = response.substring(
-    firstFart >= 0 ? firstFart : 0,
-    lastFart > 0 ? lastFart : undefined
-  );
+  const extracted = response
+    .substring(firstFart >= 0 ? firstFart : 0, lastFart > 0 ? lastFart : undefined)
+    .replace("id='fightform'", "id='fightform' style='display: none'");
   set("_duffo_combatPage", extracted);
 
   while (inMultiFight()) runCombat();
