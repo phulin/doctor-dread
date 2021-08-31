@@ -194,6 +194,7 @@ export function setDefaultChoiceHandling(): void {
   // Black forest noncombats; fight blackberry bush
   setChoice(923, 1);
   setChoice(924, 1);
+  setChoice(1340, 3); // Doctor bag choice; want to ignore for the day.
 }
 
 export function determineDraggableZoneAndEnsureAccess(
