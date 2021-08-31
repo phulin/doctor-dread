@@ -102,6 +102,8 @@ function macroPreRun() {
           ).step("runaway")
         )
         .trySkill($skill`Use the Force`)
+        .tryHaveItem($item`glob of Blank-Out`)
+        .externalIf(get("parasolUsed") < 10, Macro.tryHaveItem($item`peppermint parasol`))
         .tryHaveItem($item`Louder Than Bomb`)
         .tryHaveItem($item`divine champagne popper`)
     )
@@ -128,6 +130,8 @@ function macroPostRun() {
         ...$skills`Feel Hatred, KGB tranquilizer dart, Show them your ring, Use the Force`,
         ...$skills`Throw Latte on Opponent, Show your boring familiar pictures`
       )
+      .tryHaveItem($item`glob of Blank-Out`)
+      .externalIf(get("parasolUsed") < 10, Macro.tryHaveItem($item`peppermint parasol`))
       .tryHaveItem($item`Louder Than Bomb`)
       .tryHaveItem($item`divine champagne popper`)
       .meatKill()
@@ -301,6 +305,15 @@ function nepTurn() {
 
     if (!get("_duffo_tryptophanDartUsed", false)) {
       acquire(1, $item`tryptophan dart`, 100000);
+    }
+
+    if (get("_blankoutUsed", false)) {
+      acquire(1, $item`bottle of Blank-Out`);
+      use($item`bottle of Blank-Out`);
+    }
+
+    if (get("parasolUsed") < 10) {
+      acquire(1, $item`peppermint parasol`);
     }
 
     // If using saber, split macro into two chunks.
