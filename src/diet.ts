@@ -250,9 +250,10 @@ export function runNightcap(): void {
 
   if (myInebriety() === inebrietyLimit()) {
     acquire(1, $item`Frosty's frosty mug`, 15 * MPA);
+    drink($item`Frosty's frosty mug`);
     acquire(1, $item`Suffering Sinner`, 10000);
-    useSkill($skill`The Ode to Booze`);
-    drinksilent(1, $item`Suffering Sinner`);
+    if (haveEffect($effect`Ode to Booze`) < 10) useSkill($skill`The Ode to Booze`);
+    drinksilent($item`Suffering Sinner`);
   }
 
   if (!getChateau()["artificial skylight"]) {

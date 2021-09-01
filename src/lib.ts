@@ -319,9 +319,9 @@ function testZoneForWanderers(location: Location): boolean {
 
 export class Requirement {
   maximizeParameters_: string[];
-  maximizeOptions_: MaximizeOptions;
+  maximizeOptions_: Partial<MaximizeOptions>;
 
-  constructor(maximizeParameters_: string[], maximizeOptions_: MaximizeOptions) {
+  constructor(maximizeParameters_: string[], maximizeOptions_: Partial<MaximizeOptions>) {
     this.maximizeParameters_ = maximizeParameters_;
     this.maximizeOptions_ = maximizeOptions_;
   }
@@ -330,7 +330,7 @@ export class Requirement {
     return this.maximizeParameters_;
   }
 
-  maximizeOptions(): MaximizeOptions {
+  maximizeOptions(): Partial<MaximizeOptions> {
     return this.maximizeOptions_;
   }
 

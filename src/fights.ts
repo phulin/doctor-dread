@@ -498,7 +498,7 @@ class FreeFight {
 
   runAll() {
     if (!this.available()) return;
-    if ((this.options.cost ? this.options.cost() : 0) > get("duffo_valueOfFreeFight", 2000)) return;
+    if ((this.options.cost ? this.options.cost() : 0) > get("duffo_valueOfFreeFight", 4000)) return;
     while (this.available()) {
       useFamiliar(
         this.options.familiar ? this.options.familiar() ?? freeFightFamiliar() : freeFightFamiliar()

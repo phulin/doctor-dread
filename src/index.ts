@@ -7,6 +7,7 @@ import {
   haveEffect,
   haveEquipped,
   inebrietyLimit,
+  isBanished,
   lastChoice,
   lastDecision,
   myAdventures,
@@ -40,6 +41,7 @@ import {
   $items,
   $location,
   $monster,
+  $monsters,
   $skill,
   Bandersnatch,
   get,
@@ -81,7 +83,8 @@ import { findRun, tryFillLatte } from "./runs";
 function macroPreRun() {
   return Macro.pickpocket()
     .externalIf(
-      myFamiliar() === $familiar`XO Skeleton`,
+      myFamiliar() === $familiar`XO Skeleton` &&
+        $monsters`biker, party girl, "plain" girl`.every(isBanished),
       Macro.while_(
         "hasskill Macrometeorite && !pastround 25",
         Macro.skill("CLEESH").skill("Macrometeorite").trySkill("Hugs and Kisses!")
@@ -176,7 +179,7 @@ function nepTurn() {
     myInebriety() <= inebrietyLimit() &&
     have($item`"I Voted!" sticker`) &&
     totalTurnsPlayed() % 11 === 1 &&
-    get("lastVoteMonsterTurn") < totalTurnsPlayed() &&
+    get<number>("lastVoteMonsterTurn") < totalTurnsPlayed() &&
     get("_voteFreeFights") < 3
   ) {
     // Fight vote monster.
@@ -330,7 +333,8 @@ function nepTurn() {
     set("_duffo_tryptophanDartUsed", true);
   }
 
-  if (lastChoice() === 1324 && lastDecision() === 5) {
+  if ((lastChoice() === 1324 && lastDecision() === 5) || lastChoice() === 1387) {
+    // 1387 is Use the Force, which should ONLY happen at an NEP NC as we only equip saber then.
     // Reset lastChoice() - this is a hack but whatever.
     setChoice(781, 6);
     adv1($location`An Overgrown Shrine (Northwest)`, -1, "");
