@@ -84,7 +84,7 @@ function macroPreRun() {
   return Macro.pickpocket()
     .externalIf(
       myFamiliar() === $familiar`XO Skeleton` &&
-        $monsters`biker, party girl, "plain" girl`.every(isBanished),
+        $monsters`biker, party girl, "plain" girl`.every((monster) => isBanished(monster)),
       Macro.while_(
         "hasskill Macrometeorite && !pastround 25",
         Macro.skill("CLEESH").skill("Macrometeorite").trySkill("Hugs and Kisses!")
