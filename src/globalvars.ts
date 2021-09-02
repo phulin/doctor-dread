@@ -1,14 +1,16 @@
 import { inebrietyLimit, myAdventures, myInebriety, myTurncount } from "kolmafia";
-import { $item, have } from "libram";
+import { $item, $monster, have } from "libram";
 
 export const globalOptions: {
   ascending: boolean;
   stopTurncount: number | null;
   nightcap: boolean;
+  preferredMonster: Monster;
 } = {
   stopTurncount: null,
   ascending: false,
   nightcap: false,
+  preferredMonster: $monster`jock`,
 };
 
 export function estimatedTurns(): number {

@@ -203,7 +203,7 @@ function nepTurn() {
     have($familiar`Machine Elf`) &&
     get("_machineTunnelsAdv") < 5 &&
     get("_backUpUses") < 11 &&
-    get("lastCopyableMonster") === $monster`jock`
+    get("lastCopyableMonster") === globalOptions.preferredMonster
   ) {
     // Back stuff up into the DMT.
     useFamiliar($familiar`Machine Elf`);
@@ -388,6 +388,7 @@ export function main(argString = ""): void {
     }
     if (arg === "ascend") globalOptions.ascending = true;
     if (arg === "nightcap") globalOptions.nightcap = true;
+    if (arg === "key") globalOptions.preferredMonster = $monster`burnout`;
   }
   const gardens = $items`packet of pumpkin seeds, Peppermint Pip Packet, packet of dragon's teeth, packet of beer seeds, packet of winter seeds, packet of thanksgarden seeds, packet of tall grass seeds, packet of mushroom spores`;
   const startingGarden = gardens.find((garden) =>
