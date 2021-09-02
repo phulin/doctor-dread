@@ -877,10 +877,10 @@ export function setNepQuestChoicesAndPrepItems(): void {
     print(`Gerald wants ${partyFairInfo[0]} ${toItem(partyFairInfo[1]).plural}, please!`, "blue");
   }
 
-  if (quest === "food") {
+  if (quest === "food" && get("_questPartyFairProgress") === "") {
     setChoice(1324, 2); // Check out the kitchen
     setChoice(1326, 3); // Talk to the woman
-  } else if (quest === "booze") {
+  } else if (quest === "booze" && get("_questPartyFairProgress") === "") {
     setChoice(1324, 3); // Go to the back yard
     setChoice(1327, 3); // Find Gerald
   } else {

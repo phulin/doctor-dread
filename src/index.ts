@@ -83,10 +83,11 @@ import { acquire } from "./acquire";
 import { findRun, tryFillLatte } from "./runs";
 
 function macroPreRun() {
+  // Assume "plain" girl is in ice house, meaning isBanished will return false.
   return Macro.pickpocket()
     .externalIf(
       myFamiliar() === $familiar`XO Skeleton` &&
-        $monsters`biker, party girl, "plain" girl`.every((monster) => isBanished(monster)),
+        $monsters`biker, party girl`.every((monster) => isBanished(monster)),
       Macro.while_(
         "hasskill Macrometeorite && !pastround 25",
         Macro.skill("CLEESH").skill("Macrometeorite").trySkill("Hugs and Kisses!")

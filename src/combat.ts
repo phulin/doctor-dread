@@ -208,7 +208,10 @@ export class Macro extends LibramMacro {
   meatStasis(checkPassive: boolean): Macro {
     // If we don't care about killing the monster don't bother checking passave damage
     if (!checkPassive) {
-      return this.trySkill($skill`Pocket Crumbs`)
+      return this.externalIf(
+        haveEquipped($item`Pantsgiving`) && get("_pantsgivingCrumbs") < 9,
+        Macro.trySkill($skill`Pocket Crumbs`)
+      )
         .trySkill($skill`Extract`)
         .externalIf(
           haveEquipped($item`Buddy Bjorn`) || haveEquipped($item`Crown of Thrones`),
@@ -242,8 +245,7 @@ export class Macro extends LibramMacro {
     // Ignore unexpected monsters, holiday scaling monsters seem to abort with monsterhpabove
     return this.if_(
       "monstername jock || monstername burnout || monstername party girl || monstername plain || monstername biker || monstername sausage goblin",
-      Macro.if_(`monsterhpabove ${passiveDamage}`, Macro.trySkill($skill`Pocket Crumbs`))
-        .if_(`monsterhpabove ${passiveDamage}`, Macro.trySkill($skill`Extract`))
+      Macro.if_(`monsterhpabove ${passiveDamage}`, Macro.trySkill($skill`Extract`))
         .externalIf(
           haveEquipped($item`Buddy Bjorn`) || haveEquipped($item`Crown of Thrones`),
           Macro.while_(
@@ -283,13 +285,11 @@ export class Macro extends LibramMacro {
 
   startCombat(): Macro {
     return this.tryHaveSkill($skill`Curse of Weaksauce`)
-      .trySkill($skill`Pocket Crumbs`)
+      .externalIf(
+        haveEquipped($item`Pantsgiving`) && get("_pantsgivingCrumbs") < 9,
+        Macro.trySkill($skill`Pocket Crumbs`)
+      )
       .trySkill($skill`Extract`)
-      .tryHaveItem($item`porquoise-handled sixgun`)
-      .externalIf(have($skill`Meteor Lore`), Macro.trySkill($skill`Micrometeorite`))
-      .tryHaveItem($item`Time-Spinner`)
-      .tryHaveItem($item`Rain-Doh indigo cup`)
-      .tryHaveItem($item`Rain-Doh blue balls`)
       .externalIf(
         shouldRedigitize(),
         Macro.if_(
