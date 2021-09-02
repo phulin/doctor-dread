@@ -7,8 +7,6 @@ import {
   familiarWeight,
   fullnessLimit,
   getCounters,
-  getWorkshed,
-  haveEffect,
   haveEquipped,
   inebrietyLimit,
   mallPrice,
@@ -44,14 +42,7 @@ import {
 import { pickBjorn } from "./bjorn";
 import { tunnelOfLove } from "./fights";
 import { estimatedTurns, globalOptions } from "./globalvars";
-import {
-  baseMeat,
-  BonusEquipMode,
-  ensureEffect,
-  gnomeWeightValue,
-  Requirement,
-  saleValue,
-} from "./lib";
+import { BonusEquipMode, ensureEffect, gnomeWeightValue, Requirement, saleValue } from "./lib";
 
 const bestAdventuresFromPants =
   Item.all()
@@ -299,19 +290,9 @@ function pantsgiving() {
   const cachedBonus = pantsgivingBonuses.get(turns);
   if (cachedBonus) return new Map([[$item`Pantsgiving`, cachedBonus]]);
 
-  const expectedSinusTurns = getWorkshed() === $item`portable Mayo Clinic` ? 100 : 50;
-  const expectedUseableSinusTurns = globalOptions.ascending
-    ? Math.min(
-        estimatedTurns() - haveEffect($effect`Kicked in the Sinuses`),
-        expectedSinusTurns,
-        estimatedTurns() - (turns - count)
-      )
-    : expectedSinusTurns;
-  const sinusVal = expectedUseableSinusTurns * 1.0 * baseMeat;
   const fullnessValue =
-    sinusVal +
-    get("valueOfAdventure") * 6.5 -
-    (mallPrice($item`jumping horseradish`) + mallPrice($item`Special Seasoning`));
+    get("valueOfAdventure") * 10 -
+    (mallPrice($item`devil hair pasta`) + mallPrice($item`Special Seasoning`));
   const pantsgivingBonus = fullnessValue / (turns * 0.9);
   pantsgivingBonuses.set(turns, pantsgivingBonus);
   return new Map<Item, number>([[$item`Pantsgiving`, pantsgivingBonus]]);
@@ -344,34 +325,6 @@ function snowSuit(equipMode: BonusEquipMode) {
   return new Map<Item, number>([[$item`Snow Suit`, saleValue($item`carrot nose`) / 10]]);
 }
 
-function mayflowerBouquet(equipMode: BonusEquipMode) {
-  // +40% meat drop 12.5% of the time (effectively 5%)
-  // Drops flowers 50% of the time, wiki says 5-10 a day.
-  // Theorized that flower drop rate drops off but no info on wiki.
-  // During testing I got 4 drops then the 5th took like 40 more adventures
-  // so let's just assume rate drops by 11% with a min of 1% ¯\_(ツ)_/¯
-
-  // Ignore for EMBEZZLER
-  // Ignore for DMT, assuming mafia might get confused about the drop by the weird combats
-  if (
-    !have($item`Mayflower bouquet`) ||
-    [BonusEquipMode.EMBEZZLER, BonusEquipMode.DMT].some((mode) => mode === equipMode)
-  )
-    return new Map<Item, number>([]);
-
-  const sporadicMeatBonus = (40 * 0.125 * (equipMode === BonusEquipMode.BARF ? baseMeat : 0)) / 100;
-  const averageFlowerValue =
-    saleValue(
-      ...$items`tin magnolia, upsy daisy, lesser grodulated violet, half-orchid, begpwnia`
-    ) * Math.max(0.01, 0.5 - get("_mayflowerDrops") * 0.11);
-  return new Map<Item, number>([
-    [
-      $item`Mayflower bouquet`,
-      (get("_mayflowerDrops") < 10 ? averageFlowerValue : 0) + sporadicMeatBonus,
-    ],
-  ]);
-}
-
 function dropsItems(equipMode: BonusEquipMode) {
   const isFree = [BonusEquipMode.FREE, BonusEquipMode.DMT].includes(equipMode);
   return new Map<Item, number>([
@@ -382,6 +335,5 @@ function dropsItems(equipMode: BonusEquipMode) {
     [$item`pantogram pants`, get("_pantogramModifier").includes("Drops Items") ? 100 : 0],
     [$item`Mr. Screege's spectacles`, 180],
     ...snowSuit(equipMode),
-    ...mayflowerBouquet(equipMode),
   ]);
 }

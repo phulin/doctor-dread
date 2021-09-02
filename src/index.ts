@@ -1,6 +1,7 @@
 import {
   adv1,
   cliExecute,
+  fullnessLimit,
   getCampground,
   getCounters,
   guildStoreAvailable,
@@ -13,6 +14,7 @@ import {
   myAdventures,
   myClass,
   myFamiliar,
+  myFullness,
   myGardenType,
   myInebriety,
   myMaxmp,
@@ -52,7 +54,7 @@ import {
   SourceTerminal,
 } from "libram";
 import { adventureMacro, adventureMacroAuto, Macro } from "./combat";
-import { runDiet, runNightcap } from "./diet";
+import { fillStomach, runDiet, runNightcap } from "./diet";
 import { fairyFamiliar, freeFightFamiliar } from "./familiar";
 import { dailyFights, freeFights, safeRestore, setNepQuestChoicesAndPrepItems } from "./fights";
 import {
@@ -348,6 +350,10 @@ function nepTurn() {
   ) {
     cliExecute("numberology 69");
   }
+
+  if (myFullness() < fullnessLimit()) {
+    fillStomach();
+  }
 }
 
 export function canContinue(): boolean {
@@ -457,7 +463,7 @@ export function main(argString = ""): void {
     ) {
       visitUrl("guild.php?action=buyskill&skillid=32", true);
     }
-    const stashItems = $items`Buddy Bjorn`;
+    const stashItems = $items`Buddy Bjorn, Pantsgiving`;
     if (
       myInebriety() <= inebrietyLimit() &&
       (myClass() !== $class`Seal Clubber` || !have($skill`Furious Wallop`))

@@ -66,7 +66,7 @@ function useIfUnused(item: Item, prop: string | boolean, maxPrice: number) {
   }
 }
 
-function fillStomach() {
+export function fillStomach(): void {
   if (myLevel() >= 15 && !get("_hungerSauceUsed") && mallPrice($item`Hunger™ Sauce`) < 3 * MPA) {
     acquire(1, $item`Hunger™ Sauce`, 3 * MPA);
     use(1, $item`Hunger™ Sauce`);
