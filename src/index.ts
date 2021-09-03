@@ -465,7 +465,7 @@ export function main(argString = ""): void {
     ) {
       visitUrl("guild.php?action=buyskill&skillid=32", true);
     }
-    const stashItems = $items`Buddy Bjorn, Pantsgiving`;
+    const stashItems = $items`Buddy Bjorn, Pantsgiving, Snow Suit`;
     if (
       myInebriety() <= inebrietyLimit() &&
       (myClass() !== $class`Seal Clubber` || !have($skill`Furious Wallop`))

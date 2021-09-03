@@ -98,8 +98,10 @@ export function freeFightOutfit(requirements: Requirement[] = []): void {
             : 0,
         ],
       ]),
-      preventEquip:
-        bjornAlike === $item`Buddy Bjorn` ? $items`Crown of Thrones` : $items`Buddy Bjorn`,
+      preventEquip: [
+        ...(bjornAlike === $item`Buddy Bjorn` ? $items`Crown of Thrones` : $items`Buddy Bjorn`),
+        $item`Snow Suit`,
+      ],
       preventSlot: $slots`crown-of-thrones, buddy-bjorn`,
     })
   );
@@ -180,6 +182,7 @@ export function nepOutfit(requirement = nepDefaultRequirement): void {
             ? bjornChoice.meatVal() * bjornChoice.probability
             : 0,
         ],
+        [$item`Snow Suit`, -500], // This should ensure we only equip on last Bander stage.
       ]),
       preventEquip: [
         ...$items`broken champagne bottle, unwrapped knock-off retro superhero cape`,
@@ -204,7 +207,7 @@ function remainingRunaways(familiar: Familiar) {
   return Math.floor(weight / 5) - get("_banderRunaways");
 }
 
-export const FINAL_BANDER_STAGE = 4;
+export const FINAL_BANDER_STAGE = 5;
 export function tryConfigureBanderRuns(): boolean {
   // Try bander or boots.
   const runFamiliar = have($familiar`Pair of Stomping Boots`)
@@ -233,15 +236,15 @@ export function tryConfigureBanderRuns(): boolean {
   }
 
   if (get("_duffo_runFamiliarStage", 0) === 2) {
-    // 50-turn buffs
+    // MORE fam weight equipment - should start wearing Snow Suit.
     tunnelOfLove.runAll();
-
-    useFamiliar(runFamiliar);
-    nepOutfit(new Requirement(["100 Familiar Weight", "5 Item Drop"], {}));
     const beachHeadsUsed: number | string = get("_beachHeadsUsed");
     if (have($item`Beach Comb`) && !beachHeadsUsed.toString().split(",").includes("10")) {
       cliExecute("beach head familiar");
     }
+
+    useFamiliar(runFamiliar);
+    nepOutfit(new Requirement(["100 Familiar Weight", "5 Item Drop"], {}));
 
     if (remainingRunaways(runFamiliar) > 0) {
       return true;
@@ -251,6 +254,25 @@ export function tryConfigureBanderRuns(): boolean {
   }
 
   if (get("_duffo_runFamiliarStage", 0) === 3) {
+    // 50-turn buffs
+    tunnelOfLove.runAll();
+    const beachHeadsUsed: number | string = get("_beachHeadsUsed");
+    if (have($item`Beach Comb`) && !beachHeadsUsed.toString().split(",").includes("10")) {
+      cliExecute("beach head familiar");
+    }
+
+    useFamiliar(runFamiliar);
+    nepOutfit(new Requirement(["100 Familiar Weight", "5 Item Drop"], {}));
+
+    if (remainingRunaways(runFamiliar) > 0) {
+      return true;
+    } else {
+      set("_duffo_runFamiliarStage", 3);
+    }
+  }
+
+  if (get("_duffo_runFamiliarStage", 0) === 4) {
+    // Puzzle Champ, Meteor Shower
     useFamiliar(runFamiliar);
     nepOutfit(new Requirement(["100 Familiar Weight", "5 Item Drop"], {}));
     if (Witchess.have() && !get("_witchessBuff")) {
@@ -265,7 +287,7 @@ export function tryConfigureBanderRuns(): boolean {
     ) {
       return true;
     } else {
-      set("_duffo_runFamiliarStage", 4);
+      set("_duffo_runFamiliarStage", 5);
     }
   }
 
@@ -320,7 +342,7 @@ function snowSuit(equipMode: BonusEquipMode) {
     get("_carrotNoseDrops") >= 3 ||
     [BonusEquipMode.EMBEZZLER, BonusEquipMode.DMT].some((mode) => mode === equipMode)
   )
-    return new Map<Item, number>([]);
+    return new Map<Item, number>();
 
   return new Map<Item, number>([[$item`Snow Suit`, saleValue($item`carrot nose`) / 10]]);
 }

@@ -110,6 +110,8 @@ function fillSpleenSynthesis() {
 }
 
 export function boostItemDrop(): void {
+  if (have($familiar`Reagnimated Gnome`) && myFamiliar() !== $familiar`Reagnimated Gnome`) return;
+
   if (numericModifier("Item Drop") < 1850 && !get("_clanFortuneBuffUsed")) {
     withVIPClan(() => cliExecute("fortune buff item"));
   }
@@ -167,11 +169,7 @@ export function boostItemDrop(): void {
     });
   }
 
-  if (
-    numericModifier("Item Drop") < 1850 &&
-    mySpleenUse() < spleenLimit() &&
-    myFamiliar() !== $familiar`Frumious Bandersnatch`
-  ) {
+  if (numericModifier("Item Drop") < 1850 && mySpleenUse() < spleenLimit()) {
     fillSpleenSynthesis();
     const mojoFilterCount = 3 - get("currentMojoFilters");
     acquire(mojoFilterCount, $item`mojo filter`, 15000, false);
