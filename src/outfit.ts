@@ -267,7 +267,7 @@ export function tryConfigureBanderRuns(): boolean {
     if (remainingRunaways(runFamiliar) > 0) {
       return true;
     } else {
-      set("_duffo_runFamiliarStage", 3);
+      set("_duffo_runFamiliarStage", 4);
     }
   }
 
