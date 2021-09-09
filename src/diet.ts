@@ -303,7 +303,7 @@ export function runNightcap(): void {
   if (myInebriety() === inebrietyLimit()) {
     acquire(1, $item`Frosty's frosty mug`, 15 * MPA);
     drink($item`Frosty's frosty mug`);
-    acquire(1, nightcap(), 10000);
+    acquire(1, nightcap(), 20000);
     if (haveEffect($effect`Ode to Booze`) < 10) useSkill($skill`The Ode to Booze`);
     drinksilent(nightcap());
   }
