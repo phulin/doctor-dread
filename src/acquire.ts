@@ -30,6 +30,7 @@ const priceCaps: { [index: string]: number } = {
   "bottle of vodka": 500,
   "bottle of Blank-Out": 25000,
   "peppermint parasol": 25000,
+  "Oh, the Humanitini": 25000,
 };
 
 export function acquire(qty: number, item: Item, maxPrice?: number, throwOnFail = true): number {

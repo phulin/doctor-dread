@@ -4,6 +4,7 @@ import {
   drink,
   drinksilent,
   eat,
+  equip,
   fullnessLimit,
   getCampground,
   getChateau,
@@ -21,6 +22,7 @@ import {
   myFullness,
   myInebriety,
   myLevel,
+  mySign,
   print,
   retrieveItem,
   setProperty,
@@ -66,6 +68,28 @@ function useIfUnused(item: Item, prop: string | boolean, maxPrice: number) {
   }
 }
 
+function pasta(): Item {
+  let pasta: Item | null = null;
+  if (myClass() === $class`Sauceror` && mySign() === "Wallaby") {
+    pasta = $item`devil hair pasta`;
+  } else if (myClass() === $class`Pastamancer` && mySign() === "Platypus") {
+    pasta = $item`spooky hi mein`;
+  }
+  if (pasta === null) throw "No pasta in this seed!";
+  return pasta;
+}
+
+function nightcap(): Item {
+  let nightcap: Item | null = null;
+  if (myClass() === $class`Sauceror` && mySign() === "Wallaby") {
+    nightcap = $item`Suffering Sinner`;
+  } else if (myClass() === $class`Pastamancer` && mySign() === "Platypus") {
+    nightcap = $item`soyburger juice`;
+  }
+  if (nightcap === null) throw "No pasta in this seed!";
+  return nightcap;
+}
+
 export function fillStomach(): void {
   if (myLevel() >= 15 && !get("_hungerSauceUsed") && mallPrice($item`Hunger™ Sauce`) < 3 * MPA) {
     acquire(1, $item`Hunger™ Sauce`, 3 * MPA);
@@ -73,13 +97,28 @@ export function fillStomach(): void {
   }
   useIfUnused($item`milk of magnesium`, "_milkOfMagnesiumUsed", 5 * MPA);
 
+  if (!get("_carboLoaded") && have($skill`Canticle of Carboloading`)) {
+    useSkill($skill`Canticle of Carboloading`);
+  }
+
   const count = fullnessLimit() - myFullness();
   if (getWorkshed() === $item`portable Mayo Clinic` && myFullness() < fullnessLimit()) {
     mindMayo(Mayo.flex, count);
   }
+
   // TODO: use munchies pills?
   acquire(count, $item`Special Seasoning`, MPA, false);
-  eat(count, $item`devil hair pasta`);
+  eat(count, pasta());
+}
+
+function fillOneLiver() {
+  if (myClass() === $class`Sauceror` && mySign() === "Wallaby") {
+    acquire(1, $item`black label`, 3 * MPA);
+    drinkSafe(1, $item`bottle of vodka`);
+  } else if (myClass() === $class`Pastamancer` && mySign() === "Platypus") {
+    equip($item`tuxedo shirt`);
+    drinkSafe(1, $item`Oh, the Humanitini`);
+  }
 }
 
 function fillLiver() {
@@ -98,8 +137,7 @@ function fillLiver() {
   }
 
   if (!get("_mimeArmyShotglassUsed") && itemAmount($item`mime army shotglass`) > 0) {
-    acquire(1, $item`black label`, 3 * MPA);
-    drinkSafe(1, $item`bottle of vodka`);
+    fillOneLiver();
   }
 
   const count = inebrietyLimit() - myInebriety();
@@ -109,21 +147,27 @@ function fillLiver() {
     mindMayo(Mayo.diol, count);
     acquire(count, $item`Special Seasoning`, MPA, false);
     while (myInebriety() < inebrietyLimit()) {
-      eat(
-        Math.min(inebrietyLimit() - myInebriety(), fullnessLimit() - myFullness()),
-        $item`devil hair pasta`
-      );
+      eat(Math.min(inebrietyLimit() - myInebriety(), fullnessLimit() - myFullness()), pasta());
     }
   } else {
-    acquire(count, $item`black label`, 3 * MPA);
-    drinkSafe(count, $item`bottle of vodka`);
+    if (myClass() === $class`Sauceror` && mySign() === "Wallaby") {
+      acquire(count, $item`black label`, 3 * MPA);
+      drinkSafe(count, $item`bottle of vodka`);
+    } else if (myClass() === $class`Pastamancer` && mySign() === "Platypus") {
+      acquire(Math.floor(count / 2), $item`black label`, 3 * MPA);
+      drinkSafe(Math.floor(count / 2), $item`bottle of gin`);
+      if (myInebriety() < inebrietyLimit()) {
+        equip($item`tuxedo shirt`);
+        drinkSafe(1, $item`Oh, the Humanitini`);
+      }
+    }
   }
 }
 
 export function runDiet(): void {
-  if ($item`bottle of vodka`.inebriety !== 1 || $item`devil hair pasta`.fullness !== 1) {
+  /* if ($item`bottle of vodka`.inebriety !== 1 || $item`devil hair pasta`.fullness !== 1) {
     throw "Something is wrong with our diet items. Wrong 2CRS seed?";
-  }
+  } */
 
   if (
     get("barrelShrineUnlocked") &&
@@ -191,12 +235,13 @@ export function runDiet(): void {
     useSkill(casts, $skill`Ancestral Recall`);
   }
 
-  useIfUnused($item`borrowed time`, "_borrowedTimeUsed", 5 * MPA);
+  useIfUnused($item`borrowed time`, "_borrowedTimeUsed", 20 * MPA);
 
+  // fill liver first, as we may use mayo!
   fillLiver();
   fillStomach();
 
-  if (!get("_distentionPillUsed") && 1 <= myInebriety()) {
+  if (!get("_distentionPillUsed")) {
     if (
       (have($item`distention pill`, 1) || !get<boolean>("duffo_skipPillCheck", false)) &&
       !use($item`distention pill`)
@@ -214,7 +259,15 @@ export function runDiet(): void {
     }
   }
 
-  useIfUnused($item`spice melange`, "spiceMelangeUsed", 400000);
+  if (3 <= myInebriety() && 3 <= myFullness()) {
+    useIfUnused($item`spice melange`, "spiceMelangeUsed", 400000);
+  }
+
+  useIfUnused($item`cuppa Voraci tea`, "_voraciTeaUsed", 10 * MPA - mallPrice(pasta()));
+
+  if (1 <= myInebriety()) {
+    useIfUnused($item`cuppa Sobrie tea`, "_sobrieTeaUsed", 10 * MPA - mallPrice(pasta()));
+  }
 
   fillLiver();
   fillStomach();
@@ -244,16 +297,15 @@ export function runNightcap(): void {
   useFamiliar($familiar`Stooper`);
 
   if (myInebriety() + 1 === inebrietyLimit()) {
-    acquire(1, $item`black label`, 3 * MPA);
-    drinkSafe(1, $item`bottle of vodka`);
+    fillOneLiver();
   }
 
   if (myInebriety() === inebrietyLimit()) {
     acquire(1, $item`Frosty's frosty mug`, 15 * MPA);
     drink($item`Frosty's frosty mug`);
-    acquire(1, $item`Suffering Sinner`, 10000);
+    acquire(1, nightcap(), 10000);
     if (haveEffect($effect`Ode to Booze`) < 10) useSkill($skill`The Ode to Booze`);
-    drinksilent($item`Suffering Sinner`);
+    drinksilent(nightcap());
   }
 
   if (!getChateau()["artificial skylight"]) {

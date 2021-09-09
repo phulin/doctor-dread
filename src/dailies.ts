@@ -211,7 +211,7 @@ function configureMisc(): void {
 
   if (
     myClass() === $class`Pastamancer` &&
-    myThrall() !== $thrall`Lasagmbie` &&
+    myThrall() !== $thrall`Spice Ghost` &&
     haveSkill($skill`Bind Spice Ghost`)
   ) {
     useSkill($skill`Bind Spice Ghost`);

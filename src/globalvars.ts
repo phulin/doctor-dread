@@ -1,5 +1,5 @@
 import { inebrietyLimit, myAdventures, myInebriety, myTurncount } from "kolmafia";
-import { $item, $monster, have } from "libram";
+import { $familiar, $monster, have } from "libram";
 
 export const globalOptions: {
   ascending: boolean;
@@ -14,8 +14,11 @@ export const globalOptions: {
 };
 
 export function estimatedTurns(): number {
+  const thumbRingMultiplier = 1 / 0.96;
+  const gnomeMultiplier = have($familiar`Reagnimated Gnome`) ? 1 / 0.8 : 1;
   return globalOptions.stopTurncount
     ? globalOptions.stopTurncount - myTurncount()
     : (myAdventures() + (globalOptions.ascending && myInebriety() <= inebrietyLimit() ? 60 : 0)) *
-        (have($item`mafia thumb ring`) ? 1.04 : 1);
+        thumbRingMultiplier *
+        gnomeMultiplier;
 }

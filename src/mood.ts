@@ -5,8 +5,10 @@ import {
   getClanLounge,
   haveEffect,
   mallPrice,
+  myClass,
   myEffects,
   myFamiliar,
+  mySign,
   mySpleenUse,
   numericModifier,
   spleenLimit,
@@ -76,8 +78,6 @@ export function freeFightMood(): Mood {
         use($item`defective Game Grid token`);
     });
   }
-
-  mood.potion($item`white candy heart`, 30);
 
   const goodSongs = $skills`Chorale of Companionship, The Ballad of Richie Thingfinder, Fat Leon's Phat Loot Lyric`;
   for (const effectName of Object.keys(myEffects())) {
@@ -181,6 +181,8 @@ export function boostItemDrop(): void {
 
   // TODO: More generic potion support
   if (
+    myClass() === $class`Sauceror` &&
+    mySign() === "Wallaby" &&
     numericModifier("Item Drop") < 1850 &&
     !have($effect`Always be Collecting`) &&
     effectModifier($item`rubber nubbin`, "Effect") === $effect`Always be Collecting` &&

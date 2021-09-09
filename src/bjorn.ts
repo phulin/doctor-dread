@@ -1,7 +1,6 @@
 import { myFamiliar } from "kolmafia";
 import { $familiar, $item, $items, get, have } from "libram";
-import { fairyFamiliar } from "./familiar";
-import { baseMeat, BonusEquipMode, fairyMultiplier, leprechaunMultiplier, saleValue } from "./lib";
+import { baseMeat, BonusEquipMode, gnomeWeightValue, saleValue } from "./lib";
 
 enum BjornModifierType {
   MEAT,
@@ -502,13 +501,7 @@ function generateBjornList(mode: BonusEquipMode): BjornedFamiliar[] {
     if (familiar.modifier.type === BjornModifierType.ITEM)
       return (familiar.modifier.modifier * itemVal) / 100;
     if (familiar.modifier.type === BjornModifierType.FMWT) {
-      const lepMult = leprechaunMultiplier(fairyFamiliar());
-      const fairyMult = fairyMultiplier(fairyFamiliar());
-      return (
-        (meatVal * (10 * lepMult + 5 * Math.sqrt(lepMult)) +
-          itemVal * (5 * fairyMult + 2.5 * Math.sqrt(fairyMult))) /
-        100
-      );
+      return familiar.modifier.modifier * gnomeWeightValue();
     }
     return 0;
   };

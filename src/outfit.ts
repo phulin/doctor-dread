@@ -24,10 +24,10 @@ import {
 } from "kolmafia";
 import {
   $class,
-  $effect,
   $familiar,
   $item,
   $items,
+  $monster,
   $skill,
   $slot,
   $slots,
@@ -42,7 +42,7 @@ import {
 import { pickBjorn } from "./bjorn";
 import { tunnelOfLove } from "./fights";
 import { estimatedTurns, globalOptions } from "./globalvars";
-import { BonusEquipMode, ensureEffect, gnomeWeightValue, Requirement, saleValue } from "./lib";
+import { BonusEquipMode, gnomeWeightValue, Requirement, saleValue } from "./lib";
 
 const bestAdventuresFromPants =
   Item.all()
@@ -121,7 +121,7 @@ export function refreshLatte(): boolean {
   return have($item`latte lovers member's mug`);
 }
 
-export const nepDefaultRequirement = new Requirement(["5 Item Drop"], {});
+export const nepDefaultRequirement = new Requirement(["1 Item Drop"], {});
 export function nepOutfit(requirement = nepDefaultRequirement): void {
   const extraObjectives = [];
   const forceEquip = [];
@@ -138,6 +138,7 @@ export function nepOutfit(requirement = nepDefaultRequirement): void {
     // TODO: Fix pointer finger ring construction
     if (
       myClass() !== $class`Seal Clubber` &&
+      globalOptions.preferredMonster === $monster`jock` &&
       !requirement.maximizeOptions().forceEquip?.includes($item`The Jokester's gun`)
     ) {
       if (have($item`haiku katana`)) {
@@ -227,7 +228,7 @@ export function tryConfigureBanderRuns(): boolean {
   if (get("_duffo_runFamiliarStage", 0) === 1) {
     // Put on fam weight equipment.
     useFamiliar(runFamiliar);
-    nepOutfit(new Requirement(["20 Familiar Weight", "5 Item Drop"], {}));
+    nepOutfit(nepDefaultRequirement.merge(new Requirement(["20 Familiar Weight"], {})));
     if (remainingRunaways(runFamiliar) > 0) {
       return true;
     } else {
@@ -244,7 +245,7 @@ export function tryConfigureBanderRuns(): boolean {
     }
 
     useFamiliar(runFamiliar);
-    nepOutfit(new Requirement(["100 Familiar Weight", "5 Item Drop"], {}));
+    nepOutfit(nepDefaultRequirement.merge(new Requirement(["100 Familiar Weight"], {})));
 
     if (remainingRunaways(runFamiliar) > 0) {
       return true;
@@ -262,7 +263,7 @@ export function tryConfigureBanderRuns(): boolean {
     }
 
     useFamiliar(runFamiliar);
-    nepOutfit(new Requirement(["100 Familiar Weight", "5 Item Drop"], {}));
+    nepOutfit(nepDefaultRequirement.merge(new Requirement(["100 Familiar Weight"], {})));
 
     if (remainingRunaways(runFamiliar) > 0) {
       return true;
@@ -274,11 +275,10 @@ export function tryConfigureBanderRuns(): boolean {
   if (get("_duffo_runFamiliarStage", 0) === 4) {
     // Puzzle Champ, Meteor Shower
     useFamiliar(runFamiliar);
-    nepOutfit(new Requirement(["100 Familiar Weight", "5 Item Drop"], {}));
+    nepOutfit(nepDefaultRequirement.merge(new Requirement(["100 Familiar Weight"], {})));
     if (Witchess.have() && !get("_witchessBuff")) {
       cliExecute("witchess");
     }
-    ensureEffect($effect`Human-Machine Hybrid`);
 
     if (
       remainingRunaways(runFamiliar) +

@@ -508,7 +508,7 @@ export function maxPassiveDamage(): number {
 }
 
 export function gnomeWeightValue(): number {
-  // Assume rough weight of 160
-  const gnomeWeight = 160;
+  // Assume rough weight of 190
+  const gnomeWeight = 190;
   return MPA * (0.001 / (1 - 0.001 * gnomeWeight) ** 2);
 }

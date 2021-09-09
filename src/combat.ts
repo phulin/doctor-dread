@@ -53,7 +53,7 @@ function shouldRedigitize() {
   const digitizeAdventuresUsed = monsterCount * (monsterCount + 1) * 5 - 3;
   // Redigitize if fewer adventures than this digitize usage.
   const thumbRingMultiplier = 1 / 0.96;
-  const gnomeMultiplier = have($familiar`Reagnimated Gnome`) ? 1 / 0.85 : 1;
+  const gnomeMultiplier = have($familiar`Reagnimated Gnome`) ? 1 / 0.8 : 1;
   const expectedAdventures = myAdventures() * thumbRingMultiplier * gnomeMultiplier;
   return SourceTerminal.have() && expectedAdventures < digitizesLeft * digitizeAdventuresUsed;
 }

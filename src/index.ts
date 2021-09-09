@@ -375,7 +375,7 @@ export function main(argString = ""): void {
       "valueOfAdventure"
     )}, which is too low for barf farming to be worthwhile. If you forgot to set it, use "set valueOfAdventure = XXXX" to set it to your marginal turn meat value.`;
   }
-  if (get("valueOfAdventure") >= 20000) {
+  if (get("valueOfAdventure") >= 25000) {
     throw `Your valueOfAdventure is set to ${get(
       "valueOfAdventure"
     )}, which is definitely incorrect. Please set it to your reliable marginal turn value.`;
@@ -465,12 +465,19 @@ export function main(argString = ""): void {
     ) {
       visitUrl("guild.php?action=buyskill&skillid=32", true);
     }
-    const stashItems = $items`Buddy Bjorn, Pantsgiving, Snow Suit`;
+    const stashItems = $items`Buddy Bjorn`;
     if (
       myInebriety() <= inebrietyLimit() &&
+      globalOptions.preferredMonster === $monster`jock` &&
       (myClass() !== $class`Seal Clubber` || !have($skill`Furious Wallop`))
     ) {
       stashItems.push($item`haiku katana`);
+    }
+    if (get("_pantsgivingCount") < 500) {
+      stashItems.push($item`Pantsgiving`);
+    }
+    if (get("_duffo_runFamiliarStage") < FINAL_BANDER_STAGE) {
+      stashItems.push($item`Snow Suit`);
     }
     // FIXME: Dynamically figure out pointer ring approach.
     withStash(stashItems, () => {
