@@ -58,6 +58,7 @@ import {
   maximizeCached,
   property,
   set,
+  SongBoom,
   SourceTerminal,
   TunnelOfLove,
   Witchess,
@@ -500,6 +501,7 @@ class FreeFight {
     if (!this.available()) return;
     if ((this.options.cost ? this.options.cost() : 0) > get("duffo_valueOfFreeFight", 4000)) return;
     while (this.available()) {
+      if (SongBoom.songChangesLeft() > 0) SongBoom.setSong("Total Eclipse of Your Meat");
       useFamiliar(
         this.options.familiar ? this.options.familiar() ?? freeFightFamiliar() : freeFightFamiliar()
       );

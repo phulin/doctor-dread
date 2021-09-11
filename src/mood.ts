@@ -56,8 +56,6 @@ export function itemMood(): Mood {
   mood.skill($skill`The Spirit of Taking`);
   mood.skill($skill`Fat Leon's Phat Loot Lyric`);
   mood.skill($skill`Singer's Faithful Ocelot`);
-  mood.skill($skill`Drescher's Annoying Noise`);
-  mood.skill($skill`Pride of the Puffin`);
 
   if (!get("concertVisited") && get("sidequestArenaCompleted") === "fratboy") {
     cliExecute("concert winklered");
@@ -70,6 +68,9 @@ export function itemMood(): Mood {
 
 export function freeFightMood(): Mood {
   const mood = new Mood();
+
+  mood.skill($skill`Drescher's Annoying Noise`);
+  mood.skill($skill`Pride of the Puffin`);
 
   if (!get<boolean>("_duffo_defectiveTokenAttempted", false)) {
     set("_duffo_defectiveTokenAttempted", true);

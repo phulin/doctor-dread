@@ -17,10 +17,9 @@ export function tryFillLatte(): boolean {
     numericModifier($item`latte lovers member's mug`, "Familiar Weight") !== 5 ||
     numericModifier($item`latte lovers member's mug`, "Item Drop") !== 20 ||
     numericModifier($item`latte lovers member's mug`, "Meat Drop") !== 40;
-  const allValueUsed = get("_latteBanishUsed") && get("_latteDrinkUsed") && get("_latteCopyUsed");
   if (
     have($item`latte lovers member's mug`) &&
-    (badConfig || allValueUsed) &&
+    (badConfig || get("_latteBanishUsed")) &&
     get("_latteRefillsUsed") < 3
   ) {
     if (

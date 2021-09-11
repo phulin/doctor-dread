@@ -193,7 +193,6 @@ function horse(): void {
 }
 
 function configureMisc(): void {
-  if (SongBoom.songChangesLeft() > 0) SongBoom.setSong("Food Vibrations");
   if (SourceTerminal.have()) {
     if (get("sourceTerminalEnquiry") !== "familiar.enq") {
       SourceTerminal.enquiry($effect`familiar.enq`);
@@ -204,10 +203,10 @@ function configureMisc(): void {
     use(1, $item`BittyCar MeatCar`);
   }
 
-  if (get("_VYKEACompanionLevel") === 0) {
-    retrieveItem($item`VYKEA hex key`);
-    cliExecute(`create level 3 lamp`);
-  }
+  // if (get("_VYKEACompanionLevel") === 0) {
+  //   retrieveItem($item`VYKEA hex key`);
+  //   cliExecute(`create level 3 lamp`);
+  // }
 
   if (
     myClass() === $class`Pastamancer` &&

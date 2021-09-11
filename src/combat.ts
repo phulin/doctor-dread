@@ -37,6 +37,7 @@ import {
   have,
   Macro as LibramMacro,
   set,
+  SongBoom,
   SourceTerminal,
 } from "libram";
 import { globalOptions } from "./globalvars";
@@ -213,7 +214,6 @@ export class Macro extends LibramMacro {
         haveEquipped($item`Pantsgiving`) && get("_pantsgivingCrumbs") < 9,
         Macro.trySkill($skill`Pocket Crumbs`)
       )
-        .trySkill($skill`Extract`)
         .externalIf(
           haveEquipped($item`Buddy Bjorn`) || haveEquipped($item`Crown of Thrones`),
           Macro.while_("!pastround 3 && !hppercentbelow 25", Macro.item($item`seal tooth`))
@@ -246,7 +246,10 @@ export class Macro extends LibramMacro {
     // Ignore unexpected monsters, holiday scaling monsters seem to abort with monsterhpabove
     return this.if_(
       "monstername jock || monstername burnout || monstername party girl || monstername plain || monstername biker || monstername sausage goblin",
-      Macro.if_(`monsterhpabove ${passiveDamage}`, Macro.trySkill($skill`Extract`))
+      Macro.externalIf(
+        SongBoom.song() === "Total Eclipse of Your Meat",
+        Macro.if_(`monsterhpabove ${passiveDamage}`, Macro.skill("Sing Along"))
+      )
         .externalIf(
           haveEquipped($item`Buddy Bjorn`) || haveEquipped($item`Crown of Thrones`),
           Macro.while_(
@@ -290,7 +293,6 @@ export class Macro extends LibramMacro {
         haveEquipped($item`Pantsgiving`) && get("_pantsgivingCrumbs") < 9,
         Macro.trySkill($skill`Pocket Crumbs`)
       )
-      .trySkill($skill`Extract`)
       .externalIf(
         shouldRedigitize(),
         Macro.if_(
@@ -359,10 +361,6 @@ export class Macro extends LibramMacro {
         myClass() === $class`Sauceror` && have($skill`Curse of Weaksauce`),
         Macro.trySkill($skill`Curse of Weaksauce`)
       )
-        .externalIf(
-          !(myClass() === $class`Sauceror` && have($skill`Curse of Weaksauce`)),
-          Macro.while_("!pastround 20 && !hppercentbelow 25 && !missed 1", Macro.attack())
-        )
         // Using while_ here in case you run out of mp
         .while_("hasskill Saucegeyser", Macro.skill($skill`Saucegeyser`))
         .attack()
@@ -559,7 +557,10 @@ export function adventureMacroAuto(
 }
 
 export function main(): void {
-  const response = Macro.load().submit();
+  const macro = Macro.load();
+  if (macro.components[0] === "abort") throw "About to abort combat!";
+
+  const response = macro.submit();
   const firstFart = response.indexOf("<!--faaaaaaart-->");
   const lastFart = response.lastIndexOf("<!--faaaaaaart-->");
   const extracted = response

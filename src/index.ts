@@ -51,6 +51,7 @@ import {
   set,
   setDefaultMaximizeOptions,
   sinceKolmafiaRevision,
+  SongBoom,
   SourceTerminal,
 } from "libram";
 import { adventureMacro, adventureMacroAuto, Macro } from "./combat";
@@ -148,6 +149,8 @@ function nepTurn() {
       SourceTerminal.educate([$skill`Extract`, $skill`Digitize`]);
     }
   }
+
+  if (SongBoom.songChangesLeft() > 0) SongBoom.setSong("Food Vibrations");
 
   if (
     have($item`unwrapped knock-off retro superhero cape`) &&
@@ -465,7 +468,7 @@ export function main(argString = ""): void {
     ) {
       visitUrl("guild.php?action=buyskill&skillid=32", true);
     }
-    const stashItems = $items`Buddy Bjorn`;
+    const stashItems = []; // $items`Buddy Bjorn`;
     if (
       myInebriety() <= inebrietyLimit() &&
       globalOptions.preferredMonster === $monster`jock` &&

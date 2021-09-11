@@ -351,8 +351,8 @@ function dropsItems(equipMode: BonusEquipMode) {
   const isFree = [BonusEquipMode.FREE, BonusEquipMode.DMT].includes(equipMode);
   return new Map<Item, number>([
     [$item`familiar scrapbook`, 50],
-    [$item`mafia thumb ring`, !isFree ? 500 : 0],
-    [$item`lucky gold ring`, 400],
+    [$item`mafia thumb ring`, !isFree ? 1000 : 0],
+    // [$item`lucky gold ring`, 400],
     [$item`Mr. Cheeng's spectacles`, 250],
     [$item`pantogram pants`, get("_pantogramModifier").includes("Drops Items") ? 100 : 0],
     [$item`Mr. Screege's spectacles`, 180],
