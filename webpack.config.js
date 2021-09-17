@@ -45,6 +45,7 @@ const scriptsConfig = merge(
     entry: {
       duffo: "./src/index.ts",
       "duffo-combat": "./src/combat.ts",
+      "2crs-buffs": "./src/2crs-buffs.ts",
     },
     output: {
       path: path.resolve(__dirname, "KoLmafia", "scripts", "duffel-collector"),
