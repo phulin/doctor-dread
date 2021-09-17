@@ -1,5 +1,5 @@
-import 'core-js/modules/es.string.match-all';
-import 'core-js/modules/es.string.replace-all';
+import "core-js/modules/es.string.match-all";
+import "core-js/modules/es.string.replace-all";
 
 import {
   buy,
@@ -16,48 +16,48 @@ import {
 } from "kolmafia";
 import { $effect, $effects, $item, $items, sum } from "libram";
 
-const LISTING_REGEXP = new RegExp("<tr class=\"graybelow\" id=\"stock_([0-9]+)_([0-9]+)\">.*?stock\">([0-9,]+)<\\/td><td class=\"small\">([^<]+)<\\/td>.*?searchprice=([0-9]+)", "g");
+const LISTING_REGEXP = new RegExp(
+  '<tr class="graybelow" id="stock_([0-9]+)_([0-9]+)">.*?stock">([0-9,]+)<\\/td><td class="small">([^<]+)<\\/td>.*?searchprice=([0-9]+)',
+  "g"
+);
 
-function mallShops(
-  item: Item,
-  sortBy = "price",
-  maxPrice = 0,
-  limit = 0,
-) {
+function mallShops(item: Item, sortBy = "price", maxPrice = 0, limit = 0) {
   const pudnuggler = item === $item`none` ? "" : item.name;
 
   const params = {
-    "pudnuggler": pudnuggler,
-    "food_sortitemsby": "name",
-    "booze_sortitemsby": "name",
-    "othercon_sortitemsby": "name",
-    "consumable_byme": "0",
-    "hats_sortitemsby": "name",
-    "shirts_sortitemsby": "name",
-    "pants_sortitemsby": "name",
-    "weapons_sortitemsby": "name",
-    "weaponattribute": "3",
-    "weaponhands": "3",
-    "acc_sortitemsby": "name",
-    "offhand_sortitemsby": "name",
-    "wearable_byme": "0",
-    "famequip_sortitemsby": "name",
-    "nolimits": "0",
-    "justitems": "0",
-    "sortresultsby": sortBy,
-    "max_price": maxPrice.toString(),
-    "x_cheapest": limit.toString(),
-    "consumable_tier_1": "0",
-    "consumable_tier_2": "0",
-    "consumable_tier_3": "0",
-    "consumable_tier_4": "0",
-    "consumable_tier_5": "0",
+    pudnuggler: pudnuggler,
+    food_sortitemsby: "name",
+    booze_sortitemsby: "name",
+    othercon_sortitemsby: "name",
+    consumable_byme: "0",
+    hats_sortitemsby: "name",
+    shirts_sortitemsby: "name",
+    pants_sortitemsby: "name",
+    weapons_sortitemsby: "name",
+    weaponattribute: "3",
+    weaponhands: "3",
+    acc_sortitemsby: "name",
+    offhand_sortitemsby: "name",
+    wearable_byme: "0",
+    famequip_sortitemsby: "name",
+    nolimits: "0",
+    justitems: "0",
+    sortresultsby: sortBy,
+    max_price: maxPrice.toString(),
+    x_cheapest: limit.toString(),
+    consumable_tier_1: "0",
+    consumable_tier_2: "0",
+    consumable_tier_3: "0",
+    consumable_tier_4: "0",
+    consumable_tier_5: "0",
   };
 
-  const qs = Object.entries(params).map(([k, v]) => `${k}=${v}`).join("&");
+  const qs = Object.entries(params)
+    .map(([k, v]) => `${k}=${v}`)
+    .join("&");
 
   const url = `mall.php?didadv=1&${qs}`;
-  const page = visitUrl( url, true );
+  const page = visitUrl(url, true);
 
   if (page === "") throw "Mafia can't look at mall.php :eyes:";
 
@@ -69,7 +69,9 @@ function mallShops(
       shop: Number(match[1]),
       item: Item.get(Number(match[2])),
       stock,
-      limit: Number(match[4].replaceAll("&nbsp;", "").replaceAll(",", "").replaceAll("/day", "")) || stock,
+      limit:
+        Number(match[4].replaceAll("&nbsp;", "").replaceAll(",", "").replaceAll("/day", "")) ||
+        stock,
       price: Number(match[5]),
     };
   });
