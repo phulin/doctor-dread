@@ -15,7 +15,7 @@ export const globalOptions: {
 
 export function estimatedTurns(): number {
   const thumbRingMultiplier = 1 / 0.96;
-  const gnomeMultiplier = have($familiar`Reagnimated Gnome`) ? 1 / 0.8 : 1;
+  const gnomeMultiplier = have($familiar`Reagnimated Gnome`) ? 1 / 0.78 : 1;
   return globalOptions.stopTurncount
     ? globalOptions.stopTurncount - myTurncount()
     : (myAdventures() + (globalOptions.ascending && myInebriety() <= inebrietyLimit() ? 60 : 0)) *

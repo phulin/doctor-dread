@@ -248,7 +248,7 @@ export class Macro extends LibramMacro {
       "monstername jock || monstername burnout || monstername party girl || monstername plain || monstername biker || monstername sausage goblin",
       Macro.externalIf(
         SongBoom.song() === "Total Eclipse of Your Meat",
-        Macro.if_(`monsterhpabove ${passiveDamage}`, Macro.skill("Sing Along"))
+        Macro.if_(`monsterhpabove ${passiveDamage}`, Macro.trySkill("Sing Along"))
       )
         .externalIf(
           haveEquipped($item`Buddy Bjorn`) || haveEquipped($item`Crown of Thrones`),
@@ -288,11 +288,10 @@ export class Macro extends LibramMacro {
   }
 
   startCombat(): Macro {
-    return this.tryHaveSkill($skill`Curse of Weaksauce`)
-      .externalIf(
-        haveEquipped($item`Pantsgiving`) && get("_pantsgivingCrumbs") < 9,
-        Macro.trySkill($skill`Pocket Crumbs`)
-      )
+    return this.externalIf(
+      haveEquipped($item`Pantsgiving`) && get("_pantsgivingCrumbs") < 9,
+      Macro.trySkill($skill`Pocket Crumbs`)
+    )
       .externalIf(
         shouldRedigitize(),
         Macro.if_(
@@ -449,7 +448,7 @@ export class Macro extends LibramMacro {
       return this.basicCombat();
     }
 
-    return this.tryHaveSkill($skill`Sing Along`)
+    return this.trySkill($skill`Sing Along`)
       .tryHaveItem($item`Rain-Doh blue balls`)
       .externalIf(get("lovebugsUnlocked"), Macro.trySkill($skill`Summon Love Gnats`))
       .tryHaveSkill(classStun)

@@ -339,7 +339,7 @@ function nepTurn() {
     set("_duffo_tryptophanDartUsed", true);
   }
 
-  if ((lastChoice() === 1324 && lastDecision() === 5) || lastChoice() === 1387) {
+  if ([1324, 1325, 1326, 1327, 1328, 1387].includes(lastChoice())) {
     // 1387 is Use the Force, which should ONLY happen at an NEP NC as we only equip saber then.
     // Reset lastChoice() - this is a hack but whatever.
     setChoice(781, 6);
@@ -431,6 +431,7 @@ export function main(argString = ""): void {
       use($item`packet of tall grass seeds`);
     }
 
+    set("lastMacroError", "");
     setAutoAttack(0);
     visitUrl(`account.php?actions[]=flag_aabosses&flag_aabosses=1&action=Update`, true);
 
