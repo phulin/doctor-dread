@@ -17876,7 +17876,7 @@ function estimatedTurns() {
 
 /***/ }),
 
-/***/ 6173:
+/***/ 6760:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -20586,18 +20586,6 @@ var farmCommand = new Command("farm", "dr farm [ascend] [turncount]: Burn turns 
     }
   }
 });
-;// CONCATENATED MODULE: ./src/commands/help.ts
-
-
-
-var helpCommand = new Command("help", "dr help: Print help for each command.", () => {
-  (0,external_kolmafia_.printHtml)("<b>Doctor Dread</b>");
-
-  for (var _i = 0, _Object$keys = Object.keys(commands); _i < _Object$keys.length; _i++) {
-    var commandName = _Object$keys[_i];
-    (0,external_kolmafia_.print)(commands[commandName].help);
-  }
-});
 ;// CONCATENATED MODULE: ./src/dungeon/raidlog.ts
 var raidlog_templateObject, raidlog_templateObject2, raidlog_templateObject3;
 
@@ -20687,6 +20675,7 @@ var dreadZones = [{
     noncombat: "Cabin",
     messages: ["acquired some dread tarragon", "made some bone flour", "made the forest less stinky", "recycled some newspapers", "read an old diary", "got a Dreadsylvanian auditor's badge", "made an impression of a complicated lock", "made the forest less spooky", "drove some werewolves out of the forest", "drove some vampires out of the castle", "flipped through a photo album"],
     index: 1,
+    freddies: [[721, 2], [723, 1]],
     banishes: [{
       effect: ["forest", "stinky"],
       choiceSequence: [[721, 1], [722, 3]]
@@ -20717,6 +20706,7 @@ var dreadZones = [{
     noncombat: "Burrows",
     messages: ["made the forest less hot", "got intimate with some hot coals", "made a cool iron ingot", "made the forest less cold", "listened to the forest's heart", "drank some nutritious forest goo", "drove some bugbears out of the forest", "found and sold a rare baseball card"],
     index: 3,
+    freddies: [[729, 3], [732, 2]],
     banishes: [{
       effect: ["forest", "hot"],
       choiceSequence: [[729, 1], [730, 1]]
@@ -20735,6 +20725,7 @@ var dreadZones = [{
     noncombat: "Village Square",
     messages: ["drove some ghosts out of the village", "collected a ghost pencil", "read some naughty carvings", "made the village less cold", "looted the blacksmith's till", "made a cool iron breastplate", "made a cool iron helmet", "made some cool iron greaves", "made the village less spooky", "was hung by a clanmate", "hung a clanmate"],
     index: 4,
+    freddies: [[733, 2], [735, 2]],
     banishes: [{
       effect: ["village", "ghost"],
       choiceSequence: [[733, 1], [734, 1]]
@@ -20763,6 +20754,7 @@ var dreadZones = [{
     noncombat: "Old Duke's Estate",
     messages: ["drove some zombies out of the village", "robbed some graves", "read some lurid epitaphs", "made the village less hot", "made a shepherd's pie", "raided some naughty cabinets", "drove some werewolves out of the forest", "got a bottle of eau de mort", "made a ghost shawl"],
     index: 6,
+    freddies: [[741, 1], [742, 2]],
     banishes: [{
       effect: ["village", "zombie"],
       choiceSequence: [[741, 1], [742, 1]]
@@ -20781,6 +20773,7 @@ var dreadZones = [{
     noncombat: "Tower",
     messages: ["drove some bugbears out of the forest", "drove some zombies out of the village", "made a blood kiwitini", "drove some skeletons out of the castle", "read some ancient secrets", "learned to make a moon-amber necklace", "made the castle less sleazy", "raided a dresser", "got magically fingered"],
     index: 8,
+    freddies: [[749, 3], [752, 2]],
     banishes: [{
       effect: ["forest", "bugbear"],
       choiceSequence: [[749, 1], [750, 1]]
@@ -20813,6 +20806,7 @@ var dreadZones = [{
     noncombat: "Dungeons",
     messages: ["made the castle less spooky", "did a whole bunch of pushups", "took a nap on a prison cot", "made the castle less hot", "sifted through some ashes", "relaxed in a furnace", "got some stinking agaric", "rolled around in some mushrooms"],
     index: 9,
+    freddies: [[753, 2], [755, 2]],
     banishes: [{
       effect: ["castle", "spooky"],
       choiceSequence: [[753, 1], [754, 1]]
@@ -20950,6 +20944,64 @@ function dreadNoncombatsUsed() {
 
   return result;
 }
+;// CONCATENATED MODULE: ./src/commands/freddies.ts
+function freddies_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = freddies_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function freddies_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return freddies_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return freddies_arrayLikeToArray(o, minLen); }
+
+function freddies_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+
+
+
+var freddiesCommand = new Command("freddies", "dr freddies: Collect freddies from any available noncombats.", () => {
+  var used = dreadNoncombatsUsed();
+
+  var _iterator = freddies_createForOfIteratorHelper(dreadZones),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var zone = _step.value;
+
+      var _iterator2 = freddies_createForOfIteratorHelper(zone.noncombats),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var noncombat = _step2.value;
+          if (used.includes(noncombat.noncombat) || !noncombat.freddies) continue;
+          lib/* propertyManager.setChoices */.kr.setChoices((0,lib/* fromEntries */.sq)(noncombat.freddies));
+          (0,external_kolmafia_.visitUrl)("clan_dreadsylvania.php?action=forceloc&loc=".concat(noncombat.index));
+          (0,external_kolmafia_.runChoice)(-1);
+          if ((0,external_kolmafia_.handlingChoice)()) throw "Stuck in choice adventure!";
+          (0,external_kolmafia_.print)();
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+});
+;// CONCATENATED MODULE: ./src/commands/help.ts
+
+
+
+var helpCommand = new Command("help", "dr help: Print help for each command.", () => {
+  (0,external_kolmafia_.printHtml)("<b>Doctor Dread</b>");
+
+  for (var _i = 0, _Object$keys = Object.keys(commands); _i < _Object$keys.length; _i++) {
+    var commandName = _Object$keys[_i];
+    (0,external_kolmafia_.print)(commands[commandName].help);
+  }
+});
 ;// CONCATENATED MODULE: ./src/dungeon/plan.ts
 function plan_slicedToArray(arr, i) { return plan_arrayWithHoles(arr) || plan_iterableToArrayLimit(arr, i) || plan_unsupportedIterableToArray(arr, i) || plan_nonIterableRest(); }
 
@@ -21470,8 +21522,10 @@ var whitelistCommand = new Command("whitelist", "dr whitelist [player] [rank]: W
 
 
 
+
 /* harmony default export */ const commands = ({
   farm: farmCommand,
+  freddies: freddiesCommand,
   help: helpCommand,
   limit: limitCommand,
   plan: planCommand,
@@ -22118,7 +22172,7 @@ module.exports = require("kolmafia");;
 /******/ 	// module cache are used so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	var __webpack_exports__ = __webpack_require__(__webpack_require__.s = 6173);
+/******/ 	var __webpack_exports__ = __webpack_require__(__webpack_require__.s = 6760);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
