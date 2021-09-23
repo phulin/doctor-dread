@@ -84,8 +84,8 @@ export function categorizeBanishes(
       goodBanishes.push([noncombat, banish]);
     }
   }
-  print(`completed: ${JSON.stringify(completedBanishes.map(([, banish]) => banish))}`);
-  print(`used: ${JSON.stringify(usedBanishes.map(([, banish]) => banish))}`);
+  // print(`completed: ${JSON.stringify(completedBanishes.map(([, banish]) => banish))}`);
+  // print(`used: ${JSON.stringify(usedBanishes.map(([, banish]) => banish))}`);
 
   return { completedBanishes, usedBanishes, cantBanishes, goodBanishes };
 }
