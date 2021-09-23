@@ -5,7 +5,7 @@ import { Command } from "./command";
 
 export const whitelistCommand = new Command(
   "whitelist",
-  "dr whitelist [player] [rank?]: Whitelist [player] with rank [rank] (default normal member) to all clans in dr_clans",
+  "dr whitelist [player] [rank]: Whitelist [player] with rank [rank] (default normal member) to all clans in dr_clans",
   ([player, ...rankComponents]) => {
     const clanNamesJoined = get("dr_clans", "");
     if (clanNamesJoined === "") {

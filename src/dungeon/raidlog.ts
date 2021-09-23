@@ -358,7 +358,7 @@ export const dreadZones: DreadZoneInfo[] = [
           "raided a dresser",
           "got magically fingered",
         ],
-        index: 7,
+        index: 8,
         banishes: [
           {
             effect: ["forest", "bugbear"],
@@ -404,7 +404,7 @@ export const dreadZones: DreadZoneInfo[] = [
           "made the castle less stinky",
           "got a wax banana",
         ],
-        index: 8,
+        index: 7,
         banishes: [
           {
             effect: ["castle", "vampire"],
