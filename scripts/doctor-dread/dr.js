@@ -17876,7 +17876,7 @@ function estimatedTurns() {
 
 /***/ }),
 
-/***/ 9162:
+/***/ 6173:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -21093,6 +21093,8 @@ var limitCommand = new Command("limit", usage, _ref => {
       element = _ref2[0],
       monster = _ref2[1];
 
+  (0,external_kolmafia_.printHtml)("<b>Dr. Dread Auto-Banisher</b>");
+
   if (!isDreadMonster(monster)) {
     (0,external_kolmafia_.print)("Unrecognized monster ".concat(monster, "."), "red");
     (0,external_kolmafia_.print)("Usage: ".concat(usage, "."));
@@ -21230,7 +21232,71 @@ var statusCommand = new Command("status", "dr status: Print current banishing st
     _iterator.f();
   }
 });
+;// CONCATENATED MODULE: ./src/commands/whitelist.ts
+function whitelist_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = whitelist_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _toArray(arr) { return whitelist_arrayWithHoles(arr) || whitelist_iterableToArray(arr) || whitelist_unsupportedIterableToArray(arr) || whitelist_nonIterableRest(); }
+
+function whitelist_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function whitelist_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return whitelist_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return whitelist_arrayLikeToArray(o, minLen); }
+
+function whitelist_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function whitelist_iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function whitelist_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+var whitelistCommand = new Command("whitelist", "dr whitelist [player] [rank?]: Whitelist [player] with rank [rank] (default normal member) to all clans in dr_clans", _ref => {
+  var _ref2 = _toArray(_ref),
+      player = _ref2[0],
+      rankComponents = _ref2.slice(1);
+
+  var clanNamesJoined = (0,dist.get)("dr_clans", "");
+
+  if (clanNamesJoined === "") {
+    (0,external_kolmafia_.print)("You have not set any clans in the dr_clans property!", "red");
+    return;
+  }
+
+  if (!player) {
+    (0,external_kolmafia_.print)("Invalid player ".concat(player), "red");
+    return;
+  }
+
+  var rank = rankComponents.join(" ") || undefined;
+  var current = (0,external_kolmafia_.getClanName)();
+
+  try {
+    var clanNames = clanNamesJoined.split("|");
+
+    var _iterator = whitelist_createForOfIteratorHelper(clanNames),
+        _step;
+
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var clanName = _step.value;
+        var clan = dist.Clan.join(clanName);
+        (0,external_kolmafia_.print)("Whitelisting ".concat(player, " to ").concat((0,external_kolmafia_.getClanName)(), " at rank ").concat(rank, "."));
+
+        if (!clan.addPlayerToWhitelist(player, rank, "Added by ".concat((0,external_kolmafia_.myName)(), " on ").concat((0,external_kolmafia_.todayToString)(), " (Dr. Dread)"))) {
+          (0,external_kolmafia_.print)("Whitelisting failed in ".concat((0,external_kolmafia_.getClanName)(), "!"), "red");
+        }
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+  } finally {
+    dist.Clan.join(current);
+  }
+});
 ;// CONCATENATED MODULE: ./src/commands/index.ts
+
 
 
 
@@ -21241,7 +21307,8 @@ var statusCommand = new Command("status", "dr status: Print current banishing st
   help: helpCommand,
   limit: limitCommand,
   plan: planCommand,
-  status: statusCommand
+  status: statusCommand,
+  whitelist: whitelistCommand
 });
 ;// CONCATENATED MODULE: ./src/index.ts
 
@@ -21883,7 +21950,7 @@ module.exports = require("kolmafia");;
 /******/ 	// module cache are used so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	var __webpack_exports__ = __webpack_require__(__webpack_require__.s = 9162);
+/******/ 	var __webpack_exports__ = __webpack_require__(__webpack_require__.s = 6173);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
