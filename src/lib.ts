@@ -512,3 +512,10 @@ export function gnomeWeightValue(): number {
   const gnomeWeight = 190;
   return MPA * (0.001 / (1 - 0.001 * gnomeWeight) ** 2);
 }
+
+export function fromEntries<T>(iterable: [keyof T, T[keyof T]][]): T {
+  return [...iterable].reduce((obj, [key, val]) => {
+    obj[key] = val;
+    return obj;
+  }, {} as T);
+}

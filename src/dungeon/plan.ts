@@ -50,11 +50,11 @@ export function planLimitTo(
 
       for (const banish of noncombat.banishes) {
         const [banishZone, impact] = banish.effect;
-        print(`zone ${targetZone} === ${banishZone} && thingsToBanish includes ${impact}`);
+        // print(`zone ${targetZone} === ${banishZone} && thingsToBanish includes ${impact}`);
         if (targetZone === banishZone && thingsToBanish.includes(impact)) {
-          print("yes");
+          // print("yes");
           desiredBanishes.push([noncombat.noncombat, banish]);
-        } else print("no");
+        } // else print("no");
         print();
       }
     }

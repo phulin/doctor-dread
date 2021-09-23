@@ -276,7 +276,6 @@ export const farmCommand = new Command(
         }
       });
     } finally {
-      propertyManager.resetAll();
       visitUrl(
         `account.php?actions[]=flag_aabosses&flag_aabosses=${aaBossFlag}&action=Update`,
         true

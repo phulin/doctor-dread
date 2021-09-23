@@ -463,6 +463,17 @@ export const dreadZones: DreadZoneInfo[] = [
   },
 ];
 
+export function noncombatInfo(noncombat: DreadNoncombat): DreadNoncombatInfo {
+  for (const zone of dreadZones) {
+    for (const testNoncombat of zone.noncombats) {
+      if (testNoncombat.noncombat === noncombat) {
+        return testNoncombat;
+      }
+    }
+  }
+  return null as unknown as DreadNoncombatInfo;
+}
+
 let lastRaidlogTurncount = -1;
 let savedRaidlog: string | undefined = undefined;
 export function memoizedRaidlog(): string {
