@@ -20634,7 +20634,7 @@ function monsterPair(monster) {
   }
 }
 function monsterSingular(monster) {
-  return monster === "werewolves" ? "werewolf" : monster;
+  return monster === "werewolves" ? "werewolf" : monster.slice(0, -1);
 }
 function monsterPlural(monster) {
   if (monster === "werewolf") return "werewolves";else return "".concat(monster, "s");
@@ -21021,11 +21021,13 @@ function banishesToLimit(targetZone, monster, element) {
   return result;
 }
 function categorizeBanishes(targetZone, monster, element) {
-  var banished = dreadBanished(); // print(JSON.stringify(banished));
+  var banished = dreadBanished();
+  var banishedInZone = banished.filter(info => info.targetZone === targetZone); // print("banished: " + JSON.stringify(banishedInZone));
 
-  var banishedInZone = banished.filter(info => info.targetZone === targetZone);
   var noncombatsUsed = new Set(dreadNoncombatsUsed());
-  var desiredBanishes = banishesToLimit(targetZone, monster, element);
+  var desiredBanishes = banishesToLimit(targetZone, monster, element); // print("desired: " + JSON.stringify(desiredBanishes.map(([, banish]) => banish)));
+
+  var completedBanishes = [];
   var usedBanishes = [];
   var cantBanishes = [];
   var goodBanishes = [];
@@ -21040,7 +21042,9 @@ function categorizeBanishes(targetZone, monster, element) {
           banish = _step4$value[1];
 
       // Did we already use this noncombat, or has this banish already been done?
-      if (noncombatsUsed.has(noncombat.noncombat) || banishedInZone.some(info => noncombatZone(noncombat.noncombat) === info.noncombatZone && banish.effect[1] === info.banished)) {
+      if (banishedInZone.some(info => noncombatZone(noncombat.noncombat) === info.noncombatZone && banish.effect[1] === info.banished)) {
+        completedBanishes.push([noncombat, banish]);
+      } else if (noncombatsUsed.has(noncombat.noncombat)) {
         usedBanishes.push([noncombat, banish]);
       } else if (banish.reasonCantPerform && banish.reasonCantPerform()) {
         cantBanishes.push([noncombat, banish]);
@@ -21059,6 +21063,7 @@ function categorizeBanishes(targetZone, monster, element) {
   }
 
   return {
+    completedBanishes: completedBanishes,
     usedBanishes: usedBanishes,
     cantBanishes: cantBanishes,
     goodBanishes: goodBanishes
@@ -21121,6 +21126,25 @@ function planLimitTo(targetZone, monster, element) {
 
     return [noncombat, banish];
   });
+}
+function neededBanishes(targetZone, monster, element) {
+  var _categorizeBanishes2 = categorizeBanishes(targetZone, monster, element),
+      completedBanishes = _categorizeBanishes2.completedBanishes;
+
+  var paired = monsterPair(monster);
+  var monsterCount = completedBanishes.filter(_ref3 => {
+    var _ref4 = plan_slicedToArray(_ref3, 2),
+        banish = _ref4[1];
+
+    return banish.effect[1] === paired;
+  }).length;
+  var banishedElements = completedBanishes.map(_ref5 => {
+    var _ref6 = plan_slicedToArray(_ref5, 2),
+        banish = _ref6[1];
+
+    return banish.effect[1];
+  }).filter(x => isDreadElement(x));
+  return [].concat(plan_toConsumableArray(dreadElements.filter(e => element !== e && !banishedElements.includes(e))), plan_toConsumableArray(new Array(2 - monsterCount).fill(paired)));
 }
 ;// CONCATENATED MODULE: ./src/commands/limit.ts
 var limit_templateObject, limit_templateObject2, limit_templateObject3, limit_templateObject4, limit_templateObject5;
@@ -21205,7 +21229,7 @@ var limitCommand = new Command("limit", usage, _ref => {
     (0,external_kolmafia_.cliExecute)("outfit checkpoint");
   }
 
-  var remaining = banishesToLimit(monsterZone(monster), monster, element);
+  var remaining = neededBanishes(monsterZone(monster), monster, element);
 
   if (remaining.length === 0) {
     (0,external_kolmafia_.print)("All banishes complete!", "blue");
@@ -21251,6 +21275,15 @@ var planCommand = new Command("plan", plan_usage, _ref => {
   (0,external_kolmafia_.printHtml)("<b>Dr. Dread Banish Planner</b>");
   (0,external_kolmafia_.print)("Noncombats used: ".concat(dreadNoncombatsUsed().join(", ")));
   (0,external_kolmafia_.print)("Trying to banish ".concat(element, " ").concat(monsterPlural(monster)));
+  (0,external_kolmafia_.print)();
+  var remaining = neededBanishes(monsterZone(monster), monster, element);
+
+  if (remaining.length === 0) {
+    (0,external_kolmafia_.print)("All banishes complete!", "blue");
+  } else {
+    (0,external_kolmafia_.print)("Outstanding banishes: ".concat(remaining.join(", ")), "red");
+  }
+
   var plan = planLimitTo(monsterZone(monster), monster, element);
 
   var _iterator = commands_plan_createForOfIteratorHelper(plan),
