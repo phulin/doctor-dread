@@ -21226,6 +21226,7 @@ var limitCommand = new Command("limit", usage, _ref => {
         lib/* propertyManager.setChoices */.kr.setChoices((0,lib/* fromEntries */.sq)(banish.choiceSequence));
         (0,external_kolmafia_.visitUrl)("clan_dreadsylvania.php?action=forceloc&loc=".concat(noncombat.index));
         (0,external_kolmafia_.runChoice)(-1);
+        if ((0,external_kolmafia_.handlingChoice)()) throw "Stuck in choice adventure!";
         (0,external_kolmafia_.print)();
       }
     } catch (err) {
