@@ -45,12 +45,17 @@ export function banishesToLimit(
   return result;
 }
 
-export function planLimitTo(
+export function categorizeBanishes(
   targetZone: DreadZone,
   monster: DreadMonster | "banish no monster",
   element: DreadElement | "banish all elements" | "banish no element"
-): [DreadNoncombatInfo, DreadBanish][] {
+): {
+  usedBanishes: [DreadNoncombatInfo, DreadBanish][];
+  cantBanishes: [DreadNoncombatInfo, DreadBanish][];
+  goodBanishes: [DreadNoncombatInfo, DreadBanish][];
+} {
   const banished = dreadBanished();
+  // print(JSON.stringify(banished));
   const banishedInZone = banished.filter((info) => info.targetZone === targetZone);
 
   const noncombatsUsed = new Set(dreadNoncombatsUsed());
@@ -76,6 +81,16 @@ export function planLimitTo(
       goodBanishes.push([noncombat, banish]);
     }
   }
+
+  return { usedBanishes, cantBanishes, goodBanishes };
+}
+
+export function planLimitTo(
+  targetZone: DreadZone,
+  monster: DreadMonster | "banish no monster",
+  element: DreadElement | "banish all elements" | "banish no element"
+): [DreadNoncombatInfo, DreadBanish][] {
+  const { cantBanishes, goodBanishes } = categorizeBanishes(targetZone, monster, element);
 
   for (const [noncombat, banish] of cantBanishes) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

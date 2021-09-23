@@ -522,7 +522,7 @@ export function dreadBanished(): {
     const blockquoteMatch = raidlog.match(blockquoteRegex);
     const blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
 
-    const elementRegex = /made the (.*?) less (.*?)/g;
+    const elementRegex = /made the (.*?) less (.*?) \(1 turn\)/g;
     let match;
     while ((match = elementRegex.exec(blockquote)) !== null) {
       result.push({
@@ -532,7 +532,7 @@ export function dreadBanished(): {
       });
     }
 
-    const monsterRegex = /drove some (.*?) out of the (.*?)/g;
+    const monsterRegex = /drove some (.*?) out of the (.*?) \(1 turn\)/g;
     while ((match = monsterRegex.exec(blockquote)) !== null) {
       result.push({
         targetZone: match[2] as DreadZone,
