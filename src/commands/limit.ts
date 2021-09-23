@@ -13,8 +13,8 @@ import {
 import { $item, have } from "libram";
 
 import { Command } from "./command";
-import { needsBanishing, planLimitTo } from "../dungeon/plan";
-import { isDreadElement, isDreadMonster, monsterZone, noncombatInfo } from "../dungeon/raidlog";
+import { banishesToLimit, planLimitTo } from "../dungeon/plan";
+import { isDreadElement, isDreadMonster, monsterZone } from "../dungeon/raidlog";
 import { fromEntries, propertyManager } from "../lib";
 
 const usage = "dr limit [element] [monster]: Try to banish all monsters but [element] [monster]s.";
@@ -46,13 +46,13 @@ export const limitCommand = new Command("limit", usage, ([element, monster]: str
 
     for (const [noncombat, banish] of planLimitTo(monsterZone(monster), monster, element)) {
       print(
-        `Banishing ${banish.effect.join(", ")} @ ${noncombat} using ${banish.choiceSequence
-          .map((x) => x.join(", "))
-          .join(" => ")}`
+        `Banishing ${banish.effect.join(", ")} @ ${
+          noncombat.noncombat
+        } using ${banish.choiceSequence.map((x) => x.join(", ")).join(" => ")}`
       );
       retrieveItem($item`Dreadsylvanian skeleton key`);
       propertyManager.setChoices(fromEntries(banish.choiceSequence));
-      visitUrl(`clan_dreadsylvania.php?action=forceloc&loc=${noncombatInfo(noncombat).index}`);
+      visitUrl(`clan_dreadsylvania.php?action=forceloc&loc=${noncombat.index}`);
       runChoice(-1);
       print();
     }
@@ -60,7 +60,7 @@ export const limitCommand = new Command("limit", usage, ([element, monster]: str
     cliExecute("outfit checkpoint");
   }
 
-  const remaining = needsBanishing(monsterZone(monster), monster, element);
+  const remaining = banishesToLimit(monsterZone(monster), monster, element);
   if (remaining.length === 0) {
     print("All banishes complete!", "blue");
   } else {

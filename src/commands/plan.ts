@@ -30,7 +30,7 @@ export const planCommand = new Command("plan", usage, ([element, monster]) => {
   const plan = planLimitTo(monsterZone(monster), monster, element);
   for (const [noncombat, banish] of plan) {
     print(
-      `Banish ${banish.effect.join(", ")} @ ${noncombat} using ${banish.choiceSequence
+      `Banish ${banish.effect.join(", ")} @ ${noncombat.noncombat} using ${banish.choiceSequence
         .map((x) => x.join(", "))
         .join(" => ")}`
     );

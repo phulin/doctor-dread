@@ -39,6 +39,10 @@ export function monsterPair(monster: DreadMonster): DreadMonster {
   }
 }
 
+export function monsterSingular(monster: string): DreadMonster {
+  return monster === "werewolves" ? "werewolf" : (monster as DreadMonster);
+}
+
 export function monsterPlural(monster: DreadMonster): string {
   if (monster === "werewolf") return "werewolves";
   else return `${monster}s`;
@@ -71,6 +75,23 @@ export type DreadNoncombat =
   | "Great Hall"
   | "Dungeons";
 
+export function noncombatZone(noncombat: DreadNoncombat): DreadZone {
+  switch (noncombat) {
+    case "Cabin":
+    case "Tallest Tree":
+    case "Burrows":
+      return "forest";
+    case "Village Square":
+    case "Skid Row":
+    case "Old Duke's Estate":
+      return "village";
+    case "Tower":
+    case "Great Hall":
+    case "Dungeons":
+      return "castle";
+  }
+}
+
 export type DreadBanish = {
   effect: [DreadZone, DreadMonster | DreadElement];
   choiceSequence: [number, number][]; // Sequence of [choice id, choice] pairs to get to the banish.
@@ -86,6 +107,7 @@ export type DreadNoncombatInfo = {
 
 export type DreadZoneInfo = {
   zone: DreadZone;
+  fullName: string;
   noncombats: DreadNoncombatInfo[];
 };
 
@@ -94,6 +116,7 @@ export type DreadZoneInfo = {
 export const dreadZones: DreadZoneInfo[] = [
   {
     zone: "forest",
+    fullName: "The Woods",
     noncombats: [
       {
         noncombat: "Cabin",
@@ -218,6 +241,7 @@ export const dreadZones: DreadZoneInfo[] = [
   },
   {
     zone: "village",
+    fullName: "The Village",
     noncombats: [
       {
         noncombat: "Village Square",
@@ -340,6 +364,7 @@ export const dreadZones: DreadZoneInfo[] = [
   },
   {
     zone: "castle",
+    fullName: "The Castle",
     noncombats: [
       {
         noncombat: "Tower",
@@ -481,29 +506,43 @@ export function memoizedRaidlog(): string {
 }
 
 export function dreadBanished(): {
-  zone: DreadZone;
-  elementsBanished: DreadElement[];
-  monstersBanished: DreadMonster[];
+  targetZone: DreadZone;
+  noncombatZone: DreadZone;
+  banished: DreadElement | DreadMonster;
 }[] {
   const raidlog = memoizedRaidlog();
-  return dreadZones.map(({ zone }) => ({
-    zone,
-    elementsBanished: ([] as DreadElement[]).concat(
-      ...dreadElements.map((element) =>
-        new Array<DreadElement>(
-          raidlog.match(new RegExp(`made the ${zone} less ${element}`, "g"))?.length ?? 0
-        ).fill(element)
-      )
-    ),
-    monstersBanished: ([] as DreadMonster[]).concat(
-      ...dreadMonsters.map((monster) =>
-        new Array<DreadMonster>(
-          raidlog.match(new RegExp(`drove some ${monsterPlural(monster)} out of the ${zone}`, "g"))
-            ?.length ?? 0
-        ).fill(monster)
-      )
-    ),
-  }));
+  const result: {
+    targetZone: DreadZone;
+    noncombatZone: DreadZone;
+    banished: DreadElement | DreadMonster;
+  }[] = [];
+
+  for (const { zone, fullName } of dreadZones) {
+    const blockquoteRegex = new RegExp(`<b>${fullName}</b>\\s*<blockquote>(.*?)</blockquote>`);
+    const blockquoteMatch = raidlog.match(blockquoteRegex);
+    const blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
+
+    const elementRegex = /made the (.*?) less (.*?)/g;
+    let match;
+    while ((match = elementRegex.exec(blockquote)) !== null) {
+      result.push({
+        targetZone: match[1] as DreadZone,
+        noncombatZone: zone,
+        banished: match[2] as DreadElement,
+      });
+    }
+
+    const monsterRegex = /drove some (.*?) out of the (.*?)/g;
+    while ((match = monsterRegex.exec(blockquote)) !== null) {
+      result.push({
+        targetZone: match[2] as DreadZone,
+        noncombatZone: zone,
+        banished: monsterSingular(match[1]),
+      });
+    }
+  }
+
+  return result;
 }
 
 export function dreadNoncombatsUsed(): DreadNoncombat[] {

@@ -5,87 +5,84 @@ import {
   DreadElement,
   dreadElements,
   DreadMonster,
-  DreadNoncombat,
+  DreadNoncombatInfo,
   dreadNoncombatsUsed,
   DreadZone,
   dreadZones,
   monsterPair,
+  noncombatZone,
 } from "./raidlog";
 
-export function needsBanishing(
+export function banishesToLimit(
   targetZone: DreadZone,
   monster: DreadMonster | "banish no monster",
   element: DreadElement | "banish all elements" | "banish no element"
-): (DreadElement | DreadMonster)[] {
-  const banished = dreadBanished();
-
-  const banishedZoneInfo = banished.find((info) => info.zone === targetZone);
-  const monstersBanished = banishedZoneInfo?.monstersBanished ?? [];
-  const elementsBanished = banishedZoneInfo?.elementsBanished ?? [];
-
-  let monstersToBanish;
-  if (monster === "banish no monster") {
-    monstersToBanish = [];
-  } else {
-    const monsterBanish = monsterPair(monster);
-    // Want two banishes of monsterBanish.
-    const countToBanish = 2 - monstersBanished.filter((m) => m === monsterBanish).length;
-    monstersToBanish = new Array(countToBanish).fill(monsterBanish);
-  }
-
+): [DreadNoncombatInfo, DreadBanish][] {
+  const monstersNeededBanished = monster === "banish no monster" ? [] : [monsterPair(monster)];
   const elementsNeededBanished =
     element === "banish all elements"
       ? [...dreadElements]
       : element === "banish no element"
       ? []
       : dreadElements.filter((e) => e !== element);
-  const elementsToBanish = elementsNeededBanished.filter(
-    (element) => !elementsBanished.includes(element)
-  );
+  const thingsNeededBanished = [...monstersNeededBanished, ...elementsNeededBanished];
 
-  return [...elementsToBanish, ...monstersToBanish];
+  const result: [DreadNoncombatInfo, DreadBanish][] = [];
+  for (const noncombatZone of dreadZones) {
+    for (const noncombat of noncombatZone.noncombats) {
+      for (const banish of noncombat.banishes) {
+        const [banishZone, impact] = banish.effect;
+        // print(`zone ${targetZone} === ${banishZone} && thingsToBanish includes ${impact}`);
+        if (targetZone === banishZone && thingsNeededBanished.includes(impact)) {
+          // print("yes");
+          result.push([noncombat, banish]);
+        } // else print("no");
+        // print();
+      }
+    }
+  }
+
+  return result;
 }
 
 export function planLimitTo(
   targetZone: DreadZone,
   monster: DreadMonster | "banish no monster",
   element: DreadElement | "banish all elements" | "banish no element"
-): [DreadNoncombat, DreadBanish][] {
+): [DreadNoncombatInfo, DreadBanish][] {
+  const banished = dreadBanished();
+  const banishedInZone = banished.filter((info) => info.targetZone === targetZone);
+
   const noncombatsUsed = new Set(dreadNoncombatsUsed());
-  const thingsToBanish = needsBanishing(targetZone, monster, element);
+  const desiredBanishes = banishesToLimit(targetZone, monster, element);
 
-  const desiredBanishes: [DreadNoncombat, DreadBanish][] = [];
-  for (const noncombatZone of dreadZones) {
-    for (const noncombat of noncombatZone.noncombats) {
-      if (noncombatsUsed.has(noncombat.noncombat)) {
-        continue;
-      }
-
-      for (const banish of noncombat.banishes) {
-        const [banishZone, impact] = banish.effect;
-        // print(`zone ${targetZone} === ${banishZone} && thingsToBanish includes ${impact}`);
-        if (targetZone === banishZone && thingsToBanish.includes(impact)) {
-          // print("yes");
-          desiredBanishes.push([noncombat.noncombat, banish]);
-        } // else print("no");
-        print();
-      }
+  const usedBanishes: [DreadNoncombatInfo, DreadBanish][] = [];
+  const cantBanishes: [DreadNoncombatInfo, DreadBanish][] = [];
+  const goodBanishes: [DreadNoncombatInfo, DreadBanish][] = [];
+  for (const [noncombat, banish] of desiredBanishes) {
+    // Did we already use this noncombat, or has this banish already been done?
+    if (
+      noncombatsUsed.has(noncombat.noncombat) ||
+      banishedInZone.some(
+        (info) =>
+          noncombatZone(noncombat.noncombat) === info.noncombatZone &&
+          banish.effect[1] === info.banished
+      )
+    ) {
+      usedBanishes.push([noncombat, banish]);
+    } else if (banish.reasonCantPerform && banish.reasonCantPerform()) {
+      cantBanishes.push([noncombat, banish]);
+    } else {
+      goodBanishes.push([noncombat, banish]);
     }
   }
 
-  const badBanishes = desiredBanishes.filter(
-    ([, banish]) => banish.reasonCantPerform && banish.reasonCantPerform()
-  );
-  const goodBanishes = desiredBanishes.filter(
-    ([, banish]) => !banish.reasonCantPerform || !banish.reasonCantPerform()
-  );
-
-  for (const [noncombat, banish] of badBanishes) {
+  for (const [noncombat, banish] of cantBanishes) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     print(`Can't banish ${banish.effect} @ ${noncombat} because ${banish.reasonCantPerform!()}`);
   }
 
-  const banishLocations = new Map<DreadNoncombat, DreadBanish[]>();
+  const banishLocations = new Map<DreadNoncombatInfo, DreadBanish[]>();
   for (const [noncombat, banish] of goodBanishes) {
     let banishList = banishLocations.get(noncombat);
     if (banishList === undefined) {
@@ -97,6 +94,6 @@ export function planLimitTo(
   }
 
   return [...banishLocations].map(
-    ([noncombat, [banish]]) => [noncombat, banish] as [DreadNoncombat, DreadBanish]
+    ([noncombat, [banish]]) => [noncombat, banish] as [DreadNoncombatInfo, DreadBanish]
   );
 }
