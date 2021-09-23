@@ -53,8 +53,9 @@ export const limitCommand = new Command("limit", usage, ([element, monster]: str
       propertyManager.setChoices(fromEntries(banish.choiceSequence));
       visitUrl(`clan_dreadsylvania.php?action=forceloc&loc=${noncombatInfo(noncombat).index}`);
       runChoice(-1);
+      print();
     }
   } finally {
-    outfit("checkpoint");
+    cliExecute("outfit checkpoint");
   }
 });

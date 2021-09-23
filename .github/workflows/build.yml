@@ -64,10 +64,10 @@ jobs:
       - run: |
           git fetch --all
           git switch release
-          rm -r scripts/
-          rm -r data/
-          rm -r ccs/
-          rm -r relay/
+          rm -rf scripts/
+          rm -rf data/
+          rm -rf ccs/
+          rm -rf relay/
           mv KoLmafia/scripts scripts
           mv KoLmafia/relay relay
           mv mafiafiles/ccs ./ccs
