@@ -21193,10 +21193,11 @@ var limitCommand = new Command("limit", usage, _ref => {
     throw "You don't have skeleton keys and you're almost out of Freddies. Fix that.";
   }
 
-  (0,external_kolmafia_.cliExecute)("checkpoint");
+  var overdrunk = (0,external_kolmafia_.myInebriety)() > (0,external_kolmafia_.inebrietyLimit)();
+  if (overdrunk) (0,external_kolmafia_.cliExecute)("checkpoint");
 
   try {
-    if ((0,external_kolmafia_.myInebriety)() > (0,external_kolmafia_.inebrietyLimit)()) {
+    if (overdrunk) {
       if (!(0,dist.have)((0,dist.$item)(limit_templateObject3 || (limit_templateObject3 = limit_taggedTemplateLiteral(["Drunkula's wineglass"]))))) {
         throw "Can't do banishes without wineglass while overdrunk!";
       }
@@ -21226,7 +21227,7 @@ var limitCommand = new Command("limit", usage, _ref => {
       _iterator.f();
     }
   } finally {
-    (0,external_kolmafia_.cliExecute)("outfit checkpoint");
+    if (overdrunk) (0,external_kolmafia_.cliExecute)("outfit checkpoint");
   }
 
   var remaining = neededBanishes(monsterZone(monster), monster, element);
@@ -21285,6 +21286,10 @@ var planCommand = new Command("plan", plan_usage, _ref => {
   }
 
   var plan = planLimitTo(monsterZone(monster), monster, element);
+
+  if (plan.length === 0) {
+    (0,external_kolmafia_.print)("No banishes available and needed.");
+  }
 
   var _iterator = commands_plan_createForOfIteratorHelper(plan),
       _step;
