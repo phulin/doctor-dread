@@ -40,7 +40,7 @@ export function monsterPair(monster: DreadMonster): DreadMonster {
 }
 
 export function monsterSingular(monster: string): DreadMonster {
-  return monster === "werewolves" ? "werewolf" : (monster as DreadMonster);
+  return monster === "werewolves" ? "werewolf" : (monster.slice(0, -1) as DreadMonster);
 }
 
 export function monsterPlural(monster: DreadMonster): string {

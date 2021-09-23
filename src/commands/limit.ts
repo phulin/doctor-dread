@@ -13,7 +13,7 @@ import {
 import { $item, have } from "libram";
 
 import { Command } from "./command";
-import { banishesToLimit, planLimitTo } from "../dungeon/plan";
+import { neededBanishes, planLimitTo } from "../dungeon/plan";
 import { isDreadElement, isDreadMonster, monsterZone } from "../dungeon/raidlog";
 import { fromEntries, propertyManager } from "../lib";
 
@@ -60,7 +60,7 @@ export const limitCommand = new Command("limit", usage, ([element, monster]: str
     cliExecute("outfit checkpoint");
   }
 
-  const remaining = banishesToLimit(monsterZone(monster), monster, element);
+  const remaining = neededBanishes(monsterZone(monster), monster, element);
   if (remaining.length === 0) {
     print("All banishes complete!", "blue");
   } else {
