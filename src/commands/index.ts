@@ -4,6 +4,7 @@ import { helpCommand } from "./help";
 import { limitCommand } from "./limit";
 import { planCommand } from "./plan";
 import { statusCommand } from "./status";
+import { whitelistCommand } from "./whitelist";
 
 export default {
   farm: farmCommand,
@@ -11,4 +12,5 @@ export default {
   limit: limitCommand,
   plan: planCommand,
   status: statusCommand,
+  whitelist: whitelistCommand,
 } as { [index: string]: Command };

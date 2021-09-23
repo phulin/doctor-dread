@@ -5,6 +5,7 @@ import {
   itemAmount,
   myInebriety,
   print,
+  printHtml,
   retrieveItem,
   runChoice,
   visitUrl,
@@ -18,6 +19,7 @@ import { fromEntries, propertyManager } from "../lib";
 
 const usage = "dr limit [element] [monster]: Try to banish all monsters but [element] [monster]s.";
 export const limitCommand = new Command("limit", usage, ([element, monster]: string[]) => {
+  printHtml("<b>Dr. Dread Auto-Banisher</b>");
   if (!isDreadMonster(monster)) {
     print(`Unrecognized monster ${monster}.`, "red");
     print(`Usage: ${usage}.`);
