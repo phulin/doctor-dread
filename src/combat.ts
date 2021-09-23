@@ -4,7 +4,6 @@ import {
   equippedAmount,
   equippedItem,
   getAutoAttack,
-  getCounters,
   haveEquipped,
   haveSkill,
   inMultiFight,
@@ -40,7 +39,6 @@ import {
   SongBoom,
   SourceTerminal,
 } from "libram";
-import { globalOptions } from "./globalvars";
 import { maxPassiveDamage, monsterManuelAvailable } from "./lib";
 
 function clamp(n: number, min: number, max: number) {
@@ -146,7 +144,6 @@ export class Macro extends LibramMacro {
   }
 
   meatKill(): Macro {
-    const preferred = globalOptions.preferredMonster;
     const sealClubberSetup =
       equippedAmount($item`mafia pointer finger ring`) > 0 &&
       myClass() === $class`Seal Clubber` &&
@@ -171,29 +168,8 @@ export class Macro extends LibramMacro {
       )
     )
       .externalIf(
-        !have($effect`On the Trail`) && have($skill`Transcendent Olfaction`),
-        Macro.if_(`monstername ${preferred}`, Macro.trySkill($skill`Transcendent Olfaction`))
-      )
-      .externalIf(
-        get("_gallapagosMonster") !== preferred && have($skill`Gallapagosian Mating Call`),
-        Macro.if_(`monstername ${preferred}`, Macro.trySkill($skill`Gallapagosian Mating Call`))
-      )
-      .externalIf(
-        !get("_latteCopyUsed") &&
-          (get("_latteMonster") !== preferred ||
-            getCounters("Latte Monster", 0, 30).trim() === "") &&
-          haveEquipped($item`latte lovers member's mug`),
-        Macro.if_(`monstername ${preferred}`, Macro.skill($skill`Offer Latte to Opponent`))
-      )
-      .externalIf(
         haveEquipped($item`latte lovers member's mug`) && !get("_latteDrinkUsed"),
         Macro.skill("Gulp Latte")
-      )
-      .externalIf(
-        get("_feelNostalgicUsed") < 3 &&
-          get("lastCopyableMonster") === preferred &&
-          have($skill`Feel Nostalgic`),
-        Macro.if_(`!monstername ${preferred}`, Macro.trySkill($skill`Feel Nostalgic`))
       )
       .meatStasis(true)
       .externalIf(sealClubberSetup, Macro.trySkill($skill`Furious Wallop`))
