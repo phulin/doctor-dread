@@ -20592,23 +20592,23 @@ var helpCommand = new Command("help", "dr help: Print help for each command.", (
   }
 });
 ;// CONCATENATED MODULE: ./src/dungeon/raidlog.ts
-var _ref, raidlog_templateObject, raidlog_templateObject2, raidlog_templateObject3;
-
-function raidlog_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = raidlog_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-
-function raidlog_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+var raidlog_templateObject, raidlog_templateObject2, raidlog_templateObject3;
 
 function raidlog_toConsumableArray(arr) { return raidlog_arrayWithoutHoles(arr) || raidlog_iterableToArray(arr) || raidlog_unsupportedIterableToArray(arr) || raidlog_nonIterableSpread(); }
 
 function raidlog_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function raidlog_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return raidlog_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return raidlog_arrayLikeToArray(o, minLen); }
-
 function raidlog_iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function raidlog_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return raidlog_arrayLikeToArray(arr); }
 
+function raidlog_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = raidlog_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function raidlog_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return raidlog_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return raidlog_arrayLikeToArray(o, minLen); }
+
 function raidlog_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function raidlog_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 
 
@@ -20616,9 +20616,6 @@ var dreadMonsters = ["bugbear", "werewolf", "ghost", "zombie", "vampire", "skele
 function isDreadMonster(x) {
   return dreadMonsters.includes(x);
 }
-
-var dreadMonstersTwice = (_ref = []).concat.apply(_ref, raidlog_toConsumableArray(dreadMonsters.map(monster => [monster, monster])));
-
 var dreadElements = ["hot", "cold", "sleazy", "stinky", "spooky"];
 function isDreadElement(x) {
   return dreadElements.includes(x);
@@ -20847,18 +20844,18 @@ function memoizedRaidlog() {
 }
 function dreadBanished() {
   var raidlog = memoizedRaidlog();
-  return dreadZones.map(_ref2 => {
-    var _ref3, _ref4;
+  return dreadZones.map(_ref => {
+    var _ref2, _ref3;
 
-    var zone = _ref2.zone;
+    var zone = _ref.zone;
     return {
       zone: zone,
-      elementsBanished: (_ref3 = []).concat.apply(_ref3, raidlog_toConsumableArray(dreadElements.map(element => {
+      elementsBanished: (_ref2 = []).concat.apply(_ref2, raidlog_toConsumableArray(dreadElements.map(element => {
         var _raidlog$match$length, _raidlog$match;
 
         return new Array((_raidlog$match$length = (_raidlog$match = raidlog.match(new RegExp("made the ".concat(zone, " less ").concat(element), "g"))) === null || _raidlog$match === void 0 ? void 0 : _raidlog$match.length) !== null && _raidlog$match$length !== void 0 ? _raidlog$match$length : 0).fill(element);
       }))),
-      monstersBanished: (_ref4 = []).concat.apply(_ref4, raidlog_toConsumableArray(dreadMonstersTwice.map(monster => {
+      monstersBanished: (_ref3 = []).concat.apply(_ref3, raidlog_toConsumableArray(dreadMonsters.map(monster => {
         var _raidlog$match$length2, _raidlog$match2;
 
         return new Array((_raidlog$match$length2 = (_raidlog$match2 = raidlog.match(new RegExp("drove some ".concat(monsterPlural(monster), " out of the ").concat(zone), "g"))) === null || _raidlog$match2 === void 0 ? void 0 : _raidlog$match2.length) !== null && _raidlog$match$length2 !== void 0 ? _raidlog$match$length2 : 0).fill(monster);
@@ -20932,8 +20929,17 @@ function needsBanishing(targetZone, monster, element) {
   var banishedZoneInfo = banished.find(info => info.zone === targetZone);
   var monstersBanished = (_banishedZoneInfo$mon = banishedZoneInfo === null || banishedZoneInfo === void 0 ? void 0 : banishedZoneInfo.monstersBanished) !== null && _banishedZoneInfo$mon !== void 0 ? _banishedZoneInfo$mon : [];
   var elementsBanished = (_banishedZoneInfo$ele = banishedZoneInfo === null || banishedZoneInfo === void 0 ? void 0 : banishedZoneInfo.elementsBanished) !== null && _banishedZoneInfo$ele !== void 0 ? _banishedZoneInfo$ele : [];
-  var monstersNeededBanished = monster === "banish no monster" ? [] : [monsterPair(monster)];
-  var monstersToBanish = monstersNeededBanished.filter(monster => !monstersBanished.includes(monster));
+  var monstersToBanish;
+
+  if (monster === "banish no monster") {
+    monstersToBanish = [];
+  } else {
+    var monsterBanish = monsterPair(monster); // Want two banishes of monsterBanish.
+
+    var countToBanish = 2 - monstersBanished.filter(m => m === monsterBanish).length;
+    monstersToBanish = new Array(countToBanish).fill(monsterBanish);
+  }
+
   var elementsNeededBanished = element === "banish all elements" ? plan_toConsumableArray(dreadElements) : element === "banish no element" ? [] : dreadElements.filter(e => e !== element);
   var elementsToBanish = elementsNeededBanished.filter(element => !elementsBanished.includes(element));
   return [].concat(plan_toConsumableArray(elementsToBanish), plan_toConsumableArray(monstersToBanish));
