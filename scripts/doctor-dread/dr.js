@@ -20760,7 +20760,7 @@ var dreadZones = [{
   noncombats: [{
     noncombat: "Tower",
     messages: ["drove some bugbears out of the forest", "drove some zombies out of the village", "made a blood kiwitini", "drove some skeletons out of the castle", "read some ancient secrets", "learned to make a moon-amber necklace", "made the castle less sleazy", "raided a dresser", "got magically fingered"],
-    index: 7,
+    index: 8,
     banishes: [{
       effect: ["forest", "bugbear"],
       choiceSequence: [[749, 1], [750, 1]]
@@ -20778,7 +20778,7 @@ var dreadZones = [{
   }, {
     noncombat: "Great Hall",
     messages: ["drove some vampires out of the castle", "twirled on the dance floor", "twirled on the dance floor", "made the castle less cold", "frolicked in a freezer", "got some roast beast", "made the castle less stinky", "got a wax banana"],
-    index: 8,
+    index: 7,
     banishes: [{
       effect: ["castle", "vampire"],
       choiceSequence: [[745, 1], [746, 1]]
@@ -21261,7 +21261,7 @@ function whitelist_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var whitelistCommand = new Command("whitelist", "dr whitelist [player] [rank?]: Whitelist [player] with rank [rank] (default normal member) to all clans in dr_clans", _ref => {
+var whitelistCommand = new Command("whitelist", "dr whitelist [player] [rank]: Whitelist [player] with rank [rank] (default normal member) to all clans in dr_clans", _ref => {
   var _ref2 = _toArray(_ref),
       player = _ref2[0],
       rankComponents = _ref2.slice(1);
