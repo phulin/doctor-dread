@@ -550,11 +550,15 @@ export function dreadNoncombatsUsed(): DreadNoncombat[] {
   const result: DreadNoncombat[] = [];
 
   for (const zone of dreadZones) {
+    const blockquoteRegex = new RegExp(`<b>${zone.fullName}</b>\\s*<blockquote>(.*?)</blockquote>`);
+    const blockquoteMatch = raidlog.match(blockquoteRegex);
+    const blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
+
     for (const noncombat of zone.noncombats) {
       const messageRes = noncombat.messages.map(
         (s) => new RegExp(`${myName()} \\(#${myId()}\\) ${s}`)
       );
-      if (messageRes.some((re) => raidlog.match(re))) result.push(noncombat.noncombat);
+      if (messageRes.some((re) => blockquote.match(re))) result.push(noncombat.noncombat);
     }
   }
 

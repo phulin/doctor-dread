@@ -58,11 +58,9 @@ export function categorizeBanishes(
 } {
   const banished = dreadBanished();
   const banishedInZone = banished.filter((info) => info.targetZone === targetZone);
-  // print("banished: " + JSON.stringify(banishedInZone));
 
   const noncombatsUsed = new Set(dreadNoncombatsUsed());
   const desiredBanishes = banishesToLimit(targetZone, monster, element);
-  // print("desired: " + JSON.stringify(desiredBanishes.map(([, banish]) => banish)));
 
   const completedBanishes: [DreadNoncombatInfo, DreadBanish][] = [];
   const usedBanishes: [DreadNoncombatInfo, DreadBanish][] = [];
@@ -86,6 +84,8 @@ export function categorizeBanishes(
       goodBanishes.push([noncombat, banish]);
     }
   }
+  print(`completed: ${JSON.stringify(completedBanishes.map(([, banish]) => banish))}`);
+  print(`used: ${JSON.stringify(usedBanishes.map(([, banish]) => banish))}`);
 
   return { completedBanishes, usedBanishes, cantBanishes, goodBanishes };
 }

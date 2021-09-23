@@ -32,7 +32,7 @@ export const planCommand = new Command("plan", usage, ([element, monster]) => {
   if (remaining.length === 0) {
     print("All banishes complete!", "blue");
   } else {
-    print(`Outstanding banishes: ${remaining.join(", ")}`, "red");
+    print(`Outstanding banishes: ${remaining.join(", ")}`);
   }
 
   const plan = planLimitTo(monsterZone(monster), monster, element);
