@@ -27,7 +27,6 @@ import {
   $effect,
   $item,
   $items,
-  $monster,
   $skill,
   adventureMacro,
   adventureMacroAuto,
@@ -244,7 +243,6 @@ export const farmCommand = new Command(
       const stashItems = []; // $items`Buddy Bjorn`;
       if (
         myInebriety() <= inebrietyLimit() &&
-        globalOptions.preferredMonster === $monster`jock` &&
         (myClass() !== $class`Seal Clubber` || !have($skill`Furious Wallop`))
       ) {
         stashItems.push($item`haiku katana`);

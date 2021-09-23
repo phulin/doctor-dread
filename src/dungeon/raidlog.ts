@@ -508,7 +508,7 @@ export function dreadNoncombatsUsed(): DreadNoncombat[] {
       const messageRes = noncombat.messages.map(
         (s) => new RegExp(`${myName()} \\(#${myId()}\\) ${s}`)
       );
-      if (!messageRes.some((re) => raidlog.match(re))) result.push(noncombat.noncombat);
+      if (messageRes.some((re) => raidlog.match(re))) result.push(noncombat.noncombat);
     }
   }
 
