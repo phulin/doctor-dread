@@ -1,6 +1,7 @@
 import {
   cliExecute,
   equip,
+  handlingChoice,
   inebrietyLimit,
   itemAmount,
   myInebriety,
@@ -55,6 +56,7 @@ export const limitCommand = new Command("limit", usage, ([element, monster]: str
       propertyManager.setChoices(fromEntries(banish.choiceSequence));
       visitUrl(`clan_dreadsylvania.php?action=forceloc&loc=${noncombat.index}`);
       runChoice(-1);
+      if (handlingChoice()) throw "Stuck in choice adventure!";
       print();
     }
   } finally {
