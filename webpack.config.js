@@ -43,12 +43,11 @@ const sharedConfig = {
 const scriptsConfig = merge(
   {
     entry: {
-      duffo: "./src/index.ts",
-      "duffo-combat": "./src/combat.ts",
-      "2crs-buffs": "./src/2crs-buffs.ts",
+      dr: "./src/index.ts",
+      "dr-combat": "./src/combat.ts",
     },
     output: {
-      path: path.resolve(__dirname, "KoLmafia", "scripts", "duffel-collector"),
+      path: path.resolve(__dirname, "KoLmafia", "scripts", "doctor-dread"),
       filename: "[name].js",
       libraryTarget: "commonjs",
     },
@@ -56,13 +55,13 @@ const scriptsConfig = merge(
   sharedConfig
 );
 
-// handle the file creating the duffo UI html file
+// handle the file creating the dr UI html file
 const otherRelayConfig = merge(
   {
-    entry: "./src/relay_duffo.ts",
+    entry: "./src/relay_dr.ts",
     output: {
       path: path.resolve(__dirname, "KoLmafia", "relay"),
-      filename: "relay_duffo.js",
+      filename: "relay_dr.js",
       libraryTarget: "commonjs",
     },
     module: {
@@ -79,13 +78,13 @@ const otherRelayConfig = merge(
   sharedConfig
 );
 
-// handle the react files used in the duffo html file
+// handle the react files used in the dr html file
 const relayConfig = merge(
   {
     entry: "./src/relay/index.tsx",
     output: {
-      path: path.resolve(__dirname, "KoLmafia/relay/duffel-collector/"),
-      filename: "duffel-collector.js",
+      path: path.resolve(__dirname, "KoLmafia/relay/doctor-dread/"),
+      filename: "doctor-dread.js",
       libraryTarget: "commonjs",
     },
     module: {

@@ -62,8 +62,8 @@ export const baseMeat =
 const MPA = get("valueOfAdventure");
 
 export function safeInterrupt(): void {
-  if (get<boolean>("duffo_interrupt", false)) {
-    set("duffo_interrupt", false);
+  if (get<boolean>("dr_interrupt", false)) {
+    set("dr_interrupt", false);
     abort("User interrupt requested. Stopping Garbage Collector.");
   }
 }

@@ -5,14 +5,14 @@ This script is an automated turn-burning script for the Kingdom of Loathing that
 To install the script, use the following command in the KoLMafia CLI.
 
 ```
-svn checkout https://github.com/Loathing-Associates-Scripting-Society/duffel-collector/branches/release/
+svn checkout https://github.com/Loathing-Associates-Scripting-Society/doctor-dread/branches/release/
 ```
 
 Before running Garbage Collector, there are a few tasks you must do.
 
 # Set the value of a marginal adventure
 
-You need to let duffo know how much it can expect your turns to be worth near the end of the day. One easy way to do this is to set it at 3501 meat manually, then examine your session logs to see how much meat you were actually generating in the last 10-15 turns of the day. To set this, run the following command in the KoLMafia CLI:
+You need to let dr know how much it can expect your turns to be worth near the end of the day. One easy way to do this is to set it at 3501 meat manually, then examine your session logs to see how much meat you were actually generating in the last 10-15 turns of the day. To set this, run the following command in the KoLMafia CLI:
 
 ```
 set valueOfAdventure = 3501;
@@ -20,16 +20,16 @@ set valueOfAdventure = 3501;
 
 # Set your Stash and VIP clans
 
-When at all possible, duffo will try to access a friendly clan stash to see if it can access certain items you don't have that can profitably augment farming -- things like a Movable Feast, a sheet of Spooky Putty, a Haiku Katana, etc. To set your stash clan, copy the name of your intended stash clan and run the following code (using BAFH as an example):
+When at all possible, dr will try to access a friendly clan stash to see if it can access certain items you don't have that can profitably augment farming -- things like a Movable Feast, a sheet of Spooky Putty, a Haiku Katana, etc. To set your stash clan, copy the name of your intended stash clan and run the following code (using BAFH as an example):
 
 ```
-set duffo_stashClan = "Bonus Adventures from Hell"
+set dr_stashClan = "Bonus Adventures from Hell"
 ```
 
-Additionally, if you have a VIP Lounge Key, duffo will try to make use of any VIP furniture to augment its farming. To set your VIP clan, copy the name of your intended VIP clan and run the following code (once again using BAFH as an example):
+Additionally, if you have a VIP Lounge Key, dr will try to make use of any VIP furniture to augment its farming. To set your VIP clan, copy the name of your intended VIP clan and run the following code (once again using BAFH as an example):
 
 ```
-set duffo_vipClan = "Bonus Adventures from Hell"
+set dr_vipClan = "Bonus Adventures from Hell"
 ```
 
 # Install "Universal Recovery"
@@ -42,6 +42,6 @@ svn checkout https://svn.code.sf.net/p/kolmafiascripts/mafiarecovery/code/
 
 # Use the ascend flag if you plan to ascend
 
-duffo operates under the assumption that you plan on staying in this run over rollover. It will, by default, avoid using borrowed time, charge stinky cheese equipment, and hopefully do other stuff that hinges on this assumption. If that assumption is incorrect, you can call `duffo ascend` instead of the classic `duffo`, and it will then operate under the assumption that you do plan to ascend. As time goes on, we expect more and more features to pay attention to the ascend flag, so it's good to get in the habit of doing so.
+dr operates under the assumption that you plan on staying in this run over rollover. It will, by default, avoid using borrowed time, charge stinky cheese equipment, and hopefully do other stuff that hinges on this assumption. If that assumption is incorrect, you can call `dr ascend` instead of the classic `dr`, and it will then operate under the assumption that you do plan to ascend. As time goes on, we expect more and more features to pay attention to the ascend flag, so it's good to get in the habit of doing so.
 
-If you have issues with this script, please post about them in the #duffel-collector channel within the [Ascension Speed Society Discord](https://discord.gg/tbUCRT5), and someone will eventually (at some point) endeavor to solve them. Someday. Maybe.
+If you have issues with this script, please post about them in the #doctor-dread channel within the [Ascension Speed Society Discord](https://discord.gg/tbUCRT5), and someone will eventually (at some point) endeavor to solve them. Someday. Maybe.

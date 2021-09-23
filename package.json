@@ -1,9 +1,9 @@
 {
-  "name": "duffel-collector",
+  "name": "doctor-dread",
   "version": "1.0.0",
-  "description": "Script for farming meat (and garbage) in 2004 web RPG Kingdom of Loathing",
-  "repository": "https://github.com/Loathing-Associates-Scripting-Society/duffel-collector.git",
-  "main": "KoLmafia/scripts/duffel-collector/duffo.js",
+  "description": "Script for farming Dreadsylvania in 2003 web RPG Kingdom of Loathing",
+  "repository": "https://github.com/Loathing-Associates-Scripting-Society/doctor-dread.git",
+  "main": "KoLmafia/scripts/doctor-dread/dr.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "yarn run build:types && yarn run build:js",

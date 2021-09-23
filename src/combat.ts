@@ -517,7 +517,7 @@ export function adventureMacro(loc: Location, macro: Macro): void {
     while (inMultiFight()) runCombat();
     if (choiceFollowsFight()) visitUrl("choice.php");
   } catch (e) {
-    printHtml(get("_duffo_combatPage"));
+    printHtml(get("_dr_combatPage"));
     throw "Combat exception!";
   } finally {
     Macro.clearSaved();
@@ -542,13 +542,13 @@ export function adventureMacroAuto(
   autoMacro.setAutoAttack();
   nextMacro.save();
   try {
-    set("_duffo_combatPage", "");
+    set("_dr_combatPage", "");
     adv1(loc, 0, "");
     while (inMultiFight()) runCombat();
     if (choiceFollowsFight()) visitUrl("choice.php");
   } catch (e) {
-    printHtml(get("_duffo_combatPage"));
-    set("_duffo_combatPage", "");
+    printHtml(get("_dr_combatPage"));
+    set("_dr_combatPage", "");
     throw `Combat exception! Last macro error: ${get("lastMacroError")}`;
   } finally {
     Macro.clearSaved();
@@ -565,7 +565,7 @@ export function main(): void {
   const extracted = response
     .substring(firstFart >= 0 ? firstFart : 0, lastFart > 0 ? lastFart : undefined)
     .replace("id='fightform'", "id='fightform' style='display: none'");
-  set("_duffo_combatPage", extracted);
+  set("_dr_combatPage", extracted);
 
   while (inMultiFight()) runCombat();
   if (choiceFollowsFight()) visitUrl("choice.php");

@@ -27,17 +27,17 @@ export function withStash<T>(itemsToTake: Item[], action: () => T): T {
 }
 
 export function withVIPClan<T>(action: () => T): T {
-  let clanIdOrName: number | string | undefined = get("duffo_vipClan", undefined);
+  let clanIdOrName: number | string | undefined = get("dr_vipClan", undefined);
   if (!clanIdOrName && have($item`Clan VIP Lounge key`)) {
     if (
       userConfirm(
-        "The preference 'duffo_vipClan' is not set. Use the current clan as a VIP clan? (Defaults to yes in 15 seconds)",
+        "The preference 'dr_vipClan' is not set. Use the current clan as a VIP clan? (Defaults to yes in 15 seconds)",
         15000,
         true
       )
     ) {
       clanIdOrName = getClanId();
-      set("duffo_vipClan", clanIdOrName);
+      set("dr_vipClan", clanIdOrName);
     }
   }
   return withClan(clanIdOrName || getClanId(), action);
@@ -59,19 +59,19 @@ export class StashManager {
 
   constructor(clanIdOrName?: string | number) {
     if (clanIdOrName === undefined) {
-      clanIdOrName = get("duffo_stashClan", undefined);
+      clanIdOrName = get("dr_stashClan", undefined);
       if (!clanIdOrName) {
         if (
           userConfirm(
-            "The preference 'duffo_stashClan' is not set. Use the current clan as a stash clan? (Defaults to yes in 15 seconds)",
+            "The preference 'dr_stashClan' is not set. Use the current clan as a stash clan? (Defaults to yes in 15 seconds)",
             15000,
             true
           )
         ) {
           clanIdOrName = getClanId();
-          set("duffo_stashClan", clanIdOrName);
+          set("dr_stashClan", clanIdOrName);
         } else {
-          throw "No duffo_stashClan set.";
+          throw "No dr_stashClan set.";
         }
       }
     }

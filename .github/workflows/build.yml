@@ -42,3 +42,47 @@ jobs:
           node-version: ${{ env.node-version }}
       - run: yarn install --frozen-lockfile
       - run: yarn run lint
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [test, lint]
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ env.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.node-version }}
+      - run: |
+          git config user.name "O.A.F."
+          git config user.email "<>"
+      - run: |
+          cp -R mafia mafiafiles
+      - run: yarn install --frozen-lockfile
+      - run: yarn run build
+      - run: |
+          git fetch --all
+          git switch release
+          rm -r scripts/
+          rm -r data/
+          rm -r ccs/
+          rm -r relay/
+          rm -r images/
+          mv KoLmafia/scripts scripts
+          mv KoLmafia/relay relay
+          mv mafiafiles/ccs ./ccs
+          mv mafiafiles/data ./data
+          mv mafiafiles/dependencies.txt dependencies.txt
+          mv mafiafiles/images ./images
+      - run: |
+          git add scripts/
+          git add ccs/
+          git add data/
+          git add relay/
+          git add images/
+          git add dependencies.txt
+          {
+            git commit -m "Build Mafia files for commit $GITHUB_SHA"
+            git push origin release
+          } || exit 0

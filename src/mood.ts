@@ -37,7 +37,7 @@ import { acquire } from "./acquire";
 
 Mood.setDefaultOptions({
   mpSources: [],
-  // reserveMp: 50,
+  reserveMp: 50,
   /* songSlots: [
     $effects`Polka of Plenty, Ode to Booze`,
     $effects`Fat Leon's Phat Loot Lyric`,
@@ -72,8 +72,8 @@ export function freeFightMood(): Mood {
   mood.skill($skill`Drescher's Annoying Noise`);
   mood.skill($skill`Pride of the Puffin`);
 
-  if (!get<boolean>("_duffo_defectiveTokenAttempted", false)) {
-    set("_duffo_defectiveTokenAttempted", true);
+  if (!get<boolean>("_dr_defectiveTokenAttempted", false)) {
+    set("_dr_defectiveTokenAttempted", true);
     withStash($items`defective Game Grid token`, () => {
       if (!get("_defectiveTokenUsed") && have($item`defective Game Grid token`))
         use($item`defective Game Grid token`);
@@ -162,11 +162,11 @@ export function boostItemDrop(): void {
     }
   }
 
-  if (get("_poolGames") < 3 && !get("_duffo_noPoolTable", false) && !have($effect`Hustlin'`)) {
+  if (get("_poolGames") < 3 && !get("_dr_noPoolTable", false) && !have($effect`Hustlin'`)) {
     withVIPClan(() => {
       if (getClanLounge()["Clan pool table"] !== undefined) {
         while (get("_poolGames") < 3) cliExecute("pool stylish");
-      } else set("_duffo_noPoolTable", true);
+      } else set("_dr_noPoolTable", true);
     });
   }
 

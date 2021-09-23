@@ -308,7 +308,7 @@ const copierSources = [
   new CopierFight(
     "Professor MeatChain",
     () => false,
-    () => (have($familiar`Pocket Professor`) && !get<boolean>("_duffo_meatChain", false) ? 10 : 0),
+    () => (have($familiar`Pocket Professor`) && !get<boolean>("_dr_meatChain", false) ? 10 : 0),
     () => {
       return;
     }
@@ -316,7 +316,7 @@ const copierSources = [
   new CopierFight(
     "Professor WeightChain",
     () => false,
-    () => (have($familiar`Pocket Professor`) && !get<boolean>("_duffo_weightChain", false) ? 5 : 0),
+    () => (have($familiar`Pocket Professor`) && !get<boolean>("_dr_weightChain", false) ? 5 : 0),
     () => {
       return;
     }
@@ -331,7 +331,7 @@ function chainSetup() {
   itemMood().execute(estimatedTurns());
   safeRestore();
   freeFightMood().execute(50);
-  if (!get<boolean>("_duffo_pyecUsed", false)) {
+  if (!get<boolean>("_dr_pyecUsed", false)) {
     withStash($items`Platinum Yendorian Express Card, Bag o' Tricks`, () => {
       if (have($item`Platinum Yendorian Express Card`) && !get("expressCardUsed")) {
         use($item`Platinum Yendorian Express Card`);
@@ -339,7 +339,7 @@ function chainSetup() {
       if (have($item`Bag o' Tricks`) && !get("_bagOTricksUsed")) {
         use($item`Bag o' Tricks`);
       }
-      set("_duffo_pyecUsed", true);
+      set("_dr_pyecUsed", true);
     });
   }
   if (have($item`License to Chill`) && !get("_licenseToChillUsed")) use($item`License to Chill`);
@@ -383,7 +383,7 @@ export function dailyFights(): void {
       chainSetup();
 
       // FIRST EMBEZZLER CHAIN
-      if (have($familiar`Pocket Professor`) && !get<boolean>("_duffo_meatChain", false)) {
+      if (have($familiar`Pocket Professor`) && !get<boolean>("_dr_meatChain", false)) {
         const fightSource = getCopierFight();
         if (!fightSource) return;
         useFamiliar($familiar`Pocket Professor`);
@@ -401,12 +401,12 @@ export function dailyFights(): void {
             })
           );
         }
-        set("_duffo_meatChain", true);
+        set("_dr_meatChain", true);
         safeInterrupt();
       }
 
       // SECOND EMBEZZLER CHAIN
-      if (have($familiar`Pocket Professor`) && !get<boolean>("_duffo_weightChain", false)) {
+      if (have($familiar`Pocket Professor`) && !get<boolean>("_dr_weightChain", false)) {
         const fightSource = getCopierFight();
         if (!fightSource) return;
         useFamiliar($familiar`Pocket Professor`);
@@ -428,7 +428,7 @@ export function dailyFights(): void {
             })
           );
         }
-        set("_duffo_weightChain", true);
+        set("_dr_weightChain", true);
         safeInterrupt();
       }
 
@@ -499,7 +499,7 @@ class FreeFight {
 
   runAll() {
     if (!this.available()) return;
-    if ((this.options.cost ? this.options.cost() : 0) > get("duffo_valueOfFreeFight", 4000)) return;
+    if ((this.options.cost ? this.options.cost() : 0) > get("dr_valueOfFreeFight", 4000)) return;
     while (this.available()) {
       if (SongBoom.songChangesLeft() > 0) SongBoom.setSong("Total Eclipse of Your Meat");
       useFamiliar(

@@ -4,7 +4,6 @@ import {
   enthroneFamiliar,
   equip,
   equippedAmount,
-  familiarWeight,
   fullnessLimit,
   getCounters,
   haveEquipped,
@@ -18,10 +17,8 @@ import {
   retrieveItem,
   toSlot,
   totalTurnsPlayed,
-  useFamiliar,
   visitUrl,
   weaponType,
-  weightAdjustment,
 } from "kolmafia";
 import {
   $class,
@@ -29,7 +26,6 @@ import {
   $item,
   $items,
   $monster,
-  $skill,
   $slot,
   $slots,
   $stat,
@@ -38,11 +34,8 @@ import {
   getKramcoWandererChance,
   have,
   maximizeCached,
-  set,
-  Witchess,
 } from "libram";
 import { pickBjorn } from "./bjorn";
-import { tunnelOfLove } from "./fights";
 import { estimatedTurns, globalOptions } from "./globalvars";
 import { BonusEquipMode, gnomeWeightValue, Requirement, saleValue } from "./lib";
 
@@ -212,99 +205,6 @@ export function nepOutfit(requirement = nepDefaultRequirement): void {
   if (haveEquipped($item`Snow Suit`) && get("snowsuit") !== "nose") cliExecute("snowsuit nose");
 }
 
-function remainingRunaways(familiar: Familiar) {
-  const weight = familiarWeight(familiar) + weightAdjustment();
-  return Math.floor(weight / 5) - get("_banderRunaways");
-}
-
-export const FINAL_BANDER_STAGE = 5;
-export function tryConfigureBanderRuns(): boolean {
-  // Try bander or boots.
-  const runFamiliar = have($familiar`Pair of Stomping Boots`)
-    ? $familiar`Pair of Stomping Boots`
-    : $familiar`Frumious Bandersnatch`;
-
-  if (get("_duffo_runFamiliarStage", 0) === 0) {
-    useFamiliar(runFamiliar);
-    nepOutfit();
-    if (remainingRunaways(runFamiliar) > 0) {
-      return true;
-    } else {
-      set("_duffo_runFamiliarStage", 1);
-    }
-  }
-
-  if (get("_duffo_runFamiliarStage", 0) === 1) {
-    // Put on fam weight equipment.
-    useFamiliar(runFamiliar);
-    nepOutfit(nepDefaultRequirement.merge(new Requirement(["20 Familiar Weight"], {})));
-    if (remainingRunaways(runFamiliar) > 0) {
-      return true;
-    } else {
-      set("_duffo_runFamiliarStage", 2);
-    }
-  }
-
-  if (get("_duffo_runFamiliarStage", 0) === 2) {
-    // MORE fam weight equipment - should start wearing Snow Suit.
-    tunnelOfLove.runAll();
-    const beachHeadsUsed: number | string = get("_beachHeadsUsed");
-    if (have($item`Beach Comb`) && !beachHeadsUsed.toString().split(",").includes("10")) {
-      cliExecute("beach head familiar");
-    }
-
-    useFamiliar(runFamiliar);
-    nepOutfit(nepDefaultRequirement.merge(new Requirement(["100 Familiar Weight"], {})));
-
-    if (remainingRunaways(runFamiliar) > 0) {
-      return true;
-    } else {
-      set("_duffo_runFamiliarStage", 3);
-    }
-  }
-
-  if (get("_duffo_runFamiliarStage", 0) === 3) {
-    // 50-turn buffs
-    tunnelOfLove.runAll();
-    const beachHeadsUsed: number | string = get("_beachHeadsUsed");
-    if (have($item`Beach Comb`) && !beachHeadsUsed.toString().split(",").includes("10")) {
-      cliExecute("beach head familiar");
-    }
-
-    useFamiliar(runFamiliar);
-    nepOutfit(nepDefaultRequirement.merge(new Requirement(["100 Familiar Weight"], {})));
-
-    if (remainingRunaways(runFamiliar) > 0) {
-      return true;
-    } else {
-      set("_duffo_runFamiliarStage", 4);
-    }
-  }
-
-  if (get("_duffo_runFamiliarStage", 0) === 4) {
-    // Puzzle Champ, Meteor Shower
-    useFamiliar(runFamiliar);
-    nepOutfit(nepDefaultRequirement.merge(new Requirement(["100 Familiar Weight"], {})));
-    if (Witchess.have() && !get("_witchessBuff")) {
-      cliExecute("witchess");
-    }
-
-    if (
-      remainingRunaways(runFamiliar) +
-        (have($skill`Meteor Lore`) && get("_meteorShowerUses") < 5 ? 4 : 0) >
-      0
-    ) {
-      return true;
-    } else {
-      set("_duffo_runFamiliarStage", 5);
-    }
-  }
-
-  // TODO: Add potions stage.
-
-  return false;
-}
-
 const pantsgivingBonuses = new Map<number, number>();
 function pantsgiving() {
   if (!have($item`Pantsgiving`)) return new Map<Item, number>();
@@ -361,7 +261,7 @@ function dropsItems(equipMode: BonusEquipMode) {
   return new Map<Item, number>([
     [$item`familiar scrapbook`, 50],
     [$item`mafia thumb ring`, !isFree ? 1000 : 0],
-    // [$item`lucky gold ring`, 400],
+    [$item`lucky gold ring`, 400],
     [$item`Mr. Cheeng's spectacles`, 250],
     [$item`pantogram pants`, get("_pantogramModifier").includes("Drops Items") ? 100 : 0],
     [$item`Mr. Screege's spectacles`, 180],

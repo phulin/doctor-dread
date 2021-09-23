@@ -36,7 +36,6 @@ import { acquire } from "./acquire";
 import { clamp, ensureEffect, setChoice } from "./lib";
 
 const MPA = get("valueOfAdventure");
-print(`Using adventure value ${MPA}.`, "blue");
 
 function drinkSafe(qty: number, item: Item) {
   const prevDrunk = myInebriety();
@@ -165,6 +164,8 @@ function fillLiver() {
 }
 
 export function runDiet(): void {
+  print(`Using adventure value ${MPA}.`, "blue");
+
   /* if ($item`bottle of vodka`.inebriety !== 1 || $item`devil hair pasta`.fullness !== 1) {
     throw "Something is wrong with our diet items. Wrong 2CRS seed?";
   } */
@@ -243,7 +244,7 @@ export function runDiet(): void {
 
   if (!get("_distentionPillUsed")) {
     if (
-      (have($item`distention pill`, 1) || !get<boolean>("duffo_skipPillCheck", false)) &&
+      (have($item`distention pill`, 1) || !get<boolean>("dr_skipPillCheck", false)) &&
       !use($item`distention pill`)
     ) {
       print("WARNING: Out of distention pills.", "red");
@@ -252,7 +253,7 @@ export function runDiet(): void {
 
   if (!get("_syntheticDogHairPillUsed") && 1 <= myInebriety()) {
     if (
-      (have($item`synthetic dog hair pill`, 1) || !get<boolean>("duffo_skipPillCheck", false)) &&
+      (have($item`synthetic dog hair pill`, 1) || !get<boolean>("dr_skipPillCheck", false)) &&
       !use($item`synthetic dog hair pill`)
     ) {
       print("WARNING: Out of synthetic dog hair pills.", "red");
