@@ -15,10 +15,6 @@ export function isDreadMonster(x: string): x is DreadMonster {
   return (dreadMonsters as readonly string[]).includes(x);
 }
 
-const dreadMonstersTwice = ([] as DreadMonster[]).concat(
-  ...dreadMonsters.map((monster) => [monster, monster])
-);
-
 export const dreadElements = ["hot", "cold", "sleazy", "stinky", "spooky"] as const;
 export type DreadElement = typeof dreadElements[number];
 
@@ -500,7 +496,7 @@ export function dreadBanished(): {
       )
     ),
     monstersBanished: ([] as DreadMonster[]).concat(
-      ...dreadMonstersTwice.map((monster) =>
+      ...dreadMonsters.map((monster) =>
         new Array<DreadMonster>(
           raidlog.match(new RegExp(`drove some ${monsterPlural(monster)} out of the ${zone}`, "g"))
             ?.length ?? 0

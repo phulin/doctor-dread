@@ -23,10 +23,15 @@ export function needsBanishing(
   const monstersBanished = banishedZoneInfo?.monstersBanished ?? [];
   const elementsBanished = banishedZoneInfo?.elementsBanished ?? [];
 
-  const monstersNeededBanished = monster === "banish no monster" ? [] : [monsterPair(monster)];
-  const monstersToBanish = monstersNeededBanished.filter(
-    (monster) => !monstersBanished.includes(monster)
-  );
+  let monstersToBanish;
+  if (monster === "banish no monster") {
+    monstersToBanish = [];
+  } else {
+    const monsterBanish = monsterPair(monster);
+    // Want two banishes of monsterBanish.
+    const countToBanish = 2 - monstersBanished.filter((m) => m === monsterBanish).length;
+    monstersToBanish = new Array(countToBanish).fill(monsterBanish);
+  }
 
   const elementsNeededBanished =
     element === "banish all elements"
