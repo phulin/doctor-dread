@@ -20873,7 +20873,7 @@ function dreadBanished() {
       var blockquoteRegex = new RegExp("<b>".concat(fullName, "</b>\\s*<blockquote>(.*?)</blockquote>"));
       var blockquoteMatch = raidlog.match(blockquoteRegex);
       var blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
-      var elementRegex = /made the (.*?) less (.*?)/g;
+      var elementRegex = /made the (.*?) less (.*?) \(1 turn\)/g;
       var match = void 0;
 
       while ((match = elementRegex.exec(blockquote)) !== null) {
@@ -20884,7 +20884,7 @@ function dreadBanished() {
         });
       }
 
-      var monsterRegex = /drove some (.*?) out of the (.*?)/g;
+      var monsterRegex = /drove some (.*?) out of the (.*?) \(1 turn\)/g;
 
       while ((match = monsterRegex.exec(blockquote)) !== null) {
         result.push({
@@ -21020,8 +21020,9 @@ function banishesToLimit(targetZone, monster, element) {
 
   return result;
 }
-function planLimitTo(targetZone, monster, element) {
-  var banished = dreadBanished();
+function categorizeBanishes(targetZone, monster, element) {
+  var banished = dreadBanished(); // print(JSON.stringify(banished));
+
   var banishedInZone = banished.filter(info => info.targetZone === targetZone);
   var noncombatsUsed = new Set(dreadNoncombatsUsed());
   var desiredBanishes = banishesToLimit(targetZone, monster, element);
@@ -21057,30 +21058,59 @@ function planLimitTo(targetZone, monster, element) {
     _iterator4.f();
   }
 
-  for (var _i2 = 0, _cantBanishes = cantBanishes; _i2 < _cantBanishes.length; _i2++) {
-    var _cantBanishes$_i = plan_slicedToArray(_cantBanishes[_i2], 2),
-        noncombat = _cantBanishes$_i[0],
-        banish = _cantBanishes$_i[1];
+  return {
+    usedBanishes: usedBanishes,
+    cantBanishes: cantBanishes,
+    goodBanishes: goodBanishes
+  };
+}
+function planLimitTo(targetZone, monster, element) {
+  var _categorizeBanishes = categorizeBanishes(targetZone, monster, element),
+      cantBanishes = _categorizeBanishes.cantBanishes,
+      goodBanishes = _categorizeBanishes.goodBanishes;
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    (0,external_kolmafia_.print)("Can't banish ".concat(banish.effect, " @ ").concat(noncombat, " because ").concat(banish.reasonCantPerform()));
+  var _iterator5 = plan_createForOfIteratorHelper(cantBanishes),
+      _step5;
+
+  try {
+    for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+      var _step5$value = plan_slicedToArray(_step5.value, 2),
+          noncombat = _step5$value[0],
+          banish = _step5$value[1];
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      (0,external_kolmafia_.print)("Can't banish ".concat(banish.effect, " @ ").concat(noncombat, " because ").concat(banish.reasonCantPerform()));
+    }
+  } catch (err) {
+    _iterator5.e(err);
+  } finally {
+    _iterator5.f();
   }
 
   var banishLocations = new Map();
 
-  for (var _i3 = 0, _goodBanishes = goodBanishes; _i3 < _goodBanishes.length; _i3++) {
-    var _goodBanishes$_i = plan_slicedToArray(_goodBanishes[_i3], 2),
-        _noncombat = _goodBanishes$_i[0],
-        _banish = _goodBanishes$_i[1];
+  var _iterator6 = plan_createForOfIteratorHelper(goodBanishes),
+      _step6;
 
-    var banishList = banishLocations.get(_noncombat);
+  try {
+    for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+      var _step6$value = plan_slicedToArray(_step6.value, 2),
+          _noncombat = _step6$value[0],
+          _banish = _step6$value[1];
 
-    if (banishList === undefined) {
-      banishList = [];
-      banishLocations.set(_noncombat, banishList);
+      var banishList = banishLocations.get(_noncombat);
+
+      if (banishList === undefined) {
+        banishList = [];
+        banishLocations.set(_noncombat, banishList);
+      }
+
+      banishList.push(_banish);
     }
-
-    banishList.push(_banish);
+  } catch (err) {
+    _iterator6.e(err);
+  } finally {
+    _iterator6.f();
   }
 
   return plan_toConsumableArray(banishLocations).map(_ref => {
