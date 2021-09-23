@@ -20925,10 +20925,9 @@ function plan_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) 
 
 
 
-function planLimitTo(targetZone, monster, element) {
+function needsBanishing(targetZone, monster, element) {
   var _banishedZoneInfo$mon, _banishedZoneInfo$ele;
 
-  var noncombatsUsed = new Set(dreadNoncombatsUsed());
   var banished = dreadBanished();
   var banishedZoneInfo = banished.find(info => info.zone === targetZone);
   var monstersBanished = (_banishedZoneInfo$mon = banishedZoneInfo === null || banishedZoneInfo === void 0 ? void 0 : banishedZoneInfo.monstersBanished) !== null && _banishedZoneInfo$mon !== void 0 ? _banishedZoneInfo$mon : [];
@@ -20937,7 +20936,11 @@ function planLimitTo(targetZone, monster, element) {
   var monstersToBanish = monstersNeededBanished.filter(monster => !monstersBanished.includes(monster));
   var elementsNeededBanished = element === "banish all elements" ? plan_toConsumableArray(dreadElements) : element === "banish no element" ? [] : dreadElements.filter(e => e !== element);
   var elementsToBanish = elementsNeededBanished.filter(element => !elementsBanished.includes(element));
-  var thingsToBanish = [].concat(plan_toConsumableArray(elementsToBanish), plan_toConsumableArray(monstersToBanish));
+  return [].concat(plan_toConsumableArray(elementsToBanish), plan_toConsumableArray(monstersToBanish));
+}
+function planLimitTo(targetZone, monster, element) {
+  var noncombatsUsed = new Set(dreadNoncombatsUsed());
+  var thingsToBanish = needsBanishing(targetZone, monster, element);
   var desiredBanishes = [];
 
   var _iterator = plan_createForOfIteratorHelper(dreadZones),
@@ -21144,6 +21147,14 @@ var limitCommand = new Command("limit", usage, _ref => {
   } finally {
     (0,external_kolmafia_.cliExecute)("outfit checkpoint");
   }
+
+  var remaining = needsBanishing(monsterZone(monster), monster, element);
+
+  if (remaining.length === 0) {
+    (0,external_kolmafia_.print)("All banishes complete!", "blue");
+  } else {
+    (0,external_kolmafia_.print)("Outstanding banishes: ".concat(remaining.join(", ")), "red");
+  }
 });
 ;// CONCATENATED MODULE: ./src/commands/plan.ts
 function commands_plan_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = commands_plan_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
@@ -21267,7 +21278,13 @@ var whitelistCommand = new Command("whitelist", "dr whitelist [player] [rank?]: 
     return;
   }
 
-  var rank = rankComponents.join(" ") || undefined;
+  var rank = rankComponents.join(" ");
+
+  if (!rank) {
+    (0,external_kolmafia_.print)("Invalid rank ".concat(rank), "red");
+    return;
+  }
+
   var current = (0,external_kolmafia_.getClanName)();
 
   try {
