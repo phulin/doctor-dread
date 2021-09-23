@@ -12,12 +12,11 @@ import {
   monsterPair,
 } from "./raidlog";
 
-export function planLimitTo(
+export function needsBanishing(
   targetZone: DreadZone,
   monster: DreadMonster | "banish no monster",
   element: DreadElement | "banish all elements" | "banish no element"
-): [DreadNoncombat, DreadBanish][] {
-  const noncombatsUsed = new Set(dreadNoncombatsUsed());
+): (DreadElement | DreadMonster)[] {
   const banished = dreadBanished();
 
   const banishedZoneInfo = banished.find((info) => info.zone === targetZone);
@@ -39,7 +38,16 @@ export function planLimitTo(
     (element) => !elementsBanished.includes(element)
   );
 
-  const thingsToBanish = [...elementsToBanish, ...monstersToBanish];
+  return [...elementsToBanish, ...monstersToBanish];
+}
+
+export function planLimitTo(
+  targetZone: DreadZone,
+  monster: DreadMonster | "banish no monster",
+  element: DreadElement | "banish all elements" | "banish no element"
+): [DreadNoncombat, DreadBanish][] {
+  const noncombatsUsed = new Set(dreadNoncombatsUsed());
+  const thingsToBanish = needsBanishing(targetZone, monster, element);
 
   const desiredBanishes: [DreadNoncombat, DreadBanish][] = [];
   for (const noncombatZone of dreadZones) {

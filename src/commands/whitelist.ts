@@ -18,7 +18,11 @@ export const whitelistCommand = new Command(
       return;
     }
 
-    const rank = rankComponents.join(" ") || undefined;
+    const rank = rankComponents.join(" ");
+    if (!rank) {
+      print(`Invalid rank ${rank}`, "red");
+      return;
+    }
 
     const current = getClanName();
 
