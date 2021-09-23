@@ -21067,25 +21067,15 @@ function categorizeBanishes(targetZone, monster, element) {
 
     for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
       _loop();
-    }
+    } // print(`completed: ${JSON.stringify(completedBanishes.map(([, banish]) => banish))}`);
+    // print(`used: ${JSON.stringify(usedBanishes.map(([, banish]) => banish))}`);
+
   } catch (err) {
     _iterator4.e(err);
   } finally {
     _iterator4.f();
   }
 
-  (0,external_kolmafia_.print)("completed: ".concat(JSON.stringify(completedBanishes.map(_ref => {
-    var _ref2 = plan_slicedToArray(_ref, 2),
-        banish = _ref2[1];
-
-    return banish;
-  }))));
-  (0,external_kolmafia_.print)("used: ".concat(JSON.stringify(usedBanishes.map(_ref3 => {
-    var _ref4 = plan_slicedToArray(_ref3, 2),
-        banish = _ref4[1];
-
-    return banish;
-  }))));
   return {
     completedBanishes: completedBanishes,
     usedBanishes: usedBanishes,
@@ -21142,11 +21132,11 @@ function planLimitTo(targetZone, monster, element) {
     _iterator6.f();
   }
 
-  return plan_toConsumableArray(banishLocations).map(_ref5 => {
-    var _ref6 = plan_slicedToArray(_ref5, 2),
-        noncombat = _ref6[0],
-        _ref6$ = plan_slicedToArray(_ref6[1], 1),
-        banish = _ref6$[0];
+  return plan_toConsumableArray(banishLocations).map(_ref => {
+    var _ref2 = plan_slicedToArray(_ref, 2),
+        noncombat = _ref2[0],
+        _ref2$ = plan_slicedToArray(_ref2[1], 1),
+        banish = _ref2$[0];
 
     return [noncombat, banish];
   });
@@ -21156,15 +21146,15 @@ function neededBanishes(targetZone, monster, element) {
       completedBanishes = _categorizeBanishes2.completedBanishes;
 
   var paired = monsterPair(monster);
-  var monsterCount = completedBanishes.filter(_ref7 => {
-    var _ref8 = plan_slicedToArray(_ref7, 2),
-        banish = _ref8[1];
+  var monsterCount = completedBanishes.filter(_ref3 => {
+    var _ref4 = plan_slicedToArray(_ref3, 2),
+        banish = _ref4[1];
 
     return banish.effect[1] === paired;
   }).length;
-  var banishedElements = completedBanishes.map(_ref9 => {
-    var _ref10 = plan_slicedToArray(_ref9, 2),
-        banish = _ref10[1];
+  var banishedElements = completedBanishes.map(_ref5 => {
+    var _ref6 = plan_slicedToArray(_ref5, 2),
+        banish = _ref6[1];
 
     return banish.effect[1];
   }).filter(x => isDreadElement(x));
