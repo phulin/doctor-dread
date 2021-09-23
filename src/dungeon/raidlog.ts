@@ -103,6 +103,7 @@ export type DreadNoncombatInfo = {
   messages: string[];
   index: number; // Index for clan_dreadsylvania.php?action=forceloc&loc=XXX
   banishes: DreadBanish[];
+  freddies?: [number, number][]; // Sequence of [choice id, choice] pairs to get to the freddies.
 };
 
 export type DreadZoneInfo = {
@@ -134,6 +135,10 @@ export const dreadZones: DreadZoneInfo[] = [
           "flipped through a photo album",
         ],
         index: 1,
+        freddies: [
+          [721, 2],
+          [723, 1],
+        ],
         banishes: [
           {
             effect: ["forest", "stinky"],
@@ -213,6 +218,10 @@ export const dreadZones: DreadZoneInfo[] = [
           "found and sold a rare baseball card",
         ],
         index: 3,
+        freddies: [
+          [729, 3],
+          [732, 2],
+        ],
         banishes: [
           {
             effect: ["forest", "hot"],
@@ -259,6 +268,10 @@ export const dreadZones: DreadZoneInfo[] = [
           "hung a clanmate",
         ],
         index: 4,
+        freddies: [
+          [733, 2],
+          [735, 2],
+        ],
         banishes: [
           {
             effect: ["village", "ghost"],
@@ -336,6 +349,10 @@ export const dreadZones: DreadZoneInfo[] = [
           "made a ghost shawl",
         ],
         index: 6,
+        freddies: [
+          [741, 1],
+          [742, 2],
+        ],
         banishes: [
           {
             effect: ["village", "zombie"],
@@ -380,6 +397,10 @@ export const dreadZones: DreadZoneInfo[] = [
           "got magically fingered",
         ],
         index: 8,
+        freddies: [
+          [749, 3],
+          [752, 2],
+        ],
         banishes: [
           {
             effect: ["forest", "bugbear"],
@@ -463,6 +484,10 @@ export const dreadZones: DreadZoneInfo[] = [
           "rolled around in some mushrooms",
         ],
         index: 9,
+        freddies: [
+          [753, 2],
+          [755, 2],
+        ],
         banishes: [
           {
             effect: ["castle", "spooky"],
