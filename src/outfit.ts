@@ -9,7 +9,6 @@ import {
   haveEquipped,
   inebrietyLimit,
   mallPrice,
-  myClass,
   myFamiliar,
   myFullness,
   myInebriety,
@@ -18,17 +17,13 @@ import {
   toSlot,
   totalTurnsPlayed,
   visitUrl,
-  weaponType,
 } from "kolmafia";
 import {
-  $class,
   $familiar,
   $item,
   $items,
-  $monster,
   $slot,
   $slots,
-  $stat,
   get,
   getFoldGroup,
   getKramcoWandererChance,
@@ -129,26 +124,6 @@ export function nepOutfit(requirement = nepDefaultRequirement): void {
   } else {
     if (getKramcoWandererChance() > 0.99 && have($item`Kramco Sausage-o-Matic™`)) {
       forceEquip.push($item`Kramco Sausage-o-Matic™`);
-    }
-    // TODO: Fix pointer finger ring construction
-
-    const forceMelee = requirement
-      .maximizeOptions()
-      .forceEquip?.some((item) => weaponType(item) === $stat`Muscle`);
-    const forceRanged = requirement
-      .maximizeOptions()
-      .forceEquip?.some((item) => weaponType(item) === $stat`Moxie`);
-    if (
-      myClass() !== $class`Seal Clubber` &&
-      globalOptions.preferredMonster === $monster`jock` &&
-      !requirement.maximizeOptions().forceEquip?.includes($item`The Jokester's gun`)
-    ) {
-      if (have($item`haiku katana`) && !forceRanged) {
-        forceEquip.push($item`haiku katana`, $item`mafia pointer finger ring`);
-      } else if (have($item`unwrapped knock-off retro superhero cape`) && !forceMelee) {
-        if (!have($item`ice nine`)) retrieveItem($item`ice nine`);
-        forceEquip.push($item`ice nine`, $item`mafia pointer finger ring`);
-      }
     }
     if (
       have($item`protonic accelerator pack`) &&
