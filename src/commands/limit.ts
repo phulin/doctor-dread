@@ -34,10 +34,11 @@ export const limitCommand = new Command("limit", usage, ([element, monster]: str
     throw "You don't have skeleton keys and you're almost out of Freddies. Fix that.";
   }
 
-  cliExecute("checkpoint");
+  const overdrunk = myInebriety() > inebrietyLimit();
+  if (overdrunk) cliExecute("checkpoint");
 
   try {
-    if (myInebriety() > inebrietyLimit()) {
+    if (overdrunk) {
       if (!have($item`Drunkula's wineglass`)) {
         throw "Can't do banishes without wineglass while overdrunk!";
       }
@@ -57,7 +58,7 @@ export const limitCommand = new Command("limit", usage, ([element, monster]: str
       print();
     }
   } finally {
-    cliExecute("outfit checkpoint");
+    if (overdrunk) cliExecute("outfit checkpoint");
   }
 
   const remaining = neededBanishes(monsterZone(monster), monster, element);

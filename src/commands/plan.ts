@@ -36,6 +36,10 @@ export const planCommand = new Command("plan", usage, ([element, monster]) => {
   }
 
   const plan = planLimitTo(monsterZone(monster), monster, element);
+  if (plan.length === 0) {
+    print("No banishes available and needed.");
+  }
+
   for (const [noncombat, banish] of plan) {
     print(
       `Banish ${banish.effect.join(", ")} @ ${noncombat.noncombat} using ${banish.choiceSequence
