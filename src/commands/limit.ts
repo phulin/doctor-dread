@@ -4,7 +4,6 @@ import {
   inebrietyLimit,
   itemAmount,
   myInebriety,
-  outfit,
   print,
   retrieveItem,
   runChoice,
