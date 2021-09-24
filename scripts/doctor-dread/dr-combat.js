@@ -17885,7 +17885,7 @@ __webpack_require__.d(__webpack_exports__, {
   "nf": () => (/* binding */ monsterManuelAvailable)
 });
 
-// UNUSED EXPORTS: BonusEquipMode, Requirement, argmax, baseMeat, clamp, coinmasterPrice, determineDraggableZoneAndEnsureAccess, draggableFight, ensureEffect, fairyMultiplier, fromEntries, gnomeWeightValue, kramcoGuaranteed, leprechaunMultiplier, mapMonster, propertyManager, questStep, safeInterrupt, saleValue, setChoice, setDefaultChoiceHandling, sum, tryFeast
+// UNUSED EXPORTS: BonusEquipMode, Requirement, argmax, baseMeat, clamp, coinmasterPrice, determineDraggableZoneAndEnsureAccess, draggableFight, ensureEffect, entries, fairyMultiplier, fromEntries, gnomeWeightValue, kramcoGuaranteed, leprechaunMultiplier, mapMonster, propertyManager, questStep, safeInterrupt, saleValue, setChoice, setDefaultChoiceHandling, sum, tryFeast
 
 ;// CONCATENATED MODULE: external "canadv.ash"
 const external_canadv_ash_namespaceObject = require("canadv.ash");;
@@ -18350,6 +18350,10 @@ function gnomeWeightValue() {
   // Assume rough weight of 190
   var gnomeWeight = 190;
   return MPA * (0.001 / Math.pow(1 - 0.001 * gnomeWeight, 2));
+} // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+function entries(obj) {
+  return Object.keys(obj).map(k => [k, obj[k]]);
 }
 function fromEntries(iterable) {
   return _toConsumableArray(iterable).reduce((obj, _ref5) => {

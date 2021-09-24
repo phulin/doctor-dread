@@ -17876,7 +17876,7 @@ function estimatedTurns() {
 
 /***/ }),
 
-/***/ 6760:
+/***/ 7957:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -20586,27 +20586,196 @@ var farmCommand = new Command("farm", "dr farm [ascend] [turncount]: Burn turns 
     }
   }
 });
+;// CONCATENATED MODULE: ./src/dungeon/layout.yml
+const layout_namespaceObject = JSON.parse('[{"name":"forest","fullName":"The Woods","noncombats":[{"name":"Cabin","id":721,"index":1,"choices":{"1":{"name":"Kitchen","id":722,"choices":{"1":{"message":"acquired some dread tarragon","item":"dread tarragon"},"2":{"message":"made some bone flour","item":"bone flour"},"3":{"message":"made the forest less stinky","banish":["forest","stinky"]}}},"2":{"name":"Basement","id":723,"choices":{"1":{"message":"recycled some newspapers","item":"Freddy Kruegerand"},"2":{"message":"read an old diary","effect":"Bored Stiff"},"3":{"message":"got a Dreadsylvania auditor\'s badge","requirement":"replica key","item":"Dreadsylvania auditor\'s badge"},"4":{"message":"made an impression of a complicated lock","requirement":"wax banana","item":"complicated lock impression"}}},"3":{"name":"Attic","id":724,"locked":true,"choices":{"1":{"message":"made the forest less spooky","classes":["Accordion Thief"],"item":"intricate music box parts"},"2":{"message":"drove some werewolves out of the forest","banish":["forest","werewolf"]},"3":{"message":"drove some vampires out of the castle","banish":["castle","vampire"]},"4":{"message":"flipped through a photo album","stat":"Moxie"}}}}},{"name":"Tallest Tree","id":725,"index":2,"choices":{"1":{"name":"Climb to the top","id":726,"classes":["Seal Clubber","Turtle Tamer"],"choices":{"1":{"messages":["knocked some fruit loose","wasted some fruit"]},"2":{"message":"made the forest less sleazy","banish":["forest","sleazy"]},"3":{"message":"acquired a chunk of moon-amber","item":"moon-amber"}}},"2":{"name":"Fire tower","id":727,"locked":true,"choices":{"1":{"message":"drove some ghosts out of the village","banish":["village","ghost"]},"2":{"message":"rifled through a footlocker","item":"Freddy Kruegerand"},"3":{"message":"lifted some weights","stat":"Muscle"}}},"3":{"name":"Root around","id":728,"choices":{"1":{"message":"got a blood kiwi","item":"blood kiwi"},"2":{"message":"got a cool seed pod","item":"Dreadsylvanian seed pod"}}}}},{"name":"Burrows","id":729,"index":3,"choices":{"1":{"name":"Towards heat","id":730,"choices":{"1":{"message":"made the forest less hot","banish":["forest","hot"]},"2":{"message":"got intimate with some hot coals","effect":"Dragged Through the Coals"},"3":{"message":"made a cool iron ingot","requirement":"old ball and chain","item":"cool iron ingot"}}},"2":{"name":"Towards cold","id":731,"choices":{"1":{"message":"made the forest less cold","banish":["forest","hot"]},"2":{"message":"listened to the forest\'s heart","stat":"Mysticality"},"3":{"message":"drank some nutritious forest goo","effect":"Nature\'s Bounty"}}},"3":{"name":"Towards smelly","id":732,"choices":{"1":{"message":"drove some bugbears out of the forest","banish":["forest","hot"]},"2":{"message":"found and sold a rare baseball card","item":"Freddy Kruegerand"}}}}}]},{"name":"village","fullName":"The Village","noncombats":[{"name":"Village Square","id":733,"index":4,"choices":{"1":{"name":"Schoolhouse","id":734,"locked":true,"choices":{"1":{"message":"drove some ghosts out of the village","banish":["village","ghost"]},"2":{"message":"collected a ghost pencil","item":"ghost pencil"},"3":{"message":"read some naughty carvings","stat":"Mysticality"}}},"2":{"name":"Blacksmith","id":735,"choices":{"1":{"message":"made the village less cold","banish":["village","cold"]},"2":{"message":"looted the blacksmith\'s till","item":"Freddy Kruegerand"},"3":{"messages":["made a cool iron breastplate","made a cool iron helmet","made some cool iron greaves"]}}},"3":{"name":"Gallows","id":736,"choices":{"1":{"message":"made the village less spooky","banish":["village","spooky"]},"2":{"message":"was hung by a clanmate"},"4":{"message":"hung a clanmate"}}}}},{"name":"Skid Row","id":737,"index":5,"choices":{"1":{"name":"Sewers","id":738,"choices":{"1":{"message":"made the village less stinky","banish":["village","stinky"]},"2":{"message":"swam in a sewer","effect":"Sewer-Drenched"}}},"2":{"name":"Tenements","id":739,"choices":{"1":{"message":"drove some skeletons out of the castle","banish":["castle","skeleton"]},"2":{"message":"made the village less sleazy","banish":["village","sleazy"]},"3":{"message":"moved some bricks around","stat":"Muscle"}}},"3":{"name":"Ticking shack","id":740,"classes":["Disco Bandit","Accordion Thief"],"choices":{"1":{"message":"looted the tinker\'s shack","item":"Freddy Kruegerand"},"2":{"message":"made a complicated key","item":"replica key"},"3":{"message":"polished some moon-amber","requirement":"moon-amber","item":"polished moon-amber"},"4":{"message":"made a clockwork bird","item":"unwound mechanical songbird"},"5":{"message":"got some old fuse","quantity":3,"item":"old fuse"}}}}},{"name":"Old Duke\'s Estate","id":741,"index":6,"choices":{"1":{"name":"Family plot","id":742,"choices":{"1":{"message":"drove some zombies out of the village","banish":["village","zombie"]},"2":{"message":"robbed some graves","item":"Freddy Kruegerand"},"3":{"message":"read some lurid epitaphs","effect":"Fifty Ways to Bereave Your Lover"}}},"2":{"name":"Servant\'s quarters","id":743,"choices":{"1":{"message":"made the village less hot","banish":["village","hot"]},"2":{"message":"made a shepherd\'s pie","item":"Dreadsylvanian shepherd\'s pie"},"3":{"message":"raided some naughty cabinets","stat":"Moxie"}}},"3":{"name":"Master suite","id":744,"locked":true,"choices":{"1":{"message":"drove some werewolves out of the forest","banish":["forest","werewolf"]},"2":{"message":"got a bottle of eau de mort","item":"eau de mort"},"3":{"message":"made a ghost shawl","item":"ghost shawl"}}}}}]},{"name":"castle","fullName":"The Castle","noncombats":[{"name":"Tower","id":749,"index":8,"choices":{"1":{"name":"Laboratory","id":750,"locked":true,"choices":{"1":{"message":"drove some bugbears out of the forest","banish":["forest","bugbear"]},"2":{"message":"drove some zombies out of the village","banish":["village","zombie"]},"5":{"message":"made a blood kiwitini","classes":["Disco Bandit","Accordion Thief"],"item":"bloody kiwitini"}}},"2":{"name":"Books","id":751,"classes":["Pastamancer","Sauceror"],"choices":{"1":{"message":"drove some skeletons out of the castle","banish":["castle","skeleton"]},"2":{"message":"read some ancient secrets","stat":"Mysticality"},"3":{"message":"learned to make a moon-amber necklace"}}},"3":{"name":"Bedroom","id":752,"choices":{"1":{"message":"made the castle less sleazy","banish":["castle","sleazy"]},"2":{"message":"raided a dresser","item":"Freddy Kruegerand"},"3":{"message":"got magically fingered","effect":"Magically Fingered"}}}}},{"name":"Great Hall","id":745,"index":7,"choices":{"1":{"name":"Ballroom","id":746,"locked":true,"choices":{"1":{"message":"drove some vampires out of the castle","banish":["castle","vampire"]},"2":{"message":"twirled on the dance floor","requirement":"muddy skirt","stat":"Moxie","item":"weedy skirt"}}},"2":{"name":"Kitchen","id":747,"choices":{"1":{"message":"made the castle less cold","banish":["castle","cold"]},"2":{"message":"frolicked in a freezer","effect":"Staying Frosty"}}},"3":{"name":"Dining room","id":748,"choices":{"1":{"message":"got some roast beast","item":"dreadful roast"},"2":{"message":"made the castle less stinky","banish":["castle","stinky"]},"3":{"message":"got a wax banana","classes":["Pastamancer","Sauceror"],"item":"wax banana"}}}}},{"name":"Dungeons","id":753,"index":9,"choices":{"1":{"name":"Cell block","id":754,"choices":{"1":{"message":"made the castle less spooky","banish":["castle","spooky"]},"2":{"message":"did a whole bunch of pushups","stat":"Muscle"},"3":{"message":"took a nap on a prison cot"}}},"2":{"name":"Boiler room","id":755,"choices":{"1":{"message":"made the castle less hot","banish":["castle","hot"]},"2":{"message":"sifted through some ashes","item":"Freddy Kruegerand"},"3":{"message":"relaxed in a furnace"}}},"3":{"name":"Guardroom","id":756,"choices":{"1":{"message":"got some stinking agaric","item":"stinking agaricus"},"2":{"message":"rolled around in some mushrooms","effect":"Spore-Wreathed"}}}}}]}]');
 ;// CONCATENATED MODULE: ./src/dungeon/raidlog.ts
-var raidlog_templateObject, raidlog_templateObject2, raidlog_templateObject3;
+function raidlog_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = raidlog_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
-function raidlog_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = raidlog_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function raidlog_toConsumableArray(arr) { return raidlog_arrayWithoutHoles(arr) || raidlog_iterableToArray(arr) || raidlog_unsupportedIterableToArray(arr) || raidlog_nonIterableSpread(); }
+
+function raidlog_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function raidlog_iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function raidlog_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return raidlog_arrayLikeToArray(arr); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { raidlog_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function raidlog_slicedToArray(arr, i) { return raidlog_arrayWithHoles(arr) || raidlog_iterableToArrayLimit(arr, i) || raidlog_unsupportedIterableToArray(arr, i) || raidlog_nonIterableRest(); }
+
+function raidlog_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
 function raidlog_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return raidlog_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return raidlog_arrayLikeToArray(o, minLen); }
 
 function raidlog_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function raidlog_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+function raidlog_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function raidlog_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function raidlog_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function raidlog_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function raidlog_createClass(Constructor, protoProps, staticProps) { if (protoProps) raidlog_defineProperties(Constructor.prototype, protoProps); if (staticProps) raidlog_defineProperties(Constructor, staticProps); return Constructor; }
+
+function raidlog_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 var dreadMonsters = ["bugbear", "werewolf", "ghost", "zombie", "vampire", "skeleton"];
-function isDreadMonster(x) {
+function isDreadMonsterId(x) {
   return dreadMonsters.includes(x);
 }
 var dreadElements = ["hot", "cold", "sleazy", "stinky", "spooky"];
-function isDreadElement(x) {
+function isDreadElementId(x) {
   return dreadElements.includes(x);
 }
+var DreadSubnoncombat = /*#__PURE__*/function () {
+  function DreadSubnoncombat(_ref) {
+    var name = _ref.name,
+        id = _ref.id,
+        locked = _ref.locked,
+        classes = _ref.classes,
+        choices = _ref.choices;
+
+    raidlog_classCallCheck(this, DreadSubnoncombat);
+
+    raidlog_defineProperty(this, "name", void 0);
+
+    raidlog_defineProperty(this, "id", void 0);
+
+    raidlog_defineProperty(this, "needsUnlocked", void 0);
+
+    raidlog_defineProperty(this, "classes", void 0);
+
+    raidlog_defineProperty(this, "choices", void 0);
+
+    this.name = name;
+    this.id = id;
+    this.needsUnlocked = !!locked;
+    if (classes) this.classes = classes.map(c => Class.get(c));
+    this.choices = new Map(Object.entries(choices).map(_ref2 => {
+      var _choice$messages;
+
+      var _ref3 = raidlog_slicedToArray(_ref2, 2),
+          index = _ref3[0],
+          choice = _ref3[1];
+
+      return [parseInt(index), _objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread({
+        messages: (_choice$messages = choice.messages) !== null && _choice$messages !== void 0 ? _choice$messages : [choice.message]
+      }, choice.classes ? {
+        classes: choice.classes.map(c => Class.get(c))
+      } : {}), choice.requirement ? {
+        requirement: Item.get(choice.requirement)
+      } : {}), choice.item ? {
+        item: Item.get(choice.item)
+      } : {}), choice.banish ? {
+        banish: choice.banish
+      } : {}), choice.effect ? {
+        effect: Effect.get(choice.effect)
+      } : {}), choice.stat ? {
+        stat: Stat.get(choice.stat)
+      } : {})];
+    }));
+  }
+
+  raidlog_createClass(DreadSubnoncombat, [{
+    key: "messages",
+    value: function messages() {
+      var _ref4;
+
+      return (_ref4 = []).concat.apply(_ref4, raidlog_toConsumableArray(raidlog_toConsumableArray(this.choices.values()).map(choice => choice.messages)));
+    }
+  }, {
+    key: "isLocked",
+    value: function isLocked() {
+      return this.needsUnlocked && !memoizedRaidlog().includes("unlocked the ".concat(this.name.toLowerCase()));
+    }
+  }]);
+
+  return DreadSubnoncombat;
+}();
+var DreadNoncombat = /*#__PURE__*/function () {
+  function DreadNoncombat(_ref5) {
+    var name = _ref5.name,
+        id = _ref5.id,
+        index = _ref5.index,
+        choices = _ref5.choices;
+
+    raidlog_classCallCheck(this, DreadNoncombat);
+
+    raidlog_defineProperty(this, "name", void 0);
+
+    raidlog_defineProperty(this, "id", void 0);
+
+    raidlog_defineProperty(this, "index", void 0);
+
+    raidlog_defineProperty(this, "choices", void 0);
+
+    this.name = name;
+    this.id = id;
+    this.index = index;
+    this.choices = new Map(Object.entries(choices).map(_ref6 => {
+      var _ref7 = raidlog_slicedToArray(_ref6, 2),
+          index = _ref7[0],
+          choice = _ref7[1];
+
+      return [parseInt(index), new DreadSubnoncombat(choice)];
+    }));
+  }
+
+  raidlog_createClass(DreadNoncombat, [{
+    key: "zone",
+    value: function zone() {
+      switch (this.name) {
+        case "Cabin":
+        case "Tallest Tree":
+        case "Burrows":
+          return "forest";
+
+        case "Village Square":
+        case "Skid Row":
+        case "Old Duke's Estate":
+          return "village";
+
+        case "Tower":
+        case "Great Hall":
+        case "Dungeons":
+          return "castle";
+      }
+    }
+  }, {
+    key: "messages",
+    value: function messages() {
+      var _ref8;
+
+      return (_ref8 = []).concat.apply(_ref8, raidlog_toConsumableArray(raidlog_toConsumableArray(this.choices.values()).map(choice => choice.messages())));
+    }
+  }]);
+
+  return DreadNoncombat;
+}();
+var dreadZoneTypes = (/* unused pure expression or super */ null && (["forest", "village", "castle"]));
+var DreadZone = function DreadZone(_ref9) {
+  var name = _ref9.name,
+      fullName = _ref9.fullName,
+      noncombats = _ref9.noncombats;
+
+  raidlog_classCallCheck(this, DreadZone);
+
+  raidlog_defineProperty(this, "name", void 0);
+
+  raidlog_defineProperty(this, "fullName", void 0);
+
+  raidlog_defineProperty(this, "noncombats", void 0);
+
+  this.name = name;
+  this.fullName = fullName;
+  this.noncombats = noncombats.map(noncombat => new DreadNoncombat(noncombat));
+};
 function monsterPair(monster) {
   switch (monster) {
     case "bugbear":
@@ -20628,12 +20797,6 @@ function monsterPair(monster) {
       return "vampire";
   }
 }
-function monsterSingular(monster) {
-  return monster === "werewolves" ? "werewolf" : monster.slice(0, -1);
-}
-function monsterPlural(monster) {
-  if (monster === "werewolf") return "werewolves";else return "".concat(monster, "s");
-}
 function monsterZone(monster) {
   switch (monster) {
     case "bugbear":
@@ -20649,211 +20812,20 @@ function monsterZone(monster) {
       return "castle";
   }
 }
-function noncombatZone(noncombat) {
-  switch (noncombat) {
-    case "Cabin":
-    case "Tallest Tree":
-    case "Burrows":
-      return "forest";
-
-    case "Village Square":
-    case "Skid Row":
-    case "Old Duke's Estate":
-      return "village";
-
-    case "Tower":
-    case "Great Hall":
-    case "Dungeons":
-      return "castle";
-  }
+function monsterSingular(monster) {
+  return monster === "werewolves" ? "werewolf" : monster.slice(0, -1);
 }
-// TODO: Note whether key is needed to get there.
-var dreadZones = [{
-  zone: "forest",
-  fullName: "The Woods",
-  noncombats: [{
-    noncombat: "Cabin",
-    messages: ["acquired some dread tarragon", "made some bone flour", "made the forest less stinky", "recycled some newspapers", "read an old diary", "got a Dreadsylvanian auditor's badge", "made an impression of a complicated lock", "made the forest less spooky", "drove some werewolves out of the forest", "drove some vampires out of the castle", "flipped through a photo album"],
-    index: 1,
-    freddies: [[721, 2], [723, 1]],
-    banishes: [{
-      effect: ["forest", "stinky"],
-      choiceSequence: [[721, 1], [722, 3]]
-    }, {
-      effect: ["forest", "spooky"],
-      choiceSequence: [[721, 3], [724, 1]],
-      reasonCantPerform: () => (0,external_kolmafia_.myClass)() === (0,dist.$class)(raidlog_templateObject || (raidlog_templateObject = raidlog_taggedTemplateLiteral(["Accordion Thief"]))) ? null : "must be an Accordion Thief"
-    }, {
-      effect: ["forest", "werewolf"],
-      choiceSequence: [[721, 3], [724, 2]]
-    }, {
-      effect: ["castle", "vampire"],
-      choiceSequence: [[721, 3], [724, 3]]
-    }]
-  }, {
-    noncombat: "Tallest Tree",
-    messages: ["knocked some fruit loose", "wasted some fruit", "made the forest less sleazy", "acquired a chunk of moon-amber", "drove some ghosts out of the village", "rifled through a footlocker", "lifted some weights", "got a blood kiwi", "got a cool seed pod"],
-    index: 2,
-    banishes: [{
-      effect: ["forest", "sleazy"],
-      choiceSequence: [[725, 1], [726, 2]],
-      reasonCantPerform: () => (0,external_kolmafia_.myPrimestat)() === (0,dist.$stat)(raidlog_templateObject2 || (raidlog_templateObject2 = raidlog_taggedTemplateLiteral(["Muscle"]))) ? null : "must be a muscle class"
-    }, {
-      effect: ["village", "ghost"],
-      choiceSequence: [[725, 2], [727, 1]]
-    }]
-  }, {
-    noncombat: "Burrows",
-    messages: ["made the forest less hot", "got intimate with some hot coals", "made a cool iron ingot", "made the forest less cold", "listened to the forest's heart", "drank some nutritious forest goo", "drove some bugbears out of the forest", "found and sold a rare baseball card"],
-    index: 3,
-    freddies: [[729, 3], [732, 2]],
-    banishes: [{
-      effect: ["forest", "hot"],
-      choiceSequence: [[729, 1], [730, 1]]
-    }, {
-      effect: ["forest", "cold"],
-      choiceSequence: [[729, 2], [731, 1]]
-    }, {
-      effect: ["forest", "bugbear"],
-      choiceSequence: [[729, 3], [732, 1]]
-    }]
-  }]
-}, {
-  zone: "village",
-  fullName: "The Village",
-  noncombats: [{
-    noncombat: "Village Square",
-    messages: ["drove some ghosts out of the village", "collected a ghost pencil", "read some naughty carvings", "made the village less cold", "looted the blacksmith's till", "made a cool iron breastplate", "made a cool iron helmet", "made some cool iron greaves", "made the village less spooky", "was hung by a clanmate", "hung a clanmate"],
-    index: 4,
-    freddies: [[733, 2], [735, 2]],
-    banishes: [{
-      effect: ["village", "ghost"],
-      choiceSequence: [[733, 1], [734, 1]]
-    }, {
-      effect: ["village", "cold"],
-      choiceSequence: [[733, 2], [735, 1]]
-    }, {
-      effect: ["village", "spooky"],
-      choiceSequence: [[733, 3], [736, 1]]
-    }]
-  }, {
-    noncombat: "Skid Row",
-    messages: ["made the village less stinky", "swam in a sewer", "drove some skeletons out of the castle", "made the village less sleazy", "moved some bricks around", "looted the tinker's shack", "made a complicated key", "polished some moon-amber", "made a clockwork bird", "got some old fuse"],
-    index: 5,
-    banishes: [{
-      effect: ["village", "stinky"],
-      choiceSequence: [[737, 1], [738, 1]]
-    }, {
-      effect: ["castle", "skeleton"],
-      choiceSequence: [[737, 2], [740, 1]]
-    }, {
-      effect: ["village", "sleazy"],
-      choiceSequence: [[737, 2], [740, 2]]
-    }]
-  }, {
-    noncombat: "Old Duke's Estate",
-    messages: ["drove some zombies out of the village", "robbed some graves", "read some lurid epitaphs", "made the village less hot", "made a shepherd's pie", "raided some naughty cabinets", "drove some werewolves out of the forest", "got a bottle of eau de mort", "made a ghost shawl"],
-    index: 6,
-    freddies: [[741, 1], [742, 2]],
-    banishes: [{
-      effect: ["village", "zombie"],
-      choiceSequence: [[741, 1], [742, 1]]
-    }, {
-      effect: ["village", "hot"],
-      choiceSequence: [[741, 2], [743, 1]]
-    }, {
-      effect: ["forest", "werewolf"],
-      choiceSequence: [[741, 3], [744, 1]]
-    }]
-  }]
-}, {
-  zone: "castle",
-  fullName: "The Castle",
-  noncombats: [{
-    noncombat: "Tower",
-    messages: ["drove some bugbears out of the forest", "drove some zombies out of the village", "made a blood kiwitini", "drove some skeletons out of the castle", "read some ancient secrets", "learned to make a moon-amber necklace", "made the castle less sleazy", "raided a dresser", "got magically fingered"],
-    index: 8,
-    freddies: [[749, 3], [752, 2]],
-    banishes: [{
-      effect: ["forest", "bugbear"],
-      choiceSequence: [[749, 1], [750, 1]]
-    }, {
-      effect: ["village", "zombie"],
-      choiceSequence: [[749, 1], [750, 2]]
-    }, {
-      effect: ["castle", "skeleton"],
-      choiceSequence: [[749, 2], [751, 1]],
-      reasonCantPerform: () => (0,external_kolmafia_.myPrimestat)() === (0,dist.$stat)(raidlog_templateObject3 || (raidlog_templateObject3 = raidlog_taggedTemplateLiteral(["Mysticality"]))) ? null : "must be a mysticality class"
-    }, {
-      effect: ["castle", "sleazy"],
-      choiceSequence: [[749, 3], [752, 1]]
-    }]
-  }, {
-    noncombat: "Great Hall",
-    messages: ["drove some vampires out of the castle", "twirled on the dance floor", "twirled on the dance floor", "made the castle less cold", "frolicked in a freezer", "got some roast beast", "made the castle less stinky", "got a wax banana"],
-    index: 7,
-    banishes: [{
-      effect: ["castle", "vampire"],
-      choiceSequence: [[745, 1], [746, 1]]
-    }, {
-      effect: ["castle", "cold"],
-      choiceSequence: [[745, 2], [747, 1]]
-    }, {
-      effect: ["castle", "stinky"],
-      choiceSequence: [[745, 3], [748, 2]]
-    }]
-  }, {
-    noncombat: "Dungeons",
-    messages: ["made the castle less spooky", "did a whole bunch of pushups", "took a nap on a prison cot", "made the castle less hot", "sifted through some ashes", "relaxed in a furnace", "got some stinking agaric", "rolled around in some mushrooms"],
-    index: 9,
-    freddies: [[753, 2], [755, 2]],
-    banishes: [{
-      effect: ["castle", "spooky"],
-      choiceSequence: [[753, 1], [754, 1]]
-    }, {
-      effect: ["castle", "hot"],
-      choiceSequence: [[753, 2], [755, 1]]
-    }]
-  }]
-}];
-function noncombatInfo(noncombat) {
-  var _iterator = raidlog_createForOfIteratorHelper(dreadZones),
-      _step;
-
-  try {
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var zone = _step.value;
-
-      var _iterator2 = raidlog_createForOfIteratorHelper(zone.noncombats),
-          _step2;
-
-      try {
-        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var testNoncombat = _step2.value;
-
-          if (testNoncombat.noncombat === noncombat) {
-            return testNoncombat;
-          }
-        }
-      } catch (err) {
-        _iterator2.e(err);
-      } finally {
-        _iterator2.f();
-      }
-    }
-  } catch (err) {
-    _iterator.e(err);
-  } finally {
-    _iterator.f();
-  }
-
-  return null;
+var dreadZones = layout_namespaceObject.map(zone => new DreadZone(zone));
+function dreadZone(name) {
+  return dreadZones.find(zone => zone.name === name);
 }
 var lastRaidlogTurncount = -1;
+var lastRaidlogClan = -1;
 var savedRaidlog = undefined;
 function memoizedRaidlog() {
-  if (lastRaidlogTurncount !== (0,external_kolmafia_.totalTurnsPlayed)() || savedRaidlog === undefined) {
+  if (lastRaidlogTurncount !== (0,external_kolmafia_.totalTurnsPlayed)() || lastRaidlogClan !== (0,external_kolmafia_.getClanId)() || savedRaidlog === undefined) {
     lastRaidlogTurncount = (0,external_kolmafia_.totalTurnsPlayed)();
+    lastRaidlogClan = (0,external_kolmafia_.getClanId)();
     savedRaidlog = (0,external_kolmafia_.visitUrl)("clan_raidlogs.php");
   }
 
@@ -20863,14 +20835,14 @@ function dreadBanished() {
   var raidlog = memoizedRaidlog();
   var result = [];
 
-  var _iterator3 = raidlog_createForOfIteratorHelper(dreadZones),
-      _step3;
+  var _iterator = raidlog_createForOfIteratorHelper(dreadZones),
+      _step;
 
   try {
-    for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-      var _step3$value = _step3.value,
-          zone = _step3$value.zone,
-          fullName = _step3$value.fullName;
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var _step$value = _step.value,
+          zone = _step$value.name,
+          fullName = _step$value.fullName;
       var blockquoteRegex = new RegExp("<b>".concat(fullName, "</b>\\s*<blockquote>(.*?)</blockquote>"));
       var blockquoteMatch = raidlog.match(blockquoteRegex);
       var blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
@@ -20896,9 +20868,9 @@ function dreadBanished() {
       }
     }
   } catch (err) {
-    _iterator3.e(err);
+    _iterator.e(err);
   } finally {
-    _iterator3.f();
+    _iterator.f();
   }
 
   return result;
@@ -20907,49 +20879,64 @@ function dreadNoncombatsUsed() {
   var raidlog = memoizedRaidlog();
   var result = [];
 
-  var _iterator4 = raidlog_createForOfIteratorHelper(dreadZones),
-      _step4;
+  var _iterator2 = raidlog_createForOfIteratorHelper(dreadZones),
+      _step2;
 
   try {
     var _loop = function _loop() {
-      var zone = _step4.value;
+      var zone = _step2.value;
       var blockquoteRegex = new RegExp("<b>".concat(zone.fullName, "</b>\\s*<blockquote>(.*?)</blockquote>"));
       var blockquoteMatch = raidlog.match(blockquoteRegex);
       var blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
 
-      var _iterator5 = raidlog_createForOfIteratorHelper(zone.noncombats),
-          _step5;
+      var _iterator3 = raidlog_createForOfIteratorHelper(zone.noncombats),
+          _step3;
 
       try {
-        for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-          var noncombat = _step5.value;
-          var messageRes = noncombat.messages.map(s => new RegExp("".concat((0,external_kolmafia_.myName)(), " \\(#").concat((0,external_kolmafia_.myId)(), "\\) ").concat(s)));
-          if (messageRes.some(re => blockquote.match(re))) result.push(noncombat.noncombat);
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var noncombat = _step3.value;
+          var messageRes = noncombat.messages().map(s => new RegExp("".concat((0,external_kolmafia_.myName)(), " \\(#").concat((0,external_kolmafia_.myId)(), "\\) ").concat(s)));
+          if (messageRes.some(re => blockquote.match(re))) result.push(noncombat.name);
         }
       } catch (err) {
-        _iterator5.e(err);
+        _iterator3.e(err);
       } finally {
-        _iterator5.f();
+        _iterator3.f();
       }
     };
 
-    for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
       _loop();
     }
   } catch (err) {
-    _iterator4.e(err);
+    _iterator2.e(err);
   } finally {
-    _iterator4.f();
+    _iterator2.f();
   }
 
   return result;
 }
 ;// CONCATENATED MODULE: ./src/commands/freddies.ts
-function freddies_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = freddies_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+var freddies_templateObject;
+
+function freddies_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function freddies_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function freddies_slicedToArray(arr, i) { return freddies_arrayWithHoles(arr) || freddies_iterableToArrayLimit(arr, i) || freddies_unsupportedIterableToArray(arr, i) || freddies_nonIterableRest(); }
+
+function freddies_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function freddies_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function freddies_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function freddies_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = freddies_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 function freddies_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return freddies_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return freddies_arrayLikeToArray(o, minLen); }
 
 function freddies_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 
 
 
@@ -20971,12 +20958,50 @@ var freddiesCommand = new Command("freddies", "dr freddies: Collect freddies fro
       try {
         for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
           var noncombat = _step2.value;
-          if (used.includes(noncombat.noncombat) || !noncombat.freddies) continue;
-          lib/* propertyManager.setChoices */.kr.setChoices((0,lib/* fromEntries */.sq)(noncombat.freddies));
-          (0,external_kolmafia_.visitUrl)("clan_dreadsylvania.php?action=forceloc&loc=".concat(noncombat.index));
-          (0,external_kolmafia_.runChoice)(-1);
-          if ((0,external_kolmafia_.handlingChoice)()) throw "Stuck in choice adventure!";
-          (0,external_kolmafia_.print)();
+          if (used.includes(noncombat.name)) continue;
+
+          var _iterator3 = freddies_createForOfIteratorHelper(noncombat.choices),
+              _step3;
+
+          try {
+            for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+              var _step3$value = freddies_slicedToArray(_step3.value, 2),
+                  subIndex = _step3$value[0],
+                  subnoncombat = _step3$value[1];
+
+              if (subnoncombat.isLocked()) continue;
+              if (subnoncombat.classes && !subnoncombat.classes.includes((0,external_kolmafia_.myClass)())) continue;
+
+              var _iterator4 = freddies_createForOfIteratorHelper(subnoncombat.choices),
+                  _step4;
+
+              try {
+                for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+                  var _propertyManager$setC;
+
+                  var _step4$value = freddies_slicedToArray(_step4.value, 2),
+                      choiceIndex = _step4$value[0],
+                      choice = _step4$value[1];
+
+                  if (choice.item !== (0,dist.$item)(freddies_templateObject || (freddies_templateObject = freddies_taggedTemplateLiteral(["Freddy Kruegerand"])))) continue;
+                  if (choice.classes && !choice.classes.includes((0,external_kolmafia_.myClass)())) continue;
+                  lib/* propertyManager.setChoices */.kr.setChoices((_propertyManager$setC = {}, freddies_defineProperty(_propertyManager$setC, noncombat.id, subIndex), freddies_defineProperty(_propertyManager$setC, subnoncombat.id, choiceIndex), _propertyManager$setC));
+                  (0,external_kolmafia_.visitUrl)("clan_dreadsylvania.php?action=forceloc&loc=".concat(noncombat.index));
+                  (0,external_kolmafia_.runChoice)(-1);
+                  if ((0,external_kolmafia_.handlingChoice)()) throw "Stuck in choice adventure!";
+                  (0,external_kolmafia_.print)();
+                }
+              } catch (err) {
+                _iterator4.e(err);
+              } finally {
+                _iterator4.f();
+              }
+            }
+          } catch (err) {
+            _iterator3.e(err);
+          } finally {
+            _iterator3.f();
+          }
         }
       } catch (err) {
         _iterator2.e(err);
@@ -21038,33 +21063,52 @@ function banishesToLimit(targetZone, monster, element) {
 
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var _noncombatZone = _step.value;
+      var noncombatZone = _step.value;
 
-      var _iterator2 = plan_createForOfIteratorHelper(_noncombatZone.noncombats),
+      var _iterator2 = plan_createForOfIteratorHelper(noncombatZone.noncombats),
           _step2;
 
       try {
         for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
           var noncombat = _step2.value;
 
-          var _iterator3 = plan_createForOfIteratorHelper(noncombat.banishes),
+          var _iterator3 = plan_createForOfIteratorHelper(noncombat.choices),
               _step3;
 
           try {
             for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-              var banish = _step3.value;
+              var _step3$value = plan_slicedToArray(_step3.value, 2),
+                  subIndex = _step3$value[0],
+                  subnoncombat = _step3$value[1];
 
-              var _banish$effect = plan_slicedToArray(banish.effect, 2),
-                  banishZone = _banish$effect[0],
-                  impact = _banish$effect[1]; // print(`zone ${targetZone} === ${banishZone} && thingsToBanish includes ${impact}`);
+              var _iterator4 = plan_createForOfIteratorHelper(subnoncombat.choices),
+                  _step4;
+
+              try {
+                for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+                  var _step4$value = plan_slicedToArray(_step4.value, 2),
+                      choiceIndex = _step4$value[0],
+                      choice = _step4$value[1];
+
+                  if (!choice.banish) continue;
+
+                  var _choice$banish = plan_slicedToArray(choice.banish, 2),
+                      banishZone = _choice$banish[0],
+                      impact = _choice$banish[1]; // print(`zone ${targetZone} === ${banishZone} && thingsToBanish includes ${impact}`);
 
 
-              if (targetZone === banishZone && thingsNeededBanished.includes(impact)) {
-                // print("yes");
-                result.push([noncombat, banish]);
-              } // else print("no");
-              // print();
+                  if (targetZone === banishZone && thingsNeededBanished.includes(impact)) {
+                    // print("yes");
+                    result.push([noncombat, subIndex, choiceIndex].concat(plan_toConsumableArray(choice.banish)));
+                  } // else print("no");
+                  // print();
 
+                }
+              } catch (err) {
+                _iterator4.e(err);
+              } finally {
+                _iterator4.f();
+              }
             }
           } catch (err) {
             _iterator3.e(err);
@@ -21096,36 +21140,45 @@ function categorizeBanishes(targetZone, monster, element) {
   var cantBanishes = [];
   var goodBanishes = [];
 
-  var _iterator4 = plan_createForOfIteratorHelper(desiredBanishes),
-      _step4;
+  var _iterator5 = plan_createForOfIteratorHelper(desiredBanishes),
+      _step5;
 
   try {
     var _loop = function _loop() {
-      var _step4$value = plan_slicedToArray(_step4.value, 2),
-          noncombat = _step4$value[0],
-          banish = _step4$value[1];
+      var banish = _step5.value;
 
-      // Did we already use this noncombat, or has this banish already been done?
-      if (banishedInZone.some(info => noncombatZone(noncombat.noncombat) === info.noncombatZone && banish.effect[1] === info.banished)) {
-        completedBanishes.push([noncombat, banish]);
-      } else if (noncombatsUsed.has(noncombat.noncombat)) {
-        usedBanishes.push([noncombat, banish]);
-      } else if (banish.reasonCantPerform && banish.reasonCantPerform()) {
-        cantBanishes.push([noncombat, banish]);
+      var _banish = plan_slicedToArray(banish, 5),
+          noncombat = _banish[0],
+          subIndex = _banish[1],
+          choiceIndex = _banish[2],
+          banishZone = _banish[3],
+          banishThing = _banish[4];
+
+      var subnoncombat = noncombat.choices.get(subIndex);
+      var choice = subnoncombat.choices.get(choiceIndex);
+
+      if (banishedInZone.some(info => dreadZone(info.noncombatZone).noncombats.some(nc => nc.id === noncombat.id) && info.targetZone === banishZone && info.banished === banishThing)) {
+        completedBanishes.push(banish);
+      } else if (noncombatsUsed.has(noncombat.name)) {
+        usedBanishes.push(banish);
+      } else if (subnoncombat.classes && !subnoncombat.classes.includes((0,external_kolmafia_.myClass)())) {
+        cantBanishes.push([subnoncombat.classes, banish]);
+      } else if (choice.classes && !choice.classes.includes((0,external_kolmafia_.myClass)())) {
+        cantBanishes.push([choice.classes, banish]);
       } else {
-        goodBanishes.push([noncombat, banish]);
+        goodBanishes.push(banish);
       }
     };
 
-    for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+    for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
       _loop();
     } // print(`completed: ${JSON.stringify(completedBanishes.map(([, banish]) => banish))}`);
     // print(`used: ${JSON.stringify(usedBanishes.map(([, banish]) => banish))}`);
 
   } catch (err) {
-    _iterator4.e(err);
+    _iterator5.e(err);
   } finally {
-    _iterator4.f();
+    _iterator5.f();
   }
 
   return {
@@ -21140,34 +21193,37 @@ function planLimitTo(targetZone, monster, element) {
       cantBanishes = _categorizeBanishes.cantBanishes,
       goodBanishes = _categorizeBanishes.goodBanishes;
 
-  var _iterator5 = plan_createForOfIteratorHelper(cantBanishes),
-      _step5;
-
-  try {
-    for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-      var _step5$value = plan_slicedToArray(_step5.value, 2),
-          noncombat = _step5$value[0],
-          banish = _step5$value[1];
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      (0,external_kolmafia_.print)("Can't banish ".concat(banish.effect, " @ ").concat(noncombat, " because ").concat(banish.reasonCantPerform()));
-    }
-  } catch (err) {
-    _iterator5.e(err);
-  } finally {
-    _iterator5.f();
-  }
-
-  var banishLocations = new Map();
-
-  var _iterator6 = plan_createForOfIteratorHelper(goodBanishes),
+  var _iterator6 = plan_createForOfIteratorHelper(cantBanishes),
       _step6;
 
   try {
     for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
       var _step6$value = plan_slicedToArray(_step6.value, 2),
-          _noncombat = _step6$value[0],
-          _banish = _step6$value[1];
+          classes = _step6$value[0],
+          _step6$value$ = plan_slicedToArray(_step6$value[1], 4),
+          noncombat = _step6$value$[0],
+          banish = _step6$value$[3];
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      (0,external_kolmafia_.print)("Can't banish ".concat(banish, " @ ").concat(noncombat, " because we aren't ").concat(classes.join(", "), "."));
+    }
+  } catch (err) {
+    _iterator6.e(err);
+  } finally {
+    _iterator6.f();
+  }
+
+  var banishLocations = new Map();
+
+  var _iterator7 = plan_createForOfIteratorHelper(goodBanishes),
+      _step7;
+
+  try {
+    for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+      var _banish2 = _step7.value;
+
+      var _banish3 = plan_slicedToArray(_banish2, 1),
+          _noncombat = _banish3[0];
 
       var banishList = banishLocations.get(_noncombat);
 
@@ -21176,40 +21232,40 @@ function planLimitTo(targetZone, monster, element) {
         banishLocations.set(_noncombat, banishList);
       }
 
-      banishList.push(_banish);
+      banishList.push(_banish2);
     }
   } catch (err) {
-    _iterator6.e(err);
+    _iterator7.e(err);
   } finally {
-    _iterator6.f();
+    _iterator7.f();
   }
 
   return plan_toConsumableArray(banishLocations).map(_ref => {
     var _ref2 = plan_slicedToArray(_ref, 2),
-        noncombat = _ref2[0],
         _ref2$ = plan_slicedToArray(_ref2[1], 1),
         banish = _ref2$[0];
 
-    return [noncombat, banish];
+    return banish;
   });
-}
+} // For informational purposes only - not enough info to plan out banishes.
+
 function neededBanishes(targetZone, monster, element) {
   var _categorizeBanishes2 = categorizeBanishes(targetZone, monster, element),
       completedBanishes = _categorizeBanishes2.completedBanishes;
 
   var paired = monsterPair(monster);
   var monsterCount = completedBanishes.filter(_ref3 => {
-    var _ref4 = plan_slicedToArray(_ref3, 2),
-        banish = _ref4[1];
+    var _ref4 = plan_slicedToArray(_ref3, 5),
+        thing = _ref4[4];
 
-    return banish.effect[1] === paired;
+    return thing === paired;
   }).length;
   var banishedElements = completedBanishes.map(_ref5 => {
-    var _ref6 = plan_slicedToArray(_ref5, 2),
-        banish = _ref6[1];
+    var _ref6 = plan_slicedToArray(_ref5, 5),
+        thing = _ref6[4];
 
-    return banish.effect[1];
-  }).filter(x => isDreadElement(x));
+    return thing;
+  }).filter(x => isDreadElementId(x));
   return [].concat(plan_toConsumableArray(dreadElements.filter(e => element !== e && !banishedElements.includes(e))), plan_toConsumableArray(new Array(2 - monsterCount).fill(paired)));
 }
 ;// CONCATENATED MODULE: ./src/commands/limit.ts
@@ -21245,11 +21301,11 @@ var limitCommand = new Command("limit", usage, _ref => {
 
   (0,external_kolmafia_.printHtml)("<b>Dr. Dread Auto-Banisher</b>");
 
-  if (!isDreadMonster(monster)) {
+  if (!isDreadMonsterId(monster)) {
     (0,external_kolmafia_.print)("Unrecognized monster ".concat(monster, "."), "red");
     (0,external_kolmafia_.print)("Usage: ".concat(usage, "."));
     return;
-  } else if (!isDreadElement(element)) {
+  } else if (!isDreadElementId(element)) {
     (0,external_kolmafia_.print)("Unrecognized element ".concat(element, "."), "red");
     (0,external_kolmafia_.print)("Usage: ".concat(usage, "."));
     return;
@@ -21276,13 +21332,20 @@ var limitCommand = new Command("limit", usage, _ref => {
 
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var _step$value = limit_slicedToArray(_step.value, 2),
-            noncombat = _step$value[0],
-            banish = _step$value[1];
+        var banish = _step.value;
 
-        (0,external_kolmafia_.print)("Banishing ".concat(banish.effect.join(", "), " @ ").concat(noncombat.noncombat, " using ").concat(banish.choiceSequence.map(x => x.join(", ")).join(" => ")));
-        (0,external_kolmafia_.retrieveItem)((0,dist.$item)(limit_templateObject5 || (limit_templateObject5 = limit_taggedTemplateLiteral(["Dreadsylvanian skeleton key"]))));
-        lib/* propertyManager.setChoices */.kr.setChoices((0,lib/* fromEntries */.sq)(banish.choiceSequence));
+        var _banish = limit_slicedToArray(banish, 5),
+            noncombat = _banish[0],
+            subIndex = _banish[1],
+            choiceIndex = _banish[2],
+            targetZone = _banish[3],
+            thing = _banish[4];
+
+        var subnoncombat = noncombat.choices.get(subIndex);
+        var choiceSequence = [[noncombat.id, subIndex], [subnoncombat.id, choiceIndex]];
+        (0,external_kolmafia_.print)("Banishing ".concat(thing, " in ").concat(targetZone, " @ ").concat(noncombat.name, " using ").concat(choiceSequence.map(x => x.join(", ")).join(" => ")));
+        if (subnoncombat.isLocked()) (0,external_kolmafia_.retrieveItem)((0,dist.$item)(limit_templateObject5 || (limit_templateObject5 = limit_taggedTemplateLiteral(["Dreadsylvanian skeleton key"]))));
+        lib/* propertyManager.setChoices */.kr.setChoices((0,lib/* fromEntries */.sq)(choiceSequence));
         (0,external_kolmafia_.visitUrl)("clan_dreadsylvania.php?action=forceloc&loc=".concat(noncombat.index));
         (0,external_kolmafia_.runChoice)(-1);
         if ((0,external_kolmafia_.handlingChoice)()) throw "Stuck in choice adventure!";
@@ -21330,11 +21393,11 @@ var planCommand = new Command("plan", plan_usage, _ref => {
       element = _ref2[0],
       monster = _ref2[1];
 
-  if (!isDreadMonster(monster)) {
+  if (!isDreadMonsterId(monster)) {
     (0,external_kolmafia_.print)("Unrecognized monster ".concat(monster, "."), "red");
     (0,external_kolmafia_.print)("Usage: ".concat(plan_usage, "."));
     return;
-  } else if (!isDreadElement(element)) {
+  } else if (!isDreadElementId(element)) {
     (0,external_kolmafia_.print)("Unrecognized element ".concat(element, "."), "red");
     (0,external_kolmafia_.print)("Usage: ".concat(plan_usage, "."));
     return;
@@ -21342,7 +21405,7 @@ var planCommand = new Command("plan", plan_usage, _ref => {
 
   (0,external_kolmafia_.printHtml)("<b>Dr. Dread Banish Planner</b>");
   (0,external_kolmafia_.print)("Noncombats used: ".concat(dreadNoncombatsUsed().join(", ")));
-  (0,external_kolmafia_.print)("Trying to banish ".concat(element, " ").concat(monsterPlural(monster)));
+  (0,external_kolmafia_.print)("Trying to banish ".concat(element, " ").concat(monster));
   (0,external_kolmafia_.print)();
   var remaining = neededBanishes(monsterZone(monster), monster, element);
 
@@ -21358,16 +21421,23 @@ var planCommand = new Command("plan", plan_usage, _ref => {
     (0,external_kolmafia_.print)("No banishes available and needed.");
   }
 
-  var _iterator = commands_plan_createForOfIteratorHelper(plan),
+  var _iterator = commands_plan_createForOfIteratorHelper(planLimitTo(monsterZone(monster), monster, element)),
       _step;
 
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var _step$value = commands_plan_slicedToArray(_step.value, 2),
-          noncombat = _step$value[0],
-          banish = _step$value[1];
+      var banish = _step.value;
 
-      (0,external_kolmafia_.print)("Banish ".concat(banish.effect.join(", "), " @ ").concat(noncombat.noncombat, " using ").concat(banish.choiceSequence.map(x => x.join(", ")).join(" => ")));
+      var _banish = commands_plan_slicedToArray(banish, 5),
+          noncombat = _banish[0],
+          subIndex = _banish[1],
+          choiceIndex = _banish[2],
+          targetZone = _banish[3],
+          thing = _banish[4];
+
+      var subnoncombat = noncombat.choices.get(subIndex);
+      var choiceSequence = [[noncombat.id, subIndex], [subnoncombat.id, choiceIndex]];
+      (0,external_kolmafia_.print)("Banish ".concat(thing, " in ").concat(targetZone, " @ ").concat(noncombat.name, " using ").concat(choiceSequence.map(x => x.join(", ")).join(" => ")));
     }
   } catch (err) {
     _iterator.e(err);
@@ -21412,9 +21482,9 @@ var statusCommand = new Command("status", "dr status: Print current banishing st
 
       var banishedThing = banish.banished;
 
-      if (isDreadElement(banishedThing)) {
+      if (isDreadElementId(banishedThing)) {
         zoneInfo[0].push(banishedThing);
-      } else if (isDreadMonster(banishedThing)) {
+      } else if (isDreadMonsterId(banishedThing)) {
         zoneInfo[1].push(banishedThing);
       }
     }
@@ -21586,7 +21656,7 @@ __webpack_require__.d(__webpack_exports__, {
   "j0": () => (/* binding */ tryFeast)
 });
 
-// UNUSED EXPORTS: fairyMultiplier, leprechaunMultiplier, mapMonster, setDefaultChoiceHandling, sum
+// UNUSED EXPORTS: entries, fairyMultiplier, leprechaunMultiplier, mapMonster, setDefaultChoiceHandling, sum
 
 ;// CONCATENATED MODULE: external "canadv.ash"
 const external_canadv_ash_namespaceObject = require("canadv.ash");;
@@ -22051,6 +22121,10 @@ function gnomeWeightValue() {
   // Assume rough weight of 190
   var gnomeWeight = 190;
   return MPA * (0.001 / Math.pow(1 - 0.001 * gnomeWeight, 2));
+} // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+function entries(obj) {
+  return Object.keys(obj).map(k => [k, obj[k]]);
 }
 function fromEntries(iterable) {
   return _toConsumableArray(iterable).reduce((obj, _ref5) => {
@@ -22172,7 +22246,7 @@ module.exports = require("kolmafia");;
 /******/ 	// module cache are used so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	var __webpack_exports__ = __webpack_require__(__webpack_require__.s = 6760);
+/******/ 	var __webpack_exports__ = __webpack_require__(__webpack_require__.s = 7957);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
