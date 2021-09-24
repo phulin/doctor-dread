@@ -4,6 +4,7 @@ import { Command } from "./command";
 import {
   dreadBanished,
   DreadElementId,
+  dreadKilled,
   DreadMonsterId,
   DreadZoneId,
   isDreadElementId,
@@ -31,10 +32,13 @@ export const statusCommand = new Command(
       }
     }
 
+    const killedMap = new Map(dreadKilled().map(([zone, killed]) => [zone.name, killed]));
+
     for (const [zone, [elementsBanished, monstersBanished]] of zoneMap) {
       print(`${zone.toUpperCase()}:`);
       print(`Elements banished: ${elementsBanished.join(", ")}`);
       print(`Monsters banished: ${monstersBanished.join(", ")}`);
+      print(`Monsters remaining: ${1000 - (killedMap.get(zone) ?? 0)}`);
       print();
     }
   }

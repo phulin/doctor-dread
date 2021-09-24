@@ -157,17 +157,20 @@ export type DreadZoneId = typeof dreadZoneTypes[number];
 type DreadZoneSchema = {
   name: DreadZoneId;
   fullName: string;
+  monsters: DreadMonsterId[];
   noncombats: DreadNoncombatSchema[];
 };
 
 export class DreadZone {
   name: DreadZoneId;
   fullName: string;
+  monsters: DreadMonsterId[];
   noncombats: DreadNoncombat[];
 
-  constructor({ name, fullName, noncombats }: DreadZoneSchema) {
+  constructor({ name, fullName, monsters, noncombats }: DreadZoneSchema) {
     this.name = name;
     this.fullName = fullName;
+    this.monsters = monsters;
     this.noncombats = noncombats.map((noncombat) => new DreadNoncombat(noncombat));
   }
 }
@@ -239,38 +242,43 @@ export function memoizedRaidlog(): string {
   return savedRaidlog;
 }
 
+export function raidlogBlocks(): [DreadZone, string][] {
+  return dreadZones.map((zone) => {
+    const raidlog = memoizedRaidlog();
+    const blockquoteRegex = new RegExp(`<b>${zone.fullName}</b>\\s*<blockquote>(.*?)</blockquote>`);
+    const blockquoteMatch = raidlog.match(blockquoteRegex);
+    const blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
+    return [zone, blockquote] as [DreadZone, string];
+  });
+}
+
 export function dreadBanished(): {
   targetZone: DreadZoneId;
   noncombatZone: DreadZoneId;
   banished: DreadElementId | DreadMonsterId;
 }[] {
-  const raidlog = memoizedRaidlog();
   const result: {
     targetZone: DreadZoneId;
     noncombatZone: DreadZoneId;
     banished: DreadElementId | DreadMonsterId;
   }[] = [];
 
-  for (const { name: zone, fullName } of dreadZones) {
-    const blockquoteRegex = new RegExp(`<b>${fullName}</b>\\s*<blockquote>(.*?)</blockquote>`);
-    const blockquoteMatch = raidlog.match(blockquoteRegex);
-    const blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
-
+  for (const [{ name }, block] of raidlogBlocks()) {
     const elementRegex = /made the (.*?) less (.*?) \(1 turn\)/g;
     let match;
-    while ((match = elementRegex.exec(blockquote)) !== null) {
+    while ((match = elementRegex.exec(block)) !== null) {
       result.push({
         targetZone: match[1] as DreadZoneId,
-        noncombatZone: zone,
+        noncombatZone: name,
         banished: match[2] as DreadElementId,
       });
     }
 
     const monsterRegex = /drove some (.*?) out of the (.*?) \(1 turn\)/g;
-    while ((match = monsterRegex.exec(blockquote)) !== null) {
+    while ((match = monsterRegex.exec(block)) !== null) {
       result.push({
         targetZone: match[2] as DreadZoneId,
-        noncombatZone: zone,
+        noncombatZone: name,
         banished: monsterSingular(match[1]),
       });
     }
@@ -279,20 +287,29 @@ export function dreadBanished(): {
   return result;
 }
 
+export function dreadKilled(): [DreadZone, number][] {
+  return raidlogBlocks().map(([zone, block]) => {
+    let zoneTotal = 0;
+    for (const monster of zone.monsters) {
+      const monsterRe = new RegExp(`defeated (.*?) ${monster} x ([0-9]+)`, "g");
+      let match;
+      while ((match = monsterRe.exec(block)) !== null) {
+        zoneTotal += parseInt(match[2]);
+      }
+    }
+    return [zone, zoneTotal] as [DreadZone, number];
+  });
+}
+
 export function dreadNoncombatsUsed(): DreadNoncombatId[] {
-  const raidlog = memoizedRaidlog();
   const result: DreadNoncombatId[] = [];
 
-  for (const zone of dreadZones) {
-    const blockquoteRegex = new RegExp(`<b>${zone.fullName}</b>\\s*<blockquote>(.*?)</blockquote>`);
-    const blockquoteMatch = raidlog.match(blockquoteRegex);
-    const blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
-
+  for (const [zone, block] of raidlogBlocks()) {
     for (const noncombat of zone.noncombats) {
       const messageRes = noncombat
         .messages()
         .map((s) => new RegExp(`${myName()} \\(#${myId()}\\) ${s}`));
-      if (messageRes.some((re) => blockquote.match(re))) result.push(noncombat.name);
+      if (messageRes.some((re) => block.match(re))) result.push(noncombat.name);
     }
   }
 
