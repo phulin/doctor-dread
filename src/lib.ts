@@ -513,6 +513,11 @@ export function gnomeWeightValue(): number {
   return MPA * (0.001 / (1 - 0.001 * gnomeWeight) ** 2);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function entries<T extends { [index: string]: any }>(obj: T): [keyof T, T[keyof T]][] {
+  return Object.keys(obj).map((k) => [k, obj[k]] as [keyof T, T[keyof T]]);
+}
+
 export function fromEntries<T>(iterable: [keyof T, T[keyof T]][]): T {
   return [...iterable].reduce((obj, [key, val]) => {
     obj[key] = val;

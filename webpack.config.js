@@ -29,6 +29,7 @@ const sharedConfig = {
       },
       {
         test: /\.ya?ml$/,
+        type: "json",
         loader: "yaml-loader",
       },
       {

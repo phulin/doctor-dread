@@ -29,9 +29,9 @@
               message: read an old diary
               effect: Bored Stiff
             3:
-              message: got a Dreadsylvanian auditor's badge
+              message: got a Dreadsylvania auditor's badge
               requirement: replica key
-              item: Dreadsylvanian auditor's badge
+              item: Dreadsylvania auditor's badge
             4:
               message: made an impression of a complicated lock
               requirement: wax banana

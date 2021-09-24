@@ -81,7 +81,7 @@ export class DreadSubnoncombat {
   }
 
   messages(): string[] {
-    return ([] as string[]).concat(...Object.values(this.choices).map((choice) => choice.messages));
+    return ([] as string[]).concat(...[...this.choices.values()].map((choice) => choice.messages));
   }
 
   isLocked(): boolean {
@@ -144,7 +144,7 @@ export class DreadNoncombat {
 
   messages(): string[] {
     return ([] as string[]).concat(
-      ...Object.values(this.choices).map((choice) => choice.messages())
+      ...[...this.choices.values()].map((choice) => choice.messages())
     );
   }
 }
