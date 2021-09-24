@@ -17876,7 +17876,7 @@ function estimatedTurns() {
 
 /***/ }),
 
-/***/ 7957:
+/***/ 5808:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17892,52 +17892,517 @@ __webpack_require__.d(__webpack_exports__, {
 var external_kolmafia_ = __webpack_require__(1664);
 // EXTERNAL MODULE: ./node_modules/libram/dist/index.js
 var dist = __webpack_require__(9803);
-;// CONCATENATED MODULE: ./src/commands/command.ts
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var Command = function Command(name, help, run) {
-  _classCallCheck(this, Command);
-
-  _defineProperty(this, "name", void 0);
-
-  _defineProperty(this, "help", void 0);
-
-  _defineProperty(this, "run", void 0);
-
-  this.name = name;
-  this.help = help;
-  this.run = run;
-};
-// EXTERNAL MODULE: ./src/combat.ts
-var combat = __webpack_require__(4223);
-;// CONCATENATED MODULE: ./src/clan.ts
-var _templateObject, _templateObject2;
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-
-function clan_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function clan_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+;// CONCATENATED MODULE: ./src/dungeon/layout.yml
+const layout_namespaceObject = JSON.parse('[{"name":"forest","fullName":"The Woods","noncombats":[{"name":"Cabin","id":721,"index":1,"choices":{"1":{"name":"Kitchen","id":722,"choices":{"1":{"message":"acquired some dread tarragon","item":"dread tarragon"},"2":{"message":"made some bone flour","item":"bone flour"},"3":{"message":"made the forest less stinky","banish":["forest","stinky"]}}},"2":{"name":"Basement","id":723,"choices":{"1":{"message":"recycled some newspapers","item":"Freddy Kruegerand"},"2":{"message":"read an old diary","effect":"Bored Stiff"},"3":{"message":"got a Dreadsylvania auditor\'s badge","requirement":"replica key","item":"Dreadsylvania auditor\'s badge"},"4":{"message":"made an impression of a complicated lock","requirement":"wax banana","item":"complicated lock impression"}}},"3":{"name":"Attic","id":724,"locked":true,"choices":{"1":{"message":"made the forest less spooky","classes":["Accordion Thief"],"item":"intricate music box parts"},"2":{"message":"drove some werewolves out of the forest","banish":["forest","werewolf"]},"3":{"message":"drove some vampires out of the castle","banish":["castle","vampire"]},"4":{"message":"flipped through a photo album","stat":"Moxie"}}}}},{"name":"Tallest Tree","id":725,"index":2,"choices":{"1":{"name":"Climb to the top","id":726,"classes":["Seal Clubber","Turtle Tamer"],"choices":{"1":{"messages":["knocked some fruit loose","wasted some fruit"]},"2":{"message":"made the forest less sleazy","banish":["forest","sleazy"]},"3":{"message":"acquired a chunk of moon-amber","item":"moon-amber"}}},"2":{"name":"Fire tower","id":727,"locked":true,"choices":{"1":{"message":"drove some ghosts out of the village","banish":["village","ghost"]},"2":{"message":"rifled through a footlocker","item":"Freddy Kruegerand"},"3":{"message":"lifted some weights","stat":"Muscle"}}},"3":{"name":"Root around","id":728,"choices":{"1":{"message":"got a blood kiwi","item":"blood kiwi"},"2":{"message":"got a cool seed pod","item":"Dreadsylvanian seed pod"}}}}},{"name":"Burrows","id":729,"index":3,"choices":{"1":{"name":"Towards heat","id":730,"choices":{"1":{"message":"made the forest less hot","banish":["forest","hot"]},"2":{"message":"got intimate with some hot coals","effect":"Dragged Through the Coals"},"3":{"message":"made a cool iron ingot","requirement":"old ball and chain","item":"cool iron ingot"}}},"2":{"name":"Towards cold","id":731,"choices":{"1":{"message":"made the forest less cold","banish":["forest","hot"]},"2":{"message":"listened to the forest\'s heart","stat":"Mysticality"},"3":{"message":"drank some nutritious forest goo","effect":"Nature\'s Bounty"}}},"3":{"name":"Towards smelly","id":732,"choices":{"1":{"message":"drove some bugbears out of the forest","banish":["forest","hot"]},"2":{"message":"found and sold a rare baseball card","item":"Freddy Kruegerand"}}}}}]},{"name":"village","fullName":"The Village","noncombats":[{"name":"Village Square","id":733,"index":4,"choices":{"1":{"name":"Schoolhouse","id":734,"locked":true,"choices":{"1":{"message":"drove some ghosts out of the village","banish":["village","ghost"]},"2":{"message":"collected a ghost pencil","item":"ghost pencil"},"3":{"message":"read some naughty carvings","stat":"Mysticality"}}},"2":{"name":"Blacksmith","id":735,"choices":{"1":{"message":"made the village less cold","banish":["village","cold"]},"2":{"message":"looted the blacksmith\'s till","item":"Freddy Kruegerand"},"3":{"messages":["made a cool iron breastplate","made a cool iron helmet","made some cool iron greaves"]}}},"3":{"name":"Gallows","id":736,"choices":{"1":{"message":"made the village less spooky","banish":["village","spooky"]},"2":{"message":"was hung by a clanmate"},"4":{"message":"hung a clanmate"}}}}},{"name":"Skid Row","id":737,"index":5,"choices":{"1":{"name":"Sewers","id":738,"choices":{"1":{"message":"made the village less stinky","banish":["village","stinky"]},"2":{"message":"swam in a sewer","effect":"Sewer-Drenched"}}},"2":{"name":"Tenements","id":739,"choices":{"1":{"message":"drove some skeletons out of the castle","banish":["castle","skeleton"]},"2":{"message":"made the village less sleazy","banish":["village","sleazy"]},"3":{"message":"moved some bricks around","stat":"Muscle"}}},"3":{"name":"Ticking shack","id":740,"classes":["Disco Bandit","Accordion Thief"],"choices":{"1":{"message":"looted the tinker\'s shack","item":"Freddy Kruegerand"},"2":{"message":"made a complicated key","item":"replica key"},"3":{"message":"polished some moon-amber","requirement":"moon-amber","item":"polished moon-amber"},"4":{"message":"made a clockwork bird","item":"unwound mechanical songbird"},"5":{"message":"got some old fuse","quantity":3,"item":"old fuse"}}}}},{"name":"Old Duke\'s Estate","id":741,"index":6,"choices":{"1":{"name":"Family plot","id":742,"choices":{"1":{"message":"drove some zombies out of the village","banish":["village","zombie"]},"2":{"message":"robbed some graves","item":"Freddy Kruegerand"},"3":{"message":"read some lurid epitaphs","effect":"Fifty Ways to Bereave Your Lover"}}},"2":{"name":"Servant\'s quarters","id":743,"choices":{"1":{"message":"made the village less hot","banish":["village","hot"]},"2":{"message":"made a shepherd\'s pie","item":"Dreadsylvanian shepherd\'s pie"},"3":{"message":"raided some naughty cabinets","stat":"Moxie"}}},"3":{"name":"Master suite","id":744,"locked":true,"choices":{"1":{"message":"drove some werewolves out of the forest","banish":["forest","werewolf"]},"2":{"message":"got a bottle of eau de mort","item":"eau de mort"},"3":{"message":"made a ghost shawl","item":"ghost shawl"}}}}}]},{"name":"castle","fullName":"The Castle","noncombats":[{"name":"Tower","id":749,"index":8,"choices":{"1":{"name":"Laboratory","id":750,"locked":true,"choices":{"1":{"message":"drove some bugbears out of the forest","banish":["forest","bugbear"]},"2":{"message":"drove some zombies out of the village","banish":["village","zombie"]},"5":{"message":"made a blood kiwitini","classes":["Disco Bandit","Accordion Thief"],"item":"bloody kiwitini"}}},"2":{"name":"Books","id":751,"classes":["Pastamancer","Sauceror"],"choices":{"1":{"message":"drove some skeletons out of the castle","banish":["castle","skeleton"]},"2":{"message":"read some ancient secrets","stat":"Mysticality"},"3":{"message":"learned to make a moon-amber necklace"}}},"3":{"name":"Bedroom","id":752,"choices":{"1":{"message":"made the castle less sleazy","banish":["castle","sleazy"]},"2":{"message":"raided a dresser","item":"Freddy Kruegerand"},"3":{"message":"got magically fingered","effect":"Magically Fingered"}}}}},{"name":"Great Hall","id":745,"index":7,"choices":{"1":{"name":"Ballroom","id":746,"locked":true,"choices":{"1":{"message":"drove some vampires out of the castle","banish":["castle","vampire"]},"2":{"message":"twirled on the dance floor","requirement":"muddy skirt","stat":"Moxie","item":"weedy skirt"}}},"2":{"name":"Kitchen","id":747,"choices":{"1":{"message":"made the castle less cold","banish":["castle","cold"]},"2":{"message":"frolicked in a freezer","effect":"Staying Frosty"}}},"3":{"name":"Dining room","id":748,"choices":{"1":{"message":"got some roast beast","item":"dreadful roast"},"2":{"message":"made the castle less stinky","banish":["castle","stinky"]},"3":{"message":"got a wax banana","classes":["Pastamancer","Sauceror"],"item":"wax banana"}}}}},{"name":"Dungeons","id":753,"index":9,"choices":{"1":{"name":"Cell block","id":754,"choices":{"1":{"message":"made the castle less spooky","banish":["castle","spooky"]},"2":{"message":"did a whole bunch of pushups","stat":"Muscle"},"3":{"message":"took a nap on a prison cot"}}},"2":{"name":"Boiler room","id":755,"choices":{"1":{"message":"made the castle less hot","banish":["castle","hot"]},"2":{"message":"sifted through some ashes","item":"Freddy Kruegerand"},"3":{"message":"relaxed in a furnace"}}},"3":{"name":"Guardroom","id":756,"choices":{"1":{"message":"got some stinking agaric","item":"stinking agaricus"},"2":{"message":"rolled around in some mushrooms","effect":"Spore-Wreathed"}}}}}]}]');
+;// CONCATENATED MODULE: ./src/dungeon/raidlog.ts
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var dreadMonsters = ["bugbear", "werewolf", "ghost", "zombie", "vampire", "skeleton"];
+function isDreadMonsterId(x) {
+  return dreadMonsters.includes(x);
+}
+var dreadElements = ["hot", "cold", "sleazy", "stinky", "spooky"];
+function isDreadElementId(x) {
+  return dreadElements.includes(x);
+}
+var DreadSubnoncombat = /*#__PURE__*/function () {
+  function DreadSubnoncombat(_ref) {
+    var name = _ref.name,
+        id = _ref.id,
+        locked = _ref.locked,
+        classes = _ref.classes,
+        choices = _ref.choices;
+
+    _classCallCheck(this, DreadSubnoncombat);
+
+    _defineProperty(this, "name", void 0);
+
+    _defineProperty(this, "id", void 0);
+
+    _defineProperty(this, "needsUnlocked", void 0);
+
+    _defineProperty(this, "classes", void 0);
+
+    _defineProperty(this, "choices", void 0);
+
+    this.name = name;
+    this.id = id;
+    this.needsUnlocked = !!locked;
+    if (classes) this.classes = classes.map(c => Class.get(c));
+    this.choices = new Map(Object.entries(choices).map(_ref2 => {
+      var _choice$messages;
+
+      var _ref3 = _slicedToArray(_ref2, 2),
+          index = _ref3[0],
+          choice = _ref3[1];
+
+      return [parseInt(index), _objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread({
+        messages: (_choice$messages = choice.messages) !== null && _choice$messages !== void 0 ? _choice$messages : [choice.message]
+      }, choice.classes ? {
+        classes: choice.classes.map(c => Class.get(c))
+      } : {}), choice.requirement ? {
+        requirement: Item.get(choice.requirement)
+      } : {}), choice.item ? {
+        item: Item.get(choice.item)
+      } : {}), choice.banish ? {
+        banish: choice.banish
+      } : {}), choice.effect ? {
+        effect: Effect.get(choice.effect)
+      } : {}), choice.stat ? {
+        stat: Stat.get(choice.stat)
+      } : {})];
+    }));
+  }
+
+  _createClass(DreadSubnoncombat, [{
+    key: "messages",
+    value: function messages() {
+      var _ref4;
+
+      return (_ref4 = []).concat.apply(_ref4, _toConsumableArray(_toConsumableArray(this.choices.values()).map(choice => choice.messages)));
+    }
+  }, {
+    key: "isLocked",
+    value: function isLocked() {
+      return this.needsUnlocked && !memoizedRaidlog().includes("unlocked the ".concat(this.name.toLowerCase()));
+    }
+  }]);
+
+  return DreadSubnoncombat;
+}();
+var DreadNoncombat = /*#__PURE__*/function () {
+  function DreadNoncombat(_ref5) {
+    var name = _ref5.name,
+        id = _ref5.id,
+        index = _ref5.index,
+        choices = _ref5.choices;
+
+    _classCallCheck(this, DreadNoncombat);
+
+    _defineProperty(this, "name", void 0);
+
+    _defineProperty(this, "id", void 0);
+
+    _defineProperty(this, "index", void 0);
+
+    _defineProperty(this, "choices", void 0);
+
+    this.name = name;
+    this.id = id;
+    this.index = index;
+    this.choices = new Map(Object.entries(choices).map(_ref6 => {
+      var _ref7 = _slicedToArray(_ref6, 2),
+          index = _ref7[0],
+          choice = _ref7[1];
+
+      return [parseInt(index), new DreadSubnoncombat(choice)];
+    }));
+  }
+
+  _createClass(DreadNoncombat, [{
+    key: "zone",
+    value: function zone() {
+      switch (this.name) {
+        case "Cabin":
+        case "Tallest Tree":
+        case "Burrows":
+          return "forest";
+
+        case "Village Square":
+        case "Skid Row":
+        case "Old Duke's Estate":
+          return "village";
+
+        case "Tower":
+        case "Great Hall":
+        case "Dungeons":
+          return "castle";
+      }
+    }
+  }, {
+    key: "messages",
+    value: function messages() {
+      var _ref8;
+
+      return (_ref8 = []).concat.apply(_ref8, _toConsumableArray(_toConsumableArray(this.choices.values()).map(choice => choice.messages())));
+    }
+  }]);
+
+  return DreadNoncombat;
+}();
+var dreadZoneTypes = (/* unused pure expression or super */ null && (["forest", "village", "castle"]));
+var DreadZone = function DreadZone(_ref9) {
+  var name = _ref9.name,
+      fullName = _ref9.fullName,
+      noncombats = _ref9.noncombats;
+
+  _classCallCheck(this, DreadZone);
+
+  _defineProperty(this, "name", void 0);
+
+  _defineProperty(this, "fullName", void 0);
+
+  _defineProperty(this, "noncombats", void 0);
+
+  this.name = name;
+  this.fullName = fullName;
+  this.noncombats = noncombats.map(noncombat => new DreadNoncombat(noncombat));
+};
+function monsterPair(monster) {
+  switch (monster) {
+    case "bugbear":
+      return "werewolf";
+
+    case "werewolf":
+      return "bugbear";
+
+    case "ghost":
+      return "zombie";
+
+    case "zombie":
+      return "ghost";
+
+    case "vampire":
+      return "skeleton";
+
+    case "skeleton":
+      return "vampire";
+  }
+}
+function monsterZone(monster) {
+  switch (monster) {
+    case "bugbear":
+    case "werewolf":
+      return "forest";
+
+    case "ghost":
+    case "zombie":
+      return "village";
+
+    case "vampire":
+    case "skeleton":
+      return "castle";
+  }
+}
+function monsterSingular(monster) {
+  return monster === "werewolves" ? "werewolf" : monster.slice(0, -1);
+}
+var dreadZones = layout_namespaceObject.map(zone => new DreadZone(zone));
+function dreadZone(name) {
+  return dreadZones.find(zone => zone.name === name);
+}
+var lastRaidlogTurncount = -1;
+var lastRaidlogClan = -1;
+var savedRaidlog = undefined;
+function memoizedRaidlog() {
+  if (lastRaidlogTurncount !== (0,external_kolmafia_.totalTurnsPlayed)() || lastRaidlogClan !== (0,external_kolmafia_.getClanId)() || savedRaidlog === undefined) {
+    lastRaidlogTurncount = (0,external_kolmafia_.totalTurnsPlayed)();
+    lastRaidlogClan = (0,external_kolmafia_.getClanId)();
+    savedRaidlog = (0,external_kolmafia_.visitUrl)("clan_raidlogs.php");
+  }
+
+  return savedRaidlog;
+}
+function dreadBanished() {
+  var raidlog = memoizedRaidlog();
+  var result = [];
+
+  var _iterator = _createForOfIteratorHelper(dreadZones),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var _step$value = _step.value,
+          zone = _step$value.name,
+          fullName = _step$value.fullName;
+      var blockquoteRegex = new RegExp("<b>".concat(fullName, "</b>\\s*<blockquote>(.*?)</blockquote>"));
+      var blockquoteMatch = raidlog.match(blockquoteRegex);
+      var blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
+      var elementRegex = /made the (.*?) less (.*?) \(1 turn\)/g;
+      var match = void 0;
+
+      while ((match = elementRegex.exec(blockquote)) !== null) {
+        result.push({
+          targetZone: match[1],
+          noncombatZone: zone,
+          banished: match[2]
+        });
+      }
+
+      var monsterRegex = /drove some (.*?) out of the (.*?) \(1 turn\)/g;
+
+      while ((match = monsterRegex.exec(blockquote)) !== null) {
+        result.push({
+          targetZone: match[2],
+          noncombatZone: zone,
+          banished: monsterSingular(match[1])
+        });
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  return result;
+}
+function dreadNoncombatsUsed() {
+  var raidlog = memoizedRaidlog();
+  var result = [];
+
+  var _iterator2 = _createForOfIteratorHelper(dreadZones),
+      _step2;
+
+  try {
+    var _loop = function _loop() {
+      var zone = _step2.value;
+      var blockquoteRegex = new RegExp("<b>".concat(zone.fullName, "</b>\\s*<blockquote>(.*?)</blockquote>"));
+      var blockquoteMatch = raidlog.match(blockquoteRegex);
+      var blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
+
+      var _iterator3 = _createForOfIteratorHelper(zone.noncombats),
+          _step3;
+
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var noncombat = _step3.value;
+          var messageRes = noncombat.messages().map(s => new RegExp("".concat((0,external_kolmafia_.myName)(), " \\(#").concat((0,external_kolmafia_.myId)(), "\\) ").concat(s)));
+          if (messageRes.some(re => blockquote.match(re))) result.push(noncombat.name);
+        }
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
+      }
+    };
+
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      _loop();
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+
+  return result;
+}
+// EXTERNAL MODULE: ./src/lib.ts + 1 modules
+var lib = __webpack_require__(6962);
+;// CONCATENATED MODULE: ./src/commands/command.ts
+function command_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function command_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var Command = function Command(name, help, run) {
+  command_classCallCheck(this, Command);
+
+  command_defineProperty(this, "name", void 0);
+
+  command_defineProperty(this, "help", void 0);
+
+  command_defineProperty(this, "run", void 0);
+
+  this.name = name;
+  this.help = help;
+  this.run = run;
+};
+;// CONCATENATED MODULE: ./src/commands/collect.ts
+var _templateObject;
+
+function collect_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function collect_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = collect_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function collect_slicedToArray(arr, i) { return collect_arrayWithHoles(arr) || collect_iterableToArrayLimit(arr, i) || collect_unsupportedIterableToArray(arr, i) || collect_nonIterableRest(); }
+
+function collect_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function collect_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return collect_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return collect_arrayLikeToArray(o, minLen); }
+
+function collect_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function collect_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function collect_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+
+var collectCommand = new Command("collect", "dr collect: Collect useful items from instance.", () => {
+  var items = (0,dist.$items)(_templateObject || (_templateObject = _taggedTemplateLiteral(["dreadful roast, stinking agaricus, dread tarragon, Freddy Kruegerand"])));
+  var itemPriority = new Map((0,lib/* entries */.qh)(items).map(_ref => {
+    var _ref2 = collect_slicedToArray(_ref, 2),
+        index = _ref2[0],
+        item = _ref2[1];
+
+    return [item, index];
+  })); // noncombat, sub, choice, item
+
+  var result = [];
+  var used = dreadNoncombatsUsed();
+
+  var _iterator = collect_createForOfIteratorHelper(dreadZones),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var zone = _step.value;
+
+      var _iterator2 = collect_createForOfIteratorHelper(zone.noncombats),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var _noncombat = _step2.value;
+          if (used.includes(_noncombat.name)) continue;
+          var currentPriority = 999;
+          var currentResult = undefined;
+
+          var _iterator3 = collect_createForOfIteratorHelper(_noncombat.choices),
+              _step3;
+
+          try {
+            for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+              var _step3$value = collect_slicedToArray(_step3.value, 2),
+                  _subIndex = _step3$value[0],
+                  _subnoncombat = _step3$value[1];
+
+              if (_subnoncombat.isLocked()) continue;
+              if (_subnoncombat.classes && !_subnoncombat.classes.includes((0,external_kolmafia_.myClass)())) continue;
+
+              var _iterator4 = collect_createForOfIteratorHelper(_subnoncombat.choices),
+                  _step4;
+
+              try {
+                for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+                  var _itemPriority$get;
+
+                  var _step4$value = collect_slicedToArray(_step4.value, 2),
+                      _choiceIndex = _step4$value[0],
+                      choice = _step4$value[1];
+
+                  if (!choice.item) continue;
+                  var priority = (_itemPriority$get = itemPriority.get(choice.item)) !== null && _itemPriority$get !== void 0 ? _itemPriority$get : 999;
+
+                  if (priority < currentPriority) {
+                    currentPriority = priority;
+                    currentResult = [_noncombat, _subIndex, _choiceIndex, choice.item];
+                  }
+                }
+              } catch (err) {
+                _iterator4.e(err);
+              } finally {
+                _iterator4.f();
+              }
+            }
+          } catch (err) {
+            _iterator3.e(err);
+          } finally {
+            _iterator3.f();
+          }
+
+          if (currentResult) {
+            result.push(currentResult);
+          }
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  for (var _i2 = 0, _result = result; _i2 < _result.length; _i2++) {
+    var _subnoncombat$id, _propertyManager$setC;
+
+    var _result$_i = collect_slicedToArray(_result[_i2], 4),
+        noncombat = _result$_i[0],
+        subIndex = _result$_i[1],
+        choiceIndex = _result$_i[2],
+        item = _result$_i[3];
+
+    (0,external_kolmafia_.print)("Getting ".concat(item, "."));
+    var subnoncombat = noncombat.choices.get(subIndex);
+    lib/* propertyManager.setChoices */.kr.setChoices((_propertyManager$setC = {}, collect_defineProperty(_propertyManager$setC, noncombat.id, subIndex), collect_defineProperty(_propertyManager$setC, (_subnoncombat$id = subnoncombat === null || subnoncombat === void 0 ? void 0 : subnoncombat.id) !== null && _subnoncombat$id !== void 0 ? _subnoncombat$id : -1, choiceIndex), _propertyManager$setC));
+    (0,external_kolmafia_.visitUrl)("clan_dreadsylvania.php?action=forceloc&loc=".concat(noncombat.index));
+    (0,external_kolmafia_.runChoice)(-1);
+    if ((0,external_kolmafia_.handlingChoice)()) throw "Stuck in choice adventure!";
+    (0,external_kolmafia_.print)();
+  }
+});
+// EXTERNAL MODULE: ./src/combat.ts
+var combat = __webpack_require__(4223);
+;// CONCATENATED MODULE: ./src/clan.ts
+var clan_templateObject, _templateObject2;
+
+function clan_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = clan_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function clan_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function clan_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function clan_createClass(Constructor, protoProps, staticProps) { if (protoProps) clan_defineProperties(Constructor.prototype, protoProps); if (staticProps) clan_defineProperties(Constructor, staticProps); return Constructor; }
+
+function clan_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function clan_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function clan_toConsumableArray(arr) { return clan_arrayWithoutHoles(arr) || clan_iterableToArray(arr) || clan_unsupportedIterableToArray(arr) || clan_nonIterableSpread(); }
+
+function clan_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function clan_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return clan_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return clan_arrayLikeToArray(o, minLen); }
+
+function clan_iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function clan_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return clan_arrayLikeToArray(arr); }
+
+function clan_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
@@ -17946,7 +18411,7 @@ function withStash(itemsToTake, action) {
   var manager = new StashManager();
 
   try {
-    manager.take.apply(manager, _toConsumableArray(itemsToTake));
+    manager.take.apply(manager, clan_toConsumableArray(itemsToTake));
     return action();
   } finally {
     manager.putBackAll();
@@ -17955,7 +18420,7 @@ function withStash(itemsToTake, action) {
 function clan_withVIPClan(action) {
   var clanIdOrName = (0,dist.get)("dr_vipClan", undefined);
 
-  if (!clanIdOrName && (0,dist.have)((0,dist.$item)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Clan VIP Lounge key"]))))) {
+  if (!clanIdOrName && (0,dist.have)((0,dist.$item)(clan_templateObject || (clan_templateObject = clan_taggedTemplateLiteral(["Clan VIP Lounge key"]))))) {
     if ((0,external_kolmafia_.userConfirm)("The preference 'dr_vipClan' is not set. Use the current clan as a VIP clan? (Defaults to yes in 15 seconds)", 15000, true)) {
       clanIdOrName = (0,external_kolmafia_.getClanId)();
       (0,dist.set)("dr_vipClan", clanIdOrName);
@@ -18000,7 +18465,7 @@ var StashManager = /*#__PURE__*/function () {
     this.clanIdOrName = clanIdOrName;
   }
 
-  _createClass(StashManager, [{
+  clan_createClass(StashManager, [{
     key: "take",
     value: function take() {
       for (var _len = arguments.length, items = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -18009,7 +18474,7 @@ var StashManager = /*#__PURE__*/function () {
 
       if (items.every(item => (0,dist.have)(item))) return;
       withClan(this.clanIdOrName, () => {
-        var _iterator = _createForOfIteratorHelper(items),
+        var _iterator = clan_createForOfIteratorHelper(items),
             _step;
 
         try {
@@ -18022,10 +18487,10 @@ var StashManager = /*#__PURE__*/function () {
               continue;
             }
 
-            var foldArray = [item].concat(_toConsumableArray((0,dist.getFoldGroup)(item)));
+            var foldArray = [item].concat(clan_toConsumableArray((0,dist.getFoldGroup)(item)));
             (0,external_kolmafia_.refreshStash)();
 
-            var _iterator2 = _createForOfIteratorHelper(foldArray),
+            var _iterator2 = clan_createForOfIteratorHelper(foldArray),
                 _step2;
 
             try {
@@ -18077,7 +18542,7 @@ var StashManager = /*#__PURE__*/function () {
         items[_key2] = arguments[_key2];
       }
 
-      this.take.apply(this, _toConsumableArray(items.filter(item => (0,external_kolmafia_.availableAmount)(item) === 0)));
+      this.take.apply(this, clan_toConsumableArray(items.filter(item => (0,external_kolmafia_.availableAmount)(item) === 0)));
     }
   }, {
     key: "putBack",
@@ -18090,11 +18555,11 @@ var StashManager = /*#__PURE__*/function () {
 
       if ((0,external_kolmafia_.visitUrl)("fight.php").includes("You're fighting")) {
         (0,external_kolmafia_.print)("In fight, trying to get away to return items to stash...", "blue");
-        combat.Macro.tryItem.apply(combat.Macro, _toConsumableArray((0,dist.$items)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["Louder Than Bomb, divine champagne popper"]))))).step("runaway").submit();
+        combat.Macro.tryItem.apply(combat.Macro, clan_toConsumableArray((0,dist.$items)(_templateObject2 || (_templateObject2 = clan_taggedTemplateLiteral(["Louder Than Bomb, divine champagne popper"]))))).step("runaway").submit();
       }
 
       withClan(this.clanIdOrName, () => {
-        var _iterator3 = _createForOfIteratorHelper(items),
+        var _iterator3 = clan_createForOfIteratorHelper(items),
             _step3;
 
         try {
@@ -18129,14 +18594,12 @@ var StashManager = /*#__PURE__*/function () {
   }, {
     key: "putBackAll",
     value: function putBackAll() {
-      this.putBack.apply(this, _toConsumableArray(this.taken.keys()));
+      this.putBack.apply(this, clan_toConsumableArray(this.taken.keys()));
     }
   }]);
 
   return StashManager;
 }();
-// EXTERNAL MODULE: ./src/lib.ts + 1 modules
-var lib = __webpack_require__(6962);
 ;// CONCATENATED MODULE: ./src/familiar.ts
 var familiar_templateObject, familiar_templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19, _templateObject20, _templateObject21, _templateObject22, _templateObject23, _templateObject24, _templateObject25, _templateObject26, _templateObject27, _templateObject28, _templateObject29, _templateObject30, _templateObject31, _templateObject32, _templateObject33, _templateObject34, _templateObject35, _templateObject36, _templateObject37, _templateObject38, _templateObject39, _templateObject40, _templateObject41;
 
@@ -18948,13 +19411,13 @@ function dailies_iterableToArray(iter) { if (typeof Symbol !== "undefined" && it
 
 function dailies_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return dailies_arrayLikeToArray(arr); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || dailies_unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function dailies_slicedToArray(arr, i) { return dailies_arrayWithHoles(arr) || dailies_iterableToArrayLimit(arr, i) || dailies_unsupportedIterableToArray(arr, i) || dailies_nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function dailies_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function dailies_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function dailies_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function dailies_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = dailies_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
@@ -19159,7 +19622,7 @@ function checkVolcanoQuest() {
 
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var _step$value = _slicedToArray(_step.value, 2),
+      var _step$value = dailies_slicedToArray(_step.value, 2),
           volcanoItem = _step$value[0],
           tryToGetIt = _step$value[1];
 
@@ -19233,7 +19696,7 @@ function internetMemeShop() {
   };
 
   for (var _i2 = 0, _Object$entries = Object.entries(internetMemeShopProperties); _i2 < _Object$entries.length; _i2++) {
-    var _Object$entries$_i = _slicedToArray(_Object$entries[_i2], 2),
+    var _Object$entries$_i = dailies_slicedToArray(_Object$entries[_i2], 2),
         _property = _Object$entries$_i[0],
         item = _Object$entries$_i[1];
 
@@ -20586,336 +21049,6 @@ var farmCommand = new Command("farm", "dr farm [ascend] [turncount]: Burn turns 
     }
   }
 });
-;// CONCATENATED MODULE: ./src/dungeon/layout.yml
-const layout_namespaceObject = JSON.parse('[{"name":"forest","fullName":"The Woods","noncombats":[{"name":"Cabin","id":721,"index":1,"choices":{"1":{"name":"Kitchen","id":722,"choices":{"1":{"message":"acquired some dread tarragon","item":"dread tarragon"},"2":{"message":"made some bone flour","item":"bone flour"},"3":{"message":"made the forest less stinky","banish":["forest","stinky"]}}},"2":{"name":"Basement","id":723,"choices":{"1":{"message":"recycled some newspapers","item":"Freddy Kruegerand"},"2":{"message":"read an old diary","effect":"Bored Stiff"},"3":{"message":"got a Dreadsylvania auditor\'s badge","requirement":"replica key","item":"Dreadsylvania auditor\'s badge"},"4":{"message":"made an impression of a complicated lock","requirement":"wax banana","item":"complicated lock impression"}}},"3":{"name":"Attic","id":724,"locked":true,"choices":{"1":{"message":"made the forest less spooky","classes":["Accordion Thief"],"item":"intricate music box parts"},"2":{"message":"drove some werewolves out of the forest","banish":["forest","werewolf"]},"3":{"message":"drove some vampires out of the castle","banish":["castle","vampire"]},"4":{"message":"flipped through a photo album","stat":"Moxie"}}}}},{"name":"Tallest Tree","id":725,"index":2,"choices":{"1":{"name":"Climb to the top","id":726,"classes":["Seal Clubber","Turtle Tamer"],"choices":{"1":{"messages":["knocked some fruit loose","wasted some fruit"]},"2":{"message":"made the forest less sleazy","banish":["forest","sleazy"]},"3":{"message":"acquired a chunk of moon-amber","item":"moon-amber"}}},"2":{"name":"Fire tower","id":727,"locked":true,"choices":{"1":{"message":"drove some ghosts out of the village","banish":["village","ghost"]},"2":{"message":"rifled through a footlocker","item":"Freddy Kruegerand"},"3":{"message":"lifted some weights","stat":"Muscle"}}},"3":{"name":"Root around","id":728,"choices":{"1":{"message":"got a blood kiwi","item":"blood kiwi"},"2":{"message":"got a cool seed pod","item":"Dreadsylvanian seed pod"}}}}},{"name":"Burrows","id":729,"index":3,"choices":{"1":{"name":"Towards heat","id":730,"choices":{"1":{"message":"made the forest less hot","banish":["forest","hot"]},"2":{"message":"got intimate with some hot coals","effect":"Dragged Through the Coals"},"3":{"message":"made a cool iron ingot","requirement":"old ball and chain","item":"cool iron ingot"}}},"2":{"name":"Towards cold","id":731,"choices":{"1":{"message":"made the forest less cold","banish":["forest","hot"]},"2":{"message":"listened to the forest\'s heart","stat":"Mysticality"},"3":{"message":"drank some nutritious forest goo","effect":"Nature\'s Bounty"}}},"3":{"name":"Towards smelly","id":732,"choices":{"1":{"message":"drove some bugbears out of the forest","banish":["forest","hot"]},"2":{"message":"found and sold a rare baseball card","item":"Freddy Kruegerand"}}}}}]},{"name":"village","fullName":"The Village","noncombats":[{"name":"Village Square","id":733,"index":4,"choices":{"1":{"name":"Schoolhouse","id":734,"locked":true,"choices":{"1":{"message":"drove some ghosts out of the village","banish":["village","ghost"]},"2":{"message":"collected a ghost pencil","item":"ghost pencil"},"3":{"message":"read some naughty carvings","stat":"Mysticality"}}},"2":{"name":"Blacksmith","id":735,"choices":{"1":{"message":"made the village less cold","banish":["village","cold"]},"2":{"message":"looted the blacksmith\'s till","item":"Freddy Kruegerand"},"3":{"messages":["made a cool iron breastplate","made a cool iron helmet","made some cool iron greaves"]}}},"3":{"name":"Gallows","id":736,"choices":{"1":{"message":"made the village less spooky","banish":["village","spooky"]},"2":{"message":"was hung by a clanmate"},"4":{"message":"hung a clanmate"}}}}},{"name":"Skid Row","id":737,"index":5,"choices":{"1":{"name":"Sewers","id":738,"choices":{"1":{"message":"made the village less stinky","banish":["village","stinky"]},"2":{"message":"swam in a sewer","effect":"Sewer-Drenched"}}},"2":{"name":"Tenements","id":739,"choices":{"1":{"message":"drove some skeletons out of the castle","banish":["castle","skeleton"]},"2":{"message":"made the village less sleazy","banish":["village","sleazy"]},"3":{"message":"moved some bricks around","stat":"Muscle"}}},"3":{"name":"Ticking shack","id":740,"classes":["Disco Bandit","Accordion Thief"],"choices":{"1":{"message":"looted the tinker\'s shack","item":"Freddy Kruegerand"},"2":{"message":"made a complicated key","item":"replica key"},"3":{"message":"polished some moon-amber","requirement":"moon-amber","item":"polished moon-amber"},"4":{"message":"made a clockwork bird","item":"unwound mechanical songbird"},"5":{"message":"got some old fuse","quantity":3,"item":"old fuse"}}}}},{"name":"Old Duke\'s Estate","id":741,"index":6,"choices":{"1":{"name":"Family plot","id":742,"choices":{"1":{"message":"drove some zombies out of the village","banish":["village","zombie"]},"2":{"message":"robbed some graves","item":"Freddy Kruegerand"},"3":{"message":"read some lurid epitaphs","effect":"Fifty Ways to Bereave Your Lover"}}},"2":{"name":"Servant\'s quarters","id":743,"choices":{"1":{"message":"made the village less hot","banish":["village","hot"]},"2":{"message":"made a shepherd\'s pie","item":"Dreadsylvanian shepherd\'s pie"},"3":{"message":"raided some naughty cabinets","stat":"Moxie"}}},"3":{"name":"Master suite","id":744,"locked":true,"choices":{"1":{"message":"drove some werewolves out of the forest","banish":["forest","werewolf"]},"2":{"message":"got a bottle of eau de mort","item":"eau de mort"},"3":{"message":"made a ghost shawl","item":"ghost shawl"}}}}}]},{"name":"castle","fullName":"The Castle","noncombats":[{"name":"Tower","id":749,"index":8,"choices":{"1":{"name":"Laboratory","id":750,"locked":true,"choices":{"1":{"message":"drove some bugbears out of the forest","banish":["forest","bugbear"]},"2":{"message":"drove some zombies out of the village","banish":["village","zombie"]},"5":{"message":"made a blood kiwitini","classes":["Disco Bandit","Accordion Thief"],"item":"bloody kiwitini"}}},"2":{"name":"Books","id":751,"classes":["Pastamancer","Sauceror"],"choices":{"1":{"message":"drove some skeletons out of the castle","banish":["castle","skeleton"]},"2":{"message":"read some ancient secrets","stat":"Mysticality"},"3":{"message":"learned to make a moon-amber necklace"}}},"3":{"name":"Bedroom","id":752,"choices":{"1":{"message":"made the castle less sleazy","banish":["castle","sleazy"]},"2":{"message":"raided a dresser","item":"Freddy Kruegerand"},"3":{"message":"got magically fingered","effect":"Magically Fingered"}}}}},{"name":"Great Hall","id":745,"index":7,"choices":{"1":{"name":"Ballroom","id":746,"locked":true,"choices":{"1":{"message":"drove some vampires out of the castle","banish":["castle","vampire"]},"2":{"message":"twirled on the dance floor","requirement":"muddy skirt","stat":"Moxie","item":"weedy skirt"}}},"2":{"name":"Kitchen","id":747,"choices":{"1":{"message":"made the castle less cold","banish":["castle","cold"]},"2":{"message":"frolicked in a freezer","effect":"Staying Frosty"}}},"3":{"name":"Dining room","id":748,"choices":{"1":{"message":"got some roast beast","item":"dreadful roast"},"2":{"message":"made the castle less stinky","banish":["castle","stinky"]},"3":{"message":"got a wax banana","classes":["Pastamancer","Sauceror"],"item":"wax banana"}}}}},{"name":"Dungeons","id":753,"index":9,"choices":{"1":{"name":"Cell block","id":754,"choices":{"1":{"message":"made the castle less spooky","banish":["castle","spooky"]},"2":{"message":"did a whole bunch of pushups","stat":"Muscle"},"3":{"message":"took a nap on a prison cot"}}},"2":{"name":"Boiler room","id":755,"choices":{"1":{"message":"made the castle less hot","banish":["castle","hot"]},"2":{"message":"sifted through some ashes","item":"Freddy Kruegerand"},"3":{"message":"relaxed in a furnace"}}},"3":{"name":"Guardroom","id":756,"choices":{"1":{"message":"got some stinking agaric","item":"stinking agaricus"},"2":{"message":"rolled around in some mushrooms","effect":"Spore-Wreathed"}}}}}]}]');
-;// CONCATENATED MODULE: ./src/dungeon/raidlog.ts
-function raidlog_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = raidlog_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-
-function raidlog_toConsumableArray(arr) { return raidlog_arrayWithoutHoles(arr) || raidlog_iterableToArray(arr) || raidlog_unsupportedIterableToArray(arr) || raidlog_nonIterableSpread(); }
-
-function raidlog_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function raidlog_iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function raidlog_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return raidlog_arrayLikeToArray(arr); }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { raidlog_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function raidlog_slicedToArray(arr, i) { return raidlog_arrayWithHoles(arr) || raidlog_iterableToArrayLimit(arr, i) || raidlog_unsupportedIterableToArray(arr, i) || raidlog_nonIterableRest(); }
-
-function raidlog_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function raidlog_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return raidlog_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return raidlog_arrayLikeToArray(o, minLen); }
-
-function raidlog_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function raidlog_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function raidlog_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function raidlog_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function raidlog_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function raidlog_createClass(Constructor, protoProps, staticProps) { if (protoProps) raidlog_defineProperties(Constructor.prototype, protoProps); if (staticProps) raidlog_defineProperties(Constructor, staticProps); return Constructor; }
-
-function raidlog_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-var dreadMonsters = ["bugbear", "werewolf", "ghost", "zombie", "vampire", "skeleton"];
-function isDreadMonsterId(x) {
-  return dreadMonsters.includes(x);
-}
-var dreadElements = ["hot", "cold", "sleazy", "stinky", "spooky"];
-function isDreadElementId(x) {
-  return dreadElements.includes(x);
-}
-var DreadSubnoncombat = /*#__PURE__*/function () {
-  function DreadSubnoncombat(_ref) {
-    var name = _ref.name,
-        id = _ref.id,
-        locked = _ref.locked,
-        classes = _ref.classes,
-        choices = _ref.choices;
-
-    raidlog_classCallCheck(this, DreadSubnoncombat);
-
-    raidlog_defineProperty(this, "name", void 0);
-
-    raidlog_defineProperty(this, "id", void 0);
-
-    raidlog_defineProperty(this, "needsUnlocked", void 0);
-
-    raidlog_defineProperty(this, "classes", void 0);
-
-    raidlog_defineProperty(this, "choices", void 0);
-
-    this.name = name;
-    this.id = id;
-    this.needsUnlocked = !!locked;
-    if (classes) this.classes = classes.map(c => Class.get(c));
-    this.choices = new Map(Object.entries(choices).map(_ref2 => {
-      var _choice$messages;
-
-      var _ref3 = raidlog_slicedToArray(_ref2, 2),
-          index = _ref3[0],
-          choice = _ref3[1];
-
-      return [parseInt(index), _objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread({
-        messages: (_choice$messages = choice.messages) !== null && _choice$messages !== void 0 ? _choice$messages : [choice.message]
-      }, choice.classes ? {
-        classes: choice.classes.map(c => Class.get(c))
-      } : {}), choice.requirement ? {
-        requirement: Item.get(choice.requirement)
-      } : {}), choice.item ? {
-        item: Item.get(choice.item)
-      } : {}), choice.banish ? {
-        banish: choice.banish
-      } : {}), choice.effect ? {
-        effect: Effect.get(choice.effect)
-      } : {}), choice.stat ? {
-        stat: Stat.get(choice.stat)
-      } : {})];
-    }));
-  }
-
-  raidlog_createClass(DreadSubnoncombat, [{
-    key: "messages",
-    value: function messages() {
-      var _ref4;
-
-      return (_ref4 = []).concat.apply(_ref4, raidlog_toConsumableArray(raidlog_toConsumableArray(this.choices.values()).map(choice => choice.messages)));
-    }
-  }, {
-    key: "isLocked",
-    value: function isLocked() {
-      return this.needsUnlocked && !memoizedRaidlog().includes("unlocked the ".concat(this.name.toLowerCase()));
-    }
-  }]);
-
-  return DreadSubnoncombat;
-}();
-var DreadNoncombat = /*#__PURE__*/function () {
-  function DreadNoncombat(_ref5) {
-    var name = _ref5.name,
-        id = _ref5.id,
-        index = _ref5.index,
-        choices = _ref5.choices;
-
-    raidlog_classCallCheck(this, DreadNoncombat);
-
-    raidlog_defineProperty(this, "name", void 0);
-
-    raidlog_defineProperty(this, "id", void 0);
-
-    raidlog_defineProperty(this, "index", void 0);
-
-    raidlog_defineProperty(this, "choices", void 0);
-
-    this.name = name;
-    this.id = id;
-    this.index = index;
-    this.choices = new Map(Object.entries(choices).map(_ref6 => {
-      var _ref7 = raidlog_slicedToArray(_ref6, 2),
-          index = _ref7[0],
-          choice = _ref7[1];
-
-      return [parseInt(index), new DreadSubnoncombat(choice)];
-    }));
-  }
-
-  raidlog_createClass(DreadNoncombat, [{
-    key: "zone",
-    value: function zone() {
-      switch (this.name) {
-        case "Cabin":
-        case "Tallest Tree":
-        case "Burrows":
-          return "forest";
-
-        case "Village Square":
-        case "Skid Row":
-        case "Old Duke's Estate":
-          return "village";
-
-        case "Tower":
-        case "Great Hall":
-        case "Dungeons":
-          return "castle";
-      }
-    }
-  }, {
-    key: "messages",
-    value: function messages() {
-      var _ref8;
-
-      return (_ref8 = []).concat.apply(_ref8, raidlog_toConsumableArray(raidlog_toConsumableArray(this.choices.values()).map(choice => choice.messages())));
-    }
-  }]);
-
-  return DreadNoncombat;
-}();
-var dreadZoneTypes = (/* unused pure expression or super */ null && (["forest", "village", "castle"]));
-var DreadZone = function DreadZone(_ref9) {
-  var name = _ref9.name,
-      fullName = _ref9.fullName,
-      noncombats = _ref9.noncombats;
-
-  raidlog_classCallCheck(this, DreadZone);
-
-  raidlog_defineProperty(this, "name", void 0);
-
-  raidlog_defineProperty(this, "fullName", void 0);
-
-  raidlog_defineProperty(this, "noncombats", void 0);
-
-  this.name = name;
-  this.fullName = fullName;
-  this.noncombats = noncombats.map(noncombat => new DreadNoncombat(noncombat));
-};
-function monsterPair(monster) {
-  switch (monster) {
-    case "bugbear":
-      return "werewolf";
-
-    case "werewolf":
-      return "bugbear";
-
-    case "ghost":
-      return "zombie";
-
-    case "zombie":
-      return "ghost";
-
-    case "vampire":
-      return "skeleton";
-
-    case "skeleton":
-      return "vampire";
-  }
-}
-function monsterZone(monster) {
-  switch (monster) {
-    case "bugbear":
-    case "werewolf":
-      return "forest";
-
-    case "ghost":
-    case "zombie":
-      return "village";
-
-    case "vampire":
-    case "skeleton":
-      return "castle";
-  }
-}
-function monsterSingular(monster) {
-  return monster === "werewolves" ? "werewolf" : monster.slice(0, -1);
-}
-var dreadZones = layout_namespaceObject.map(zone => new DreadZone(zone));
-function dreadZone(name) {
-  return dreadZones.find(zone => zone.name === name);
-}
-var lastRaidlogTurncount = -1;
-var lastRaidlogClan = -1;
-var savedRaidlog = undefined;
-function memoizedRaidlog() {
-  if (lastRaidlogTurncount !== (0,external_kolmafia_.totalTurnsPlayed)() || lastRaidlogClan !== (0,external_kolmafia_.getClanId)() || savedRaidlog === undefined) {
-    lastRaidlogTurncount = (0,external_kolmafia_.totalTurnsPlayed)();
-    lastRaidlogClan = (0,external_kolmafia_.getClanId)();
-    savedRaidlog = (0,external_kolmafia_.visitUrl)("clan_raidlogs.php");
-  }
-
-  return savedRaidlog;
-}
-function dreadBanished() {
-  var raidlog = memoizedRaidlog();
-  var result = [];
-
-  var _iterator = raidlog_createForOfIteratorHelper(dreadZones),
-      _step;
-
-  try {
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var _step$value = _step.value,
-          zone = _step$value.name,
-          fullName = _step$value.fullName;
-      var blockquoteRegex = new RegExp("<b>".concat(fullName, "</b>\\s*<blockquote>(.*?)</blockquote>"));
-      var blockquoteMatch = raidlog.match(blockquoteRegex);
-      var blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
-      var elementRegex = /made the (.*?) less (.*?) \(1 turn\)/g;
-      var match = void 0;
-
-      while ((match = elementRegex.exec(blockquote)) !== null) {
-        result.push({
-          targetZone: match[1],
-          noncombatZone: zone,
-          banished: match[2]
-        });
-      }
-
-      var monsterRegex = /drove some (.*?) out of the (.*?) \(1 turn\)/g;
-
-      while ((match = monsterRegex.exec(blockquote)) !== null) {
-        result.push({
-          targetZone: match[2],
-          noncombatZone: zone,
-          banished: monsterSingular(match[1])
-        });
-      }
-    }
-  } catch (err) {
-    _iterator.e(err);
-  } finally {
-    _iterator.f();
-  }
-
-  return result;
-}
-function dreadNoncombatsUsed() {
-  var raidlog = memoizedRaidlog();
-  var result = [];
-
-  var _iterator2 = raidlog_createForOfIteratorHelper(dreadZones),
-      _step2;
-
-  try {
-    var _loop = function _loop() {
-      var zone = _step2.value;
-      var blockquoteRegex = new RegExp("<b>".concat(zone.fullName, "</b>\\s*<blockquote>(.*?)</blockquote>"));
-      var blockquoteMatch = raidlog.match(blockquoteRegex);
-      var blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
-
-      var _iterator3 = raidlog_createForOfIteratorHelper(zone.noncombats),
-          _step3;
-
-      try {
-        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-          var noncombat = _step3.value;
-          var messageRes = noncombat.messages().map(s => new RegExp("".concat((0,external_kolmafia_.myName)(), " \\(#").concat((0,external_kolmafia_.myId)(), "\\) ").concat(s)));
-          if (messageRes.some(re => blockquote.match(re))) result.push(noncombat.name);
-        }
-      } catch (err) {
-        _iterator3.e(err);
-      } finally {
-        _iterator3.f();
-      }
-    };
-
-    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-      _loop();
-    }
-  } catch (err) {
-    _iterator2.e(err);
-  } finally {
-    _iterator2.f();
-  }
-
-  return result;
-}
 ;// CONCATENATED MODULE: ./src/commands/freddies.ts
 var freddies_templateObject;
 
@@ -21593,7 +21726,9 @@ var whitelistCommand = new Command("whitelist", "dr whitelist [player] [rank]: W
 
 
 
+
 /* harmony default export */ const commands = ({
+  collect: collectCommand,
   farm: farmCommand,
   freddies: freddiesCommand,
   help: helpCommand,
@@ -21643,6 +21778,7 @@ __webpack_require__.d(__webpack_exports__, {
   "xd": () => (/* binding */ determineDraggableZoneAndEnsureAccess),
   "Te": () => (/* binding */ draggableFight),
   "pq": () => (/* binding */ ensureEffect),
+  "qh": () => (/* binding */ entries),
   "sq": () => (/* binding */ fromEntries),
   "EO": () => (/* binding */ gnomeWeightValue),
   "DR": () => (/* binding */ kramcoGuaranteed),
@@ -21656,7 +21792,7 @@ __webpack_require__.d(__webpack_exports__, {
   "j0": () => (/* binding */ tryFeast)
 });
 
-// UNUSED EXPORTS: entries, fairyMultiplier, leprechaunMultiplier, mapMonster, setDefaultChoiceHandling, sum
+// UNUSED EXPORTS: fairyMultiplier, leprechaunMultiplier, mapMonster, setDefaultChoiceHandling, sum
 
 ;// CONCATENATED MODULE: external "canadv.ash"
 const external_canadv_ash_namespaceObject = require("canadv.ash");;
@@ -22246,7 +22382,7 @@ module.exports = require("kolmafia");;
 /******/ 	// module cache are used so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	var __webpack_exports__ = __webpack_require__(__webpack_require__.s = 7957);
+/******/ 	var __webpack_exports__ = __webpack_require__(__webpack_require__.s = 5808);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
