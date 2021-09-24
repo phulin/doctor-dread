@@ -43,6 +43,14 @@ export const unkillCommand = new Command(
       throw "Can't kill hard mode UKS in 2CRS!";
     }
 
+    if (!requiredSkills.every((skill) => have(skill))) {
+      throw `You don't have required skill ${requiredSkills.filter((skill) => !have(skill))}`;
+    }
+
+    if (!requiredItems.every((item) => have(item))) {
+      throw `You don't have required item ${requiredItems.filter((item) => !have(item))}`;
+    }
+
     if (!have($effect`Shepherd's Breath`)) {
       if (myFullness() + 4 > fullnessLimit()) {
         throw "Not enough stomach space to eat a Dreadsylvanian shepherd's pie";
@@ -51,14 +59,6 @@ export const unkillCommand = new Command(
       }
 
       eat($item`Dreadsylvanian shepherd's pie`);
-    }
-
-    if (!requiredSkills.every((skill) => have(skill))) {
-      throw `You don't have required skill ${requiredSkills.filter((skill) => !have(skill))}`;
-    }
-
-    if (!requiredItems.every((item) => have(item))) {
-      throw `You don't have required item ${requiredItems.filter((item) => !have(item))}`;
     }
 
     cliExecute("mood apathetic");
