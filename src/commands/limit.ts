@@ -63,7 +63,7 @@ export const limitCommand = new Command("limit", usage, ([element, monster]: str
           .map((x) => x.join(", "))
           .join(" => ")}`
       );
-      retrieveItem($item`Dreadsylvanian skeleton key`);
+      if (subnoncombat.isLocked()) retrieveItem($item`Dreadsylvanian skeleton key`);
       propertyManager.setChoices(fromEntries(choiceSequence));
       visitUrl(`clan_dreadsylvania.php?action=forceloc&loc=${noncombat.index}`);
       runChoice(-1);

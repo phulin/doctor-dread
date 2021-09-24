@@ -85,7 +85,9 @@ export class DreadSubnoncombat {
   }
 
   isLocked(): boolean {
-    return !memoizedRaidlog().includes(`unlocked the ${this.name.toLowerCase()}`);
+    return (
+      this.needsUnlocked && !memoizedRaidlog().includes(`unlocked the ${this.name.toLowerCase()}`)
+    );
   }
 }
 

@@ -1,4 +1,4 @@
-import { handlingChoice, print, runChoice, visitUrl } from "kolmafia";
+import { handlingChoice, myClass, print, runChoice, visitUrl } from "kolmafia";
 
 import { Command } from "./command";
 import { dreadNoncombatsUsed, dreadZones } from "../dungeon/raidlog";
@@ -16,9 +16,11 @@ export const freddiesCommand = new Command(
 
         for (const [subIndex, subnoncombat] of noncombat.choices) {
           if (subnoncombat.isLocked()) continue;
+          if (subnoncombat.classes && !subnoncombat.classes.includes(myClass())) continue;
 
           for (const [choiceIndex, choice] of subnoncombat.choices) {
             if (choice.item !== $item`Freddy Kruegerand`) continue;
+            if (choice.classes && !choice.classes.includes(myClass())) continue;
 
             propertyManager.setChoices({
               [noncombat.id]: subIndex,

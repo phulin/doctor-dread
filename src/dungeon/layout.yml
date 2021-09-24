@@ -216,6 +216,7 @@
         3:
           name: Ticking shack
           id: 740
+          classes: ["Disco Bandit", "Accordion Thief"]
           choices:
             1:
               message: looted the tinker's shack
