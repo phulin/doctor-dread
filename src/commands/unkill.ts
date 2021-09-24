@@ -62,6 +62,7 @@ export const unkillCommand = new Command(
     }
 
     cliExecute("mood apathetic");
+    cliExecute("mcd 0");
 
     const mood = new Mood();
 
@@ -83,6 +84,8 @@ export const unkillCommand = new Command(
     mood.potion($item`natto marble soda`, 1000); // 39%
     mood.potion($item`invisible potion`, 1000); // 54%
     mood.potion($item`LOV Elixir #6`, 1000); // 69%
+
+    mood.potion($item`cuppa Monstrosi tea`, 1000);
 
     if (!mood.execute()) {
       throw "Failed to get all necessary effects for some reason.";
