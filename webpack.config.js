@@ -28,6 +28,10 @@ const sharedConfig = {
         loader: "babel-loader",
       },
       {
+        test: /\.ya?ml$/,
+        loader: "yaml-loader",
+      },
+      {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },

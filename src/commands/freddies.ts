@@ -2,7 +2,8 @@ import { handlingChoice, print, runChoice, visitUrl } from "kolmafia";
 
 import { Command } from "./command";
 import { dreadNoncombatsUsed, dreadZones } from "../dungeon/raidlog";
-import { fromEntries, propertyManager } from "../lib";
+import { propertyManager } from "../lib";
+import { $item } from "libram";
 
 export const freddiesCommand = new Command(
   "freddies",
@@ -11,13 +12,24 @@ export const freddiesCommand = new Command(
     const used = dreadNoncombatsUsed();
     for (const zone of dreadZones) {
       for (const noncombat of zone.noncombats) {
-        if (used.includes(noncombat.noncombat) || !noncombat.freddies) continue;
+        if (used.includes(noncombat.name)) continue;
 
-        propertyManager.setChoices(fromEntries(noncombat.freddies));
-        visitUrl(`clan_dreadsylvania.php?action=forceloc&loc=${noncombat.index}`);
-        runChoice(-1);
-        if (handlingChoice()) throw "Stuck in choice adventure!";
-        print();
+        for (const [subIndex, subnoncombat] of noncombat.choices) {
+          if (subnoncombat.isLocked()) continue;
+
+          for (const [choiceIndex, choice] of subnoncombat.choices) {
+            if (choice.item !== $item`Freddy Kruegerand`) continue;
+
+            propertyManager.setChoices({
+              [noncombat.id]: subIndex,
+              [subnoncombat.id]: choiceIndex,
+            });
+            visitUrl(`clan_dreadsylvania.php?action=forceloc&loc=${noncombat.index}`);
+            runChoice(-1);
+            if (handlingChoice()) throw "Stuck in choice adventure!";
+            print();
+          }
+        }
       }
     }
   }

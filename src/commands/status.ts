@@ -3,11 +3,11 @@ import { print } from "kolmafia";
 import { Command } from "./command";
 import {
   dreadBanished,
-  DreadElement,
-  DreadMonster,
-  DreadZone,
-  isDreadElement,
-  isDreadMonster,
+  DreadElementId,
+  DreadMonsterId,
+  DreadZoneId,
+  isDreadElementId,
+  isDreadMonsterId,
 } from "../dungeon/raidlog";
 
 export const statusCommand = new Command(
@@ -15,7 +15,7 @@ export const statusCommand = new Command(
   "dr status: Print current banishing status of dungeon.",
   () => {
     const banished = dreadBanished();
-    const zoneMap = new Map<DreadZone, [DreadElement[], DreadMonster[]]>();
+    const zoneMap = new Map<DreadZoneId, [DreadElementId[], DreadMonsterId[]]>();
     for (const banish of banished) {
       let zoneInfo = zoneMap.get(banish.targetZone);
       if (zoneInfo === undefined) {
@@ -24,9 +24,9 @@ export const statusCommand = new Command(
       }
 
       const banishedThing = banish.banished;
-      if (isDreadElement(banishedThing)) {
+      if (isDreadElementId(banishedThing)) {
         zoneInfo[0].push(banishedThing);
-      } else if (isDreadMonster(banishedThing)) {
+      } else if (isDreadMonsterId(banishedThing)) {
         zoneInfo[1].push(banishedThing);
       }
     }

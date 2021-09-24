@@ -1,24 +1,26 @@
-import { print } from "kolmafia";
+import { myClass, print } from "kolmafia";
 import {
   DreadBanish,
   dreadBanished,
-  DreadElement,
+  DreadChoice,
+  DreadElementId,
   dreadElements,
-  DreadMonster,
-  DreadNoncombatInfo,
+  DreadMonsterId,
+  DreadNoncombat,
   dreadNoncombatsUsed,
-  DreadZone,
+  DreadSubnoncombat,
+  dreadZone,
+  DreadZoneId,
   dreadZones,
-  isDreadElement,
+  isDreadElementId,
   monsterPair,
-  noncombatZone,
 } from "./raidlog";
 
 export function banishesToLimit(
-  targetZone: DreadZone,
-  monster: DreadMonster | "banish no monster",
-  element: DreadElement | "banish all elements" | "banish no element"
-): [DreadNoncombatInfo, DreadBanish][] {
+  targetZone: DreadZoneId,
+  monster: DreadMonsterId | "banish no monster",
+  element: DreadElementId | "banish all elements" | "banish no element"
+): DreadBanish[] {
   const monstersNeededBanished = monster === "banish no monster" ? [] : [monsterPair(monster)];
   const elementsNeededBanished =
     element === "banish all elements"
@@ -28,17 +30,21 @@ export function banishesToLimit(
       : dreadElements.filter((e) => e !== element);
   const thingsNeededBanished = [...monstersNeededBanished, ...elementsNeededBanished];
 
-  const result: [DreadNoncombatInfo, DreadBanish][] = [];
+  const result: DreadBanish[] = [];
   for (const noncombatZone of dreadZones) {
     for (const noncombat of noncombatZone.noncombats) {
-      for (const banish of noncombat.banishes) {
-        const [banishZone, impact] = banish.effect;
-        // print(`zone ${targetZone} === ${banishZone} && thingsToBanish includes ${impact}`);
-        if (targetZone === banishZone && thingsNeededBanished.includes(impact)) {
-          // print("yes");
-          result.push([noncombat, banish]);
-        } // else print("no");
-        // print();
+      for (const [subIndex, subnoncombat] of noncombat.choices) {
+        for (const [choiceIndex, choice] of subnoncombat.choices) {
+          if (!choice.banish) continue;
+
+          const [banishZone, impact] = choice.banish;
+          // print(`zone ${targetZone} === ${banishZone} && thingsToBanish includes ${impact}`);
+          if (targetZone === banishZone && thingsNeededBanished.includes(impact)) {
+            // print("yes");
+            result.push([noncombat, subIndex, choiceIndex, ...choice.banish]);
+          } // else print("no");
+          // print();
+        }
       }
     }
   }
@@ -47,14 +53,14 @@ export function banishesToLimit(
 }
 
 export function categorizeBanishes(
-  targetZone: DreadZone,
-  monster: DreadMonster | "banish no monster",
-  element: DreadElement | "banish all elements" | "banish no element"
+  targetZone: DreadZoneId,
+  monster: DreadMonsterId | "banish no monster",
+  element: DreadElementId | "banish all elements" | "banish no element"
 ): {
-  completedBanishes: [DreadNoncombatInfo, DreadBanish][];
-  usedBanishes: [DreadNoncombatInfo, DreadBanish][];
-  cantBanishes: [DreadNoncombatInfo, DreadBanish][];
-  goodBanishes: [DreadNoncombatInfo, DreadBanish][];
+  completedBanishes: DreadBanish[];
+  usedBanishes: DreadBanish[];
+  cantBanishes: [Class[], DreadBanish][];
+  goodBanishes: DreadBanish[];
 } {
   const banished = dreadBanished();
   const banishedInZone = banished.filter((info) => info.targetZone === targetZone);
@@ -62,26 +68,31 @@ export function categorizeBanishes(
   const noncombatsUsed = new Set(dreadNoncombatsUsed());
   const desiredBanishes = banishesToLimit(targetZone, monster, element);
 
-  const completedBanishes: [DreadNoncombatInfo, DreadBanish][] = [];
-  const usedBanishes: [DreadNoncombatInfo, DreadBanish][] = [];
-  const cantBanishes: [DreadNoncombatInfo, DreadBanish][] = [];
-  const goodBanishes: [DreadNoncombatInfo, DreadBanish][] = [];
-  for (const [noncombat, banish] of desiredBanishes) {
-    // Did we already use this noncombat, or has this banish already been done?
+  const completedBanishes: DreadBanish[] = [];
+  const usedBanishes: DreadBanish[] = [];
+  const cantBanishes: [Class[], DreadBanish][] = [];
+  const goodBanishes: DreadBanish[] = [];
+  for (const banish of desiredBanishes) {
+    const [noncombat, subIndex, choiceIndex, banishZone, banishThing] = banish;
+    const subnoncombat = noncombat.choices.get(subIndex) as DreadSubnoncombat;
+    const choice = subnoncombat.choices.get(choiceIndex) as DreadChoice;
     if (
       banishedInZone.some(
         (info) =>
-          noncombatZone(noncombat.noncombat) === info.noncombatZone &&
-          banish.effect[1] === info.banished
+          dreadZone(info.noncombatZone).noncombats.some((nc) => nc.id === noncombat.id) &&
+          info.targetZone === banishZone &&
+          info.banished === banishThing
       )
     ) {
-      completedBanishes.push([noncombat, banish]);
-    } else if (noncombatsUsed.has(noncombat.noncombat)) {
-      usedBanishes.push([noncombat, banish]);
-    } else if (banish.reasonCantPerform && banish.reasonCantPerform()) {
-      cantBanishes.push([noncombat, banish]);
+      completedBanishes.push(banish);
+    } else if (noncombatsUsed.has(noncombat.name)) {
+      usedBanishes.push(banish);
+    } else if (subnoncombat.classes && !subnoncombat.classes.includes(myClass())) {
+      cantBanishes.push([subnoncombat.classes, banish]);
+    } else if (choice.classes && !choice.classes.includes(myClass())) {
+      cantBanishes.push([choice.classes, banish]);
     } else {
-      goodBanishes.push([noncombat, banish]);
+      goodBanishes.push(banish);
     }
   }
   // print(`completed: ${JSON.stringify(completedBanishes.map(([, banish]) => banish))}`);
@@ -91,19 +102,20 @@ export function categorizeBanishes(
 }
 
 export function planLimitTo(
-  targetZone: DreadZone,
-  monster: DreadMonster | "banish no monster",
-  element: DreadElement | "banish all elements" | "banish no element"
-): [DreadNoncombatInfo, DreadBanish][] {
+  targetZone: DreadZoneId,
+  monster: DreadMonsterId | "banish no monster",
+  element: DreadElementId | "banish all elements" | "banish no element"
+): DreadBanish[] {
   const { cantBanishes, goodBanishes } = categorizeBanishes(targetZone, monster, element);
 
-  for (const [noncombat, banish] of cantBanishes) {
+  for (const [classes, [noncombat, , , banish]] of cantBanishes) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    print(`Can't banish ${banish.effect} @ ${noncombat} because ${banish.reasonCantPerform!()}`);
+    print(`Can't banish ${banish} @ ${noncombat} because we aren't ${classes.join(", ")}.`);
   }
 
-  const banishLocations = new Map<DreadNoncombatInfo, DreadBanish[]>();
-  for (const [noncombat, banish] of goodBanishes) {
+  const banishLocations = new Map<DreadNoncombat, DreadBanish[]>();
+  for (const banish of goodBanishes) {
+    const [noncombat] = banish;
     let banishList = banishLocations.get(noncombat);
     if (banishList === undefined) {
       banishList = [];
@@ -113,22 +125,21 @@ export function planLimitTo(
     banishList.push(banish);
   }
 
-  return [...banishLocations].map(
-    ([noncombat, [banish]]) => [noncombat, banish] as [DreadNoncombatInfo, DreadBanish]
-  );
+  return [...banishLocations].map(([, [banish]]) => banish);
 }
 
+// For informational purposes only - not enough info to plan out banishes.
 export function neededBanishes(
-  targetZone: DreadZone,
-  monster: DreadMonster,
-  element: DreadElement
-): (DreadElement | DreadMonster)[] {
+  targetZone: DreadZoneId,
+  monster: DreadMonsterId,
+  element: DreadElementId
+): (DreadElementId | DreadMonsterId)[] {
   const { completedBanishes } = categorizeBanishes(targetZone, monster, element);
   const paired = monsterPair(monster);
-  const monsterCount = completedBanishes.filter(([, banish]) => banish.effect[1] === paired).length;
+  const monsterCount = completedBanishes.filter(([, , , , thing]) => thing === paired).length;
   const banishedElements = completedBanishes
-    .map(([, banish]) => banish.effect[1])
-    .filter((x) => isDreadElement(x)) as DreadElement[];
+    .map(([, , , , thing]) => thing)
+    .filter((x) => isDreadElementId(x)) as DreadElementId[];
   return [
     ...dreadElements.filter((e) => element !== e && !banishedElements.includes(e)),
     ...new Array(2 - monsterCount).fill(paired),
