@@ -18233,6 +18233,12 @@ function dreadKilled() {
         while ((match = monsterRe.exec(block)) !== null) {
           zoneTotal += parseInt(match[2]);
         }
+
+        var singleMonsterRe = new RegExp("defeated (.*?) ".concat(monster, " \\("), "gi");
+
+        while ((match = singleMonsterRe.exec(block)) !== null) {
+          zoneTotal += 1;
+        }
       }
     } catch (err) {
       _iterator2.e(err);
