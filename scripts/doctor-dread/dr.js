@@ -17876,7 +17876,7 @@ function estimatedTurns() {
 
 /***/ }),
 
-/***/ 6924:
+/***/ 1659:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -21970,6 +21970,120 @@ var statusCommand = new Command("status", "dr status: Print current status of du
     _iterator2.f();
   }
 });
+;// CONCATENATED MODULE: ./src/commands/unkill.ts
+var unkill_templateObject, unkill_templateObject2, unkill_templateObject3, unkill_templateObject4, unkill_templateObject5, unkill_templateObject6, unkill_templateObject7, unkill_templateObject8, unkill_templateObject9, unkill_templateObject10, unkill_templateObject11, unkill_templateObject12, unkill_templateObject13, unkill_templateObject14, unkill_templateObject15, unkill_templateObject16, unkill_templateObject17, unkill_templateObject18, unkill_templateObject19, unkill_templateObject20, unkill_templateObject21, unkill_templateObject22, unkill_templateObject23, unkill_templateObject24, unkill_templateObject25, unkill_templateObject26, unkill_templateObject27, unkill_templateObject28, unkill_templateObject29;
+
+function unkill_slicedToArray(arr, i) { return unkill_arrayWithHoles(arr) || unkill_iterableToArrayLimit(arr, i) || unkill_unsupportedIterableToArray(arr, i) || unkill_nonIterableRest(); }
+
+function unkill_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function unkill_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return unkill_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return unkill_arrayLikeToArray(o, minLen); }
+
+function unkill_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function unkill_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function unkill_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function unkill_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+
+
+var requiredSkills = (0,dist.$skills)(unkill_templateObject || (unkill_templateObject = unkill_taggedTemplateLiteral(["Song of Sauce, Carol of the Hells, Wizard Squint, Sauce Monocle, Frigidalmatian"])));
+var requiredItems = (0,dist.$items)(unkill_templateObject2 || (unkill_templateObject2 = unkill_taggedTemplateLiteral(["Novelty Belt Buckle of Violence, unwrapped knock-off retro superhero cape, Unkillable Skeleton's shield"])));
+var unkillCommand = new Command("unkill", "dr unkill [normal?]: Kill the Unkillable Skeleton on hard or normal mode.", _ref => {
+  var _dreadKilled$find;
+
+  var _ref2 = unkill_slicedToArray(_ref, 1),
+      mode = _ref2[0];
+
+  var _ref3 = (_dreadKilled$find = dreadKilled().find(_ref5 => {
+    var _ref6 = unkill_slicedToArray(_ref5, 1),
+        zone = _ref6[0];
+
+    return zone.name === "castle";
+  })) !== null && _dreadKilled$find !== void 0 ? _dreadKilled$find : ["castle", 0],
+      _ref4 = unkill_slicedToArray(_ref3, 2),
+      castleKilled = _ref4[1];
+
+  if (castleKilled < 1000) {
+    throw "You haven't finished the castle.";
+  }
+
+  if ((0,external_kolmafia_.myPath)() === "Two Crazy Random Summer") {
+    throw "Can't kill hard mode UKS in 2CRS!";
+  }
+
+  if (!requiredSkills.every(skill => (0,dist.have)(skill))) {
+    throw "You don't have required skill ".concat(requiredSkills.filter(skill => !(0,dist.have)(skill)));
+  }
+
+  if (!requiredItems.every(item => (0,dist.have)(item))) {
+    throw "You don't have required item ".concat(requiredItems.filter(item => !(0,dist.have)(item)));
+  }
+
+  if (mode !== "normal" && !(0,dist.have)((0,dist.$effect)(unkill_templateObject3 || (unkill_templateObject3 = unkill_taggedTemplateLiteral(["Shepherd's Breath"]))))) {
+    if ((0,external_kolmafia_.myFullness)() + 4 > (0,external_kolmafia_.fullnessLimit)()) {
+      throw "Not enough stomach space to eat a Dreadsylvanian shepherd's pie";
+    } else if (!(0,dist.have)((0,dist.$item)(unkill_templateObject4 || (unkill_templateObject4 = unkill_taggedTemplateLiteral(["Dreadsylvanian shepherd's pie"]))))) {
+      throw "You don't have a Dreadsylvanian shepherd's pie. Consider making one.";
+    }
+
+    (0,external_kolmafia_.eat)((0,dist.$item)(unkill_templateObject5 || (unkill_templateObject5 = unkill_taggedTemplateLiteral(["Dreadsylvanian shepherd's pie"]))));
+  }
+
+  (0,external_kolmafia_.cliExecute)("mood apathetic");
+  (0,external_kolmafia_.cliExecute)("mcd 0");
+  var mood = new dist.Mood();
+  mood.skill((0,dist.$skill)(unkill_templateObject6 || (unkill_templateObject6 = unkill_taggedTemplateLiteral(["Frigidalmatian"]))));
+  mood.potion((0,dist.$item)(unkill_templateObject7 || (unkill_templateObject7 = unkill_taggedTemplateLiteral(["corrupted marrow"]))), 2000);
+  mood.potion((0,dist.$item)(unkill_templateObject8 || (unkill_templateObject8 = unkill_taggedTemplateLiteral(["tobiko marble soda"]))), 2000);
+  mood.potion((0,dist.$item)(unkill_templateObject9 || (unkill_templateObject9 = unkill_taggedTemplateLiteral(["Mer-kin smartjuice"]))), 5000);
+  mood.potion((0,dist.$item)(unkill_templateObject10 || (unkill_templateObject10 = unkill_taggedTemplateLiteral(["Hawking's Elixir of Brilliance"]))), 5000);
+  mood.potion((0,dist.$item)(unkill_templateObject11 || (unkill_templateObject11 = unkill_taggedTemplateLiteral(["ointment of the occult"]))), 5000);
+  mood.potion((0,dist.$item)(unkill_templateObject12 || (unkill_templateObject12 = unkill_taggedTemplateLiteral(["potion of temporary gr8ness"]))), 5000);
+  mood.skill((0,dist.$skill)(unkill_templateObject13 || (unkill_templateObject13 = unkill_taggedTemplateLiteral(["Song of Sauce"]))));
+  mood.skill((0,dist.$skill)(unkill_templateObject14 || (unkill_templateObject14 = unkill_taggedTemplateLiteral(["Carol of the Hells"])))); // Base 9% spell critical
+
+  mood.skill((0,dist.$skill)(unkill_templateObject15 || (unkill_templateObject15 = unkill_taggedTemplateLiteral(["Wizard Squint"])))); // 19%
+
+  mood.skill((0,dist.$skill)(unkill_templateObject16 || (unkill_templateObject16 = unkill_taggedTemplateLiteral(["Sauce Monocle"])))); // 24%
+
+  mood.potion((0,dist.$item)(unkill_templateObject17 || (unkill_templateObject17 = unkill_taggedTemplateLiteral(["natto marble soda"]))), 1000); // 39%
+
+  mood.potion((0,dist.$item)(unkill_templateObject18 || (unkill_templateObject18 = unkill_taggedTemplateLiteral(["invisible potion"]))), 1000); // 54%
+
+  mood.potion((0,dist.$item)(unkill_templateObject19 || (unkill_templateObject19 = unkill_taggedTemplateLiteral(["LOV Elixir #6"]))), 1000); // 69% - nice!
+  // -ML
+
+  mood.potion((0,dist.$item)(unkill_templateObject20 || (unkill_templateObject20 = unkill_taggedTemplateLiteral(["cuppa Monstrosi tea"]))), 1000);
+
+  if (!mood.execute()) {
+    throw "Failed to get all necessary effects for some reason.";
+  }
+
+  (0,external_kolmafia_.retrieveItem)((0,dist.$item)(unkill_templateObject21 || (unkill_templateObject21 = unkill_taggedTemplateLiteral(["meteorb"]))));
+  (0,external_kolmafia_.retrieveItem)((0,dist.$item)(unkill_templateObject22 || (unkill_templateObject22 = unkill_taggedTemplateLiteral(["dark baconstone ring"]))));
+
+  if ((0,dist.have)((0,dist.$item)(unkill_templateObject23 || (unkill_templateObject23 = unkill_taggedTemplateLiteral(["Powerful Glove"])))) && !(0,dist.have)((0,dist.$effect)(unkill_templateObject24 || (unkill_templateObject24 = unkill_taggedTemplateLiteral(["Triple-Sized"]))))) {
+    (0,external_kolmafia_.equip)((0,dist.$item)(unkill_templateObject25 || (unkill_templateObject25 = unkill_taggedTemplateLiteral(["Powerful Glove"]))));
+    (0,external_kolmafia_.useSkill)((0,dist.$skill)(unkill_templateObject26 || (unkill_templateObject26 = unkill_taggedTemplateLiteral(["CHEAT CODE: Triple Size"]))));
+  }
+
+  (0,external_kolmafia_.useFamiliar)((0,dist.$familiar)(unkill_templateObject27 || (unkill_templateObject27 = unkill_taggedTemplateLiteral(["Left-Hand Man"]))));
+  (0,dist.maximizeCached)(["Mysticality", "10 Spell Damage Percent", "-100 Monster Level", "-HP"], {
+    forceEquip: (0,dist.$items)(unkill_templateObject28 || (unkill_templateObject28 = unkill_taggedTemplateLiteral(["Novelty Belt Buckle of Violence, meteorb, unwrapped knock-off retro superhero cape, Unkillable Skeleton's shield, dark baconstone ring"])))
+  });
+  (0,external_kolmafia_.cliExecute)("retrocape heck kill");
+  lib/* propertyManager.setChoices */.kr.setChoices({
+    760: 1
+  });
+  (0,combat.adventureMacro)((0,dist.$location)(unkill_templateObject29 || (unkill_templateObject29 = unkill_taggedTemplateLiteral(["Dreadsylvanian Castle"]))), combat.Macro.if_("monstername Count Drunkula", combat.Macro.abort()).step("twiddle").repeat());
+});
 ;// CONCATENATED MODULE: ./src/commands/whitelist.ts
 function whitelist_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = whitelist_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
@@ -22049,6 +22163,7 @@ var whitelistCommand = new Command("whitelist", "dr whitelist [player] [rank]: W
 
 
 
+
 /* harmony default export */ const commands = ({
   collect: collectCommand,
   cook: cookCommand,
@@ -22058,6 +22173,7 @@ var whitelistCommand = new Command("whitelist", "dr whitelist [player] [rank]: W
   limit: limitCommand,
   plan: planCommand,
   status: statusCommand,
+  unkill: unkillCommand,
   whitelist: whitelistCommand
 });
 ;// CONCATENATED MODULE: ./src/index.ts
@@ -22713,7 +22829,7 @@ module.exports = require("kolmafia");;
 /******/ 	// module cache are used so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	var __webpack_exports__ = __webpack_require__(__webpack_require__.s = 6924);
+/******/ 	var __webpack_exports__ = __webpack_require__(__webpack_require__.s = 1659);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
