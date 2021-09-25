@@ -1,4 +1,5 @@
 import { getClanId, myId, myName, totalTurnsPlayed, visitUrl } from "kolmafia";
+import { $element } from "libram";
 
 import dreadLayout from "./layout.yml";
 
@@ -21,6 +22,26 @@ export type DreadElementId = typeof dreadElements[number];
 
 export function isDreadElementId(x: string): x is DreadElementId {
   return (dreadElements as readonly string[]).includes(x);
+}
+
+export function toDreadElementId(x: string): DreadElementId | undefined {
+  if (isDreadElementId(x)) return x;
+  else if (x === "sleaze") return "sleazy";
+  else if (x === "stench") return "stinky";
+  else return undefined;
+}
+
+export function toElement(dreadElement: DreadElementId): Element {
+  switch (dreadElement) {
+    case "hot":
+    case "cold":
+    case "spooky":
+      return Element.get(dreadElement);
+    case "sleazy":
+      return $element`sleaze`;
+    case "stinky":
+      return $element`stench`;
+  }
 }
 
 export type DreadChoice = {
