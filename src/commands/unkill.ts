@@ -14,13 +14,16 @@ import {
   $familiar,
   $item,
   $items,
+  $location,
   $skill,
   $skills,
   have,
   maximizeCached,
   Mood,
 } from "libram";
+import { adventureMacro, Macro } from "../combat";
 import { dreadKilled } from "../dungeon/raidlog";
+import { propertyManager } from "../lib";
 
 import { Command } from "./command";
 
@@ -29,8 +32,8 @@ const requiredItems = $items`Novelty Belt Buckle of Violence, unwrapped knock-of
 
 export const unkillCommand = new Command(
   "unkill",
-  "dr unkill: Kill the Unkillable Skeleton.",
-  () => {
+  "dr unkill [normal?]: Kill the Unkillable Skeleton on hard or normal mode.",
+  ([mode]) => {
     const [, castleKilled] = dreadKilled().find(([zone]) => zone.name === "castle") ?? [
       "castle",
       0,
@@ -51,7 +54,7 @@ export const unkillCommand = new Command(
       throw `You don't have required item ${requiredItems.filter((item) => !have(item))}`;
     }
 
-    if (!have($effect`Shepherd's Breath`)) {
+    if (mode !== "normal" && !have($effect`Shepherd's Breath`)) {
       if (myFullness() + 4 > fullnessLimit()) {
         throw "Not enough stomach space to eat a Dreadsylvanian shepherd's pie";
       } else if (!have($item`Dreadsylvanian shepherd's pie`)) {
@@ -83,8 +86,9 @@ export const unkillCommand = new Command(
     mood.skill($skill`Sauce Monocle`); // 24%
     mood.potion($item`natto marble soda`, 1000); // 39%
     mood.potion($item`invisible potion`, 1000); // 54%
-    mood.potion($item`LOV Elixir #6`, 1000); // 69%
+    mood.potion($item`LOV Elixir #6`, 1000); // 69% - nice!
 
+    // -ML
     mood.potion($item`cuppa Monstrosi tea`, 1000);
 
     if (!mood.execute()) {
@@ -106,5 +110,12 @@ export const unkillCommand = new Command(
     });
 
     cliExecute("retrocape heck kill");
+
+    propertyManager.setChoices({ 760: 1 });
+
+    adventureMacro(
+      $location`Dreadsylvanian Castle`,
+      Macro.if_("monstername Count Drunkula", Macro.abort()).step("twiddle").repeat()
+    );
   }
 );

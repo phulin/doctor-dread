@@ -7,23 +7,21 @@ import {
   dreadKilled,
   DreadMonsterId,
   DreadZoneId,
+  dreadZones,
   isDreadElementId,
   isDreadMonsterId,
 } from "../dungeon/raidlog";
 
 export const statusCommand = new Command(
   "status",
-  "dr status: Print current banishing status of dungeon.",
+  "dr status: Print current status of dungeon.",
   () => {
     const banished = dreadBanished();
-    const zoneMap = new Map<DreadZoneId, [DreadElementId[], DreadMonsterId[]]>();
+    const zoneMap = new Map<DreadZoneId, [DreadElementId[], DreadMonsterId[]]>(
+      dreadZones.map((zone) => [zone.name, [[], []]])
+    );
     for (const banish of banished) {
-      let zoneInfo = zoneMap.get(banish.targetZone);
-      if (zoneInfo === undefined) {
-        zoneInfo = [[], []];
-        zoneMap.set(banish.targetZone, zoneInfo);
-      }
-
+      const zoneInfo = zoneMap.get(banish.targetZone) as [DreadElementId[], DreadMonsterId[]];
       const banishedThing = banish.banished;
       if (isDreadElementId(banishedThing)) {
         zoneInfo[0].push(banishedThing);
@@ -36,8 +34,8 @@ export const statusCommand = new Command(
 
     for (const [zone, [elementsBanished, monstersBanished]] of zoneMap) {
       print(`${zone.toUpperCase()}:`);
-      print(`Elements banished: ${elementsBanished.join(", ")}`);
-      print(`Monsters banished: ${monstersBanished.join(", ")}`);
+      print(`Elements banished: ${elementsBanished.length ? elementsBanished.join(", ") : "none"}`);
+      print(`Monsters banished: ${monstersBanished.length ? monstersBanished.join(", ") : "none"}`);
       print(`Monsters remaining: ${1000 - (killedMap.get(zone) ?? 0)}`);
       print();
     }
