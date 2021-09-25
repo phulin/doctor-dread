@@ -18184,7 +18184,7 @@ function dreadBanished() {
           name = _step$value[0].name,
           block = _step$value[1];
 
-      var elementRegex = /made the (.*?) less (.*?) \(1 turn\)/g;
+      var elementRegex = /made the (.*?) less (.*?) \(1 turn\)/gi;
       var match = void 0;
 
       while ((match = elementRegex.exec(block)) !== null) {
@@ -18195,7 +18195,7 @@ function dreadBanished() {
         });
       }
 
-      var monsterRegex = /drove some (.*?) out of the (.*?) \(1 turn\)/g;
+      var monsterRegex = /drove some (.*?) out of the (.*?) \(1 turn\)/gi;
 
       while ((match = monsterRegex.exec(block)) !== null) {
         result.push({
@@ -18227,7 +18227,7 @@ function dreadKilled() {
     try {
       for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
         var monster = _step2.value;
-        var monsterRe = new RegExp("defeated (.*?) ".concat(monster, " x ([0-9]+)"), "g");
+        var monsterRe = new RegExp("defeated (.*?) ".concat(monster, " x ([0-9]+)"), "gi");
         var match = void 0;
 
         while ((match = monsterRe.exec(block)) !== null) {
@@ -18261,7 +18261,7 @@ function dreadNoncombatsUsed() {
       try {
         for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
           var noncombat = _step4.value;
-          var messageRes = noncombat.messages().map(s => new RegExp("".concat((0,external_kolmafia_.myName)(), " \\(#").concat((0,external_kolmafia_.myId)(), "\\) ").concat(s)));
+          var messageRes = noncombat.messages().map(s => new RegExp("".concat((0,external_kolmafia_.myName)(), " \\(#").concat((0,external_kolmafia_.myId)(), "\\) ").concat(s), "i"));
           if (messageRes.some(re => block.match(re))) result.push(noncombat.name);
         }
       } catch (err) {
