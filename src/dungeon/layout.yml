@@ -204,7 +204,7 @@
               effect: Sewer-Drenched
         2:
           name: Tenements
-          id: 739
+          id: 740
           choices:
             1:
               message: drove some skeletons out of the castle
@@ -217,7 +217,7 @@
               stat: Muscle
         3:
           name: Ticking shack
-          id: 740
+          id: 739
           classes: ["Disco Bandit", "Accordion Thief"]
           choices:
             1:
