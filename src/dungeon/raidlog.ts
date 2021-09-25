@@ -285,7 +285,7 @@ export function dreadBanished(): {
   }[] = [];
 
   for (const [{ name }, block] of raidlogBlocks()) {
-    const elementRegex = /made the (.*?) less (.*?) \(1 turn\)/g;
+    const elementRegex = /made the (.*?) less (.*?) \(1 turn\)/gi;
     let match;
     while ((match = elementRegex.exec(block)) !== null) {
       result.push({
@@ -295,7 +295,7 @@ export function dreadBanished(): {
       });
     }
 
-    const monsterRegex = /drove some (.*?) out of the (.*?) \(1 turn\)/g;
+    const monsterRegex = /drove some (.*?) out of the (.*?) \(1 turn\)/gi;
     while ((match = monsterRegex.exec(block)) !== null) {
       result.push({
         targetZone: match[2] as DreadZoneId,
@@ -312,7 +312,7 @@ export function dreadKilled(): [DreadZone, number][] {
   return raidlogBlocks().map(([zone, block]) => {
     let zoneTotal = 0;
     for (const monster of zone.monsters) {
-      const monsterRe = new RegExp(`defeated (.*?) ${monster} x ([0-9]+)`, "g");
+      const monsterRe = new RegExp(`defeated (.*?) ${monster} x ([0-9]+)`, "gi");
       let match;
       while ((match = monsterRe.exec(block)) !== null) {
         zoneTotal += parseInt(match[2]);
@@ -329,7 +329,7 @@ export function dreadNoncombatsUsed(): DreadNoncombatId[] {
     for (const noncombat of zone.noncombats) {
       const messageRes = noncombat
         .messages()
-        .map((s) => new RegExp(`${myName()} \\(#${myId()}\\) ${s}`));
+        .map((s) => new RegExp(`${myName()} \\(#${myId()}\\) ${s}`, "i"));
       if (messageRes.some((re) => block.match(re))) result.push(noncombat.name);
     }
   }
