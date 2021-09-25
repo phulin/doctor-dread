@@ -22033,7 +22033,7 @@ var unkillCommand = new Command("unkill", "dr unkill [normal?]: Kill the Unkilla
   }
 
   if (mode !== "normal" && !(0,dist.have)((0,dist.$effect)(unkill_templateObject3 || (unkill_templateObject3 = unkill_taggedTemplateLiteral(["Shepherd's Breath"]))))) {
-    if ((0,external_kolmafia_.myFullness)() + 4 > (0,external_kolmafia_.fullnessLimit)()) {
+    if ((0,external_kolmafia_.myFullness)() + 3 > (0,external_kolmafia_.fullnessLimit)()) {
       throw "Not enough stomach space to eat a Dreadsylvanian shepherd's pie";
     } else if (!(0,dist.have)((0,dist.$item)(unkill_templateObject4 || (unkill_templateObject4 = unkill_taggedTemplateLiteral(["Dreadsylvanian shepherd's pie"]))))) {
       throw "You don't have a Dreadsylvanian shepherd's pie. Consider making one.";
