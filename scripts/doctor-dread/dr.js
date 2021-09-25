@@ -21912,9 +21912,9 @@ function status_arrayLikeToArray(arr, len) { if (len == null || len > arr.length
 
 
 
-var statusCommand = new Command("status", "dr status: Print current banishing status of dungeon.", () => {
+var statusCommand = new Command("status", "dr status: Print current status of dungeon.", () => {
   var banished = dreadBanished();
-  var zoneMap = new Map();
+  var zoneMap = new Map(dreadZones.map(zone => [zone.name, [[], []]]));
 
   var _iterator = status_createForOfIteratorHelper(banished),
       _step;
@@ -21923,12 +21923,6 @@ var statusCommand = new Command("status", "dr status: Print current banishing st
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
       var banish = _step.value;
       var zoneInfo = zoneMap.get(banish.targetZone);
-
-      if (zoneInfo === undefined) {
-        zoneInfo = [[], []];
-        zoneMap.set(banish.targetZone, zoneInfo);
-      }
-
       var banishedThing = banish.banished;
 
       if (isDreadElementId(banishedThing)) {
@@ -21965,8 +21959,8 @@ var statusCommand = new Command("status", "dr status: Print current banishing st
           monstersBanished = _step2$value$[1];
 
       (0,external_kolmafia_.print)("".concat(zone.toUpperCase(), ":"));
-      (0,external_kolmafia_.print)("Elements banished: ".concat(elementsBanished.join(", ")));
-      (0,external_kolmafia_.print)("Monsters banished: ".concat(monstersBanished.join(", ")));
+      (0,external_kolmafia_.print)("Elements banished: ".concat(elementsBanished.length ? elementsBanished.join(", ") : "none"));
+      (0,external_kolmafia_.print)("Monsters banished: ".concat(monstersBanished.length ? monstersBanished.join(", ") : "none"));
       (0,external_kolmafia_.print)("Monsters remaining: ".concat(1000 - ((_killedMap$get = killedMap.get(zone)) !== null && _killedMap$get !== void 0 ? _killedMap$get : 0)));
       (0,external_kolmafia_.print)();
     }
