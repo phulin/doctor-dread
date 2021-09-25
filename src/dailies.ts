@@ -36,6 +36,7 @@ import {
   $items,
   $skill,
   $skills,
+  $stat,
   $thrall,
   ChateauMantegna,
   get,
@@ -145,6 +146,19 @@ function configureGear(): void {
     use($item`box of Familiar Jacks`);
   }
 
+  if (have($item`portable pantogram`) && !have($item`pantogram pants`)) {
+    retrieveItem($item`ten-leaf clover`);
+    retrieveItem($item`tiny dancer`);
+    retrieveItem($item`bubblin' crude`);
+    const m = new Map([
+      [$stat`Muscle`, 1],
+      [$stat`Mysticality`, 2],
+      [$stat`Moxie`, 3],
+    ]).get(myPrimestat());
+    visitUrl("inv_use.php?pwd&whichitem=9573");
+    visitUrl(`choice.php?whichchoice=1270&pwd&option=1&m=${m}&e=5&s1=5789,1&s2=7338,1&s3=24,1`);
+  }
+
   if (have($item`Fourth of May Cosplay Saber`) && get("_saberMod") === 0) {
     // Get familiar weight.
     visitUrl("main.php?action=may4");
@@ -157,27 +171,15 @@ function configureGear(): void {
 }
 
 function prepFamiliars(): void {
-  /* if (have($familiar`Robortender`)) {
-    for (const drink of $items`Newark, drive-by shooting, Feliz Navidad, single entendre, Bloody Nora`) {
-      if (get("_roboDrinks").includes(drink.name)) continue;
-      useFamiliar($familiar`Robortender`);
-      if (itemAmount(drink) === 0) retrieveItem(1, drink);
-      print(`Feeding robortender ${drink}.`, "blue");
-      visitUrl(`inventory.php?action=robooze&which=1&whichitem=${toInt(drink)}`);
-    }
-  } */
-
   if (have($item`mumming trunk`) && !get("_mummeryMods").includes("Item Drop")) {
-    useFamiliar(
-      have($familiar`Reagnimated Gnome`) ? $familiar`Reagnimated Gnome` : fairyFamiliar()
-    );
+    useFamiliar(fairyFamiliar());
     cliExecute("mummery item");
   }
 
   if (get("_feastUsed") === 0) {
     withStash($items`moveable feast`, () => {
       if (have($item`moveable feast`))
-        $familiars`Pocket Professor, Frumious Bandersnatch, Pair of Stomping Boots, Cat Burglar, Reagnimated Gnome`.forEach(
+        $familiars`Pocket Professor, Frumious Bandersnatch, Pair of Stomping Boots, Mechanical Songbird, Reagnimated Gnome`.forEach(
           tryFeast
         );
     });
@@ -187,7 +189,7 @@ function prepFamiliars(): void {
 function horse(): void {
   visitUrl("place.php?whichplace=town_right");
   if (get("horseryAvailable") && get("_horsery") !== "dark horse") {
-    cliExecute("horsery dark");
+    cliExecute("horsery crazy");
   }
 }
 

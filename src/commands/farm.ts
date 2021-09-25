@@ -4,6 +4,7 @@ import {
   getCampground,
   getCounters,
   guildStoreAvailable,
+  haveEquipped,
   inebrietyLimit,
   myAdventures,
   myClass,
@@ -27,6 +28,7 @@ import {
   $effect,
   $item,
   $items,
+  $location,
   $skill,
   adventureMacro,
   adventureMacroAuto,
@@ -55,7 +57,7 @@ import {
   safeInterrupt,
 } from "../lib";
 import { itemMood } from "../mood";
-import { freeFightOutfit } from "../outfit";
+import { dreadOutfit, freeFightOutfit } from "../outfit";
 
 function canContinue(): boolean {
   return (
@@ -79,10 +81,10 @@ function dreadTurn() {
   if (SongBoom.songChangesLeft() > 0) SongBoom.setSong("Food Vibrations");
 
   if (
-    have($item`unwrapped knock-off retro superhero cape`) &&
-    (get("retroCapeSuperhero") !== "robot" || get("retroCapeWashingInstructions") !== "kill")
+    haveEquipped($item`unwrapped knock-off retro superhero cape`) &&
+    (get("retroCapeSuperhero") !== "vampire" || get("retroCapeWashingInstructions") !== "kill")
   ) {
-    cliExecute("retrocape robot kill");
+    cliExecute("retrocape vampire kill");
   }
 
   const digitizeUp = getCounters("Digitize Monster", 0, 0).trim() !== "";
@@ -127,7 +129,8 @@ function dreadTurn() {
     adventureMacroAuto(determineDraggableZoneAndEnsureAccess(), Macro.basicCombat());
   } else {
     // Dread turn.
-    // FIXME: Actually adventure.
+    dreadOutfit();
+    adventureMacro($location`Dreadsylvanian Castle`, Macro.skill($skill`Slay the Dead`));
   }
 
   if (
@@ -138,13 +141,13 @@ function dreadTurn() {
   }
 
   if (myFullness() < fullnessLimit()) {
-    fillStomach();
+    fillStomach(true);
   }
 }
 
 export const farmCommand = new Command(
   "farm",
-  "dr farm [ascend] [turncount]: Burn turns dreadfarming, up to turncount turns.",
+  "dr farm [ascend] [turncount]: Burn turns dreadfarming the Castle, up to turncount turns.",
   (args: string[]) => {
     for (const arg of args) {
       if (arg.match(/\d+/)) {
@@ -188,7 +191,7 @@ export const farmCommand = new Command(
     }
 
     try {
-      print("Collecting duffels!", "blue");
+      print("Collecting old dry bones!", "blue");
       if (globalOptions.stopTurncount !== null) {
         print(`Stopping in ${globalOptions.stopTurncount - myTurncount()}`, "blue");
       }
@@ -240,13 +243,7 @@ export const farmCommand = new Command(
       ) {
         visitUrl("guild.php?action=buyskill&skillid=32", true);
       }
-      const stashItems = []; // $items`Buddy Bjorn`;
-      if (
-        myInebriety() <= inebrietyLimit() &&
-        (myClass() !== $class`Seal Clubber` || !have($skill`Furious Wallop`))
-      ) {
-        stashItems.push($item`haiku katana`);
-      }
+      const stashItems = $items`Buddy Bjorn`;
       if (get("_pantsgivingCount") < 500) {
         stashItems.push($item`Pantsgiving`);
       }

@@ -2,8 +2,6 @@ import {
   bjornifyFamiliar,
   cliExecute,
   enthroneFamiliar,
-  equip,
-  equippedAmount,
   fullnessLimit,
   getCounters,
   haveEquipped,
@@ -111,8 +109,19 @@ export function refreshLatte(): boolean {
   return have($item`latte lovers member's mug`);
 }
 
-export const nepDefaultRequirement = new Requirement(["1 Item Drop"], {});
-export function nepOutfit(requirement = nepDefaultRequirement): void {
+export const dreadDefaultRequirement = new Requirement(["1 Item Drop"], {
+  forceEquip: [
+    ...[
+      $item`dreadful fedora`,
+      $item`dreadful glove`,
+      $item`unwrapped knock-off retro superhero cape`,
+      $item`dreadful sweater`,
+      $item`Dreadsylvania Auditor's badge`,
+    ].filter((item) => have(item)),
+    have($item`cursed pirate cutlass`) ? $item`cursed pirate cutlass` : $item`sweet ninja sword`,
+  ],
+});
+export function dreadOutfit(requirement = dreadDefaultRequirement): void {
   const extraObjectives = [];
   const forceEquip = [];
   const equipMode =
@@ -128,8 +137,7 @@ export function nepOutfit(requirement = nepDefaultRequirement): void {
     if (
       have($item`protonic accelerator pack`) &&
       get("questPAGhost") === "unstarted" &&
-      get("nextParanormalActivity") <= totalTurnsPlayed() &&
-      !forceEquip.includes($item`ice nine`)
+      get("nextParanormalActivity") <= totalTurnsPlayed()
     ) {
       forceEquip.push($item`protonic accelerator pack`);
     }
@@ -172,9 +180,6 @@ export function nepOutfit(requirement = nepDefaultRequirement): void {
 
   maximizeCached(compiledRequirements.maximizeParameters(), compiledRequirements.maximizeOptions());
 
-  if (equippedAmount($item`ice nine`) > 0) {
-    equip($item`unwrapped knock-off retro superhero cape`);
-  }
   if (haveEquipped($item`Buddy Bjorn`)) bjornifyFamiliar(bjornChoice.familiar);
   if (haveEquipped($item`Crown of Thrones`)) enthroneFamiliar(bjornChoice.familiar);
   if (haveEquipped($item`Snow Suit`) && get("snowsuit") !== "nose") cliExecute("snowsuit nose");
