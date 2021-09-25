@@ -317,6 +317,11 @@ export function dreadKilled(): [DreadZone, number][] {
       while ((match = monsterRe.exec(block)) !== null) {
         zoneTotal += parseInt(match[2]);
       }
+
+      const singleMonsterRe = new RegExp(`defeated (.*?) ${monster} \\(`, "gi");
+      while ((match = singleMonsterRe.exec(block)) !== null) {
+        zoneTotal += 1;
+      }
     }
     return [zone, zoneTotal] as [DreadZone, number];
   });
