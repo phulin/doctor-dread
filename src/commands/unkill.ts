@@ -55,7 +55,7 @@ export const unkillCommand = new Command(
     }
 
     if (mode !== "normal" && !have($effect`Shepherd's Breath`)) {
-      if (myFullness() + 4 > fullnessLimit()) {
+      if (myFullness() + 3 > fullnessLimit()) {
         throw "Not enough stomach space to eat a Dreadsylvanian shepherd's pie";
       } else if (!have($item`Dreadsylvanian shepherd's pie`)) {
         throw "You don't have a Dreadsylvanian shepherd's pie. Consider making one.";
