@@ -1,5 +1,6 @@
 import { print, printHtml } from "kolmafia";
 
+import { Command } from "../command";
 import { neededBanishes, planLimitTo } from "../dungeon/plan";
 import {
   dreadNoncombatsUsed,
@@ -8,11 +9,10 @@ import {
   isDreadMonsterId,
   monsterZone,
 } from "../dungeon/raidlog";
-import { Command } from "./command";
 
 const usage = "dr plan [element] [monster]: Print plan for banishing all [element] [monster]s.";
 
-export const planCommand = new Command("plan", usage, ([element, monster]) => {
+export default new Command("plan", usage, ([element, monster]) => {
   if (!isDreadMonsterId(monster)) {
     print(`Unrecognized monster ${monster}.`, "red");
     print(`Usage: ${usage}.`);

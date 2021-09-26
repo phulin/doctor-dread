@@ -4,13 +4,16 @@ import {
   autosellPrice,
   buy,
   cliExecute,
+  equip,
   familiarWeight,
   haveEquipped,
   haveSkill,
+  inebrietyLimit,
   mallPrice,
   myBjornedFamiliar,
   myEnthronedFamiliar,
   myFamiliar,
+  myInebriety,
   myLocation,
   myPath,
   myTurncount,
@@ -527,4 +530,22 @@ export function fromEntries<T>(iterable: [keyof T, T[keyof T]][]): T {
     obj[key] = val;
     return obj;
   }, {} as T);
+}
+
+export function withWineglass<T>(action: () => T): T {
+  const overdrunk = myInebriety() > inebrietyLimit();
+  if (overdrunk) cliExecute("checkpoint");
+
+  try {
+    if (overdrunk) {
+      if (!have($item`Drunkula's wineglass`)) {
+        throw "Can't use noncombats without wineglass while overdrunk!";
+      }
+      equip($item`Drunkula's wineglass`);
+    }
+
+    return action();
+  } finally {
+    cliExecute("outfit checkpoint");
+  }
 }

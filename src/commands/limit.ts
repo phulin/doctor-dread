@@ -1,10 +1,6 @@
 import {
-  cliExecute,
-  equip,
   handlingChoice,
-  inebrietyLimit,
   itemAmount,
-  myInebriety,
   print,
   printHtml,
   retrieveItem,
@@ -13,7 +9,7 @@ import {
 } from "kolmafia";
 import { $item, have } from "libram";
 
-import { Command } from "./command";
+import { Command } from "../command";
 import { neededBanishes, planLimitTo } from "../dungeon/plan";
 import {
   DreadSubnoncombat,
@@ -21,10 +17,10 @@ import {
   isDreadMonsterId,
   monsterZone,
 } from "../dungeon/raidlog";
-import { fromEntries, propertyManager } from "../lib";
+import { fromEntries, propertyManager, withWineglass } from "../lib";
 
 const usage = "dr limit [element] [monster]: Try to banish all monsters but [element] [monster]s.";
-export const limitCommand = new Command("limit", usage, ([element, monster]: string[]) => {
+export default new Command("limit", usage, ([element, monster]: string[]) => {
   printHtml("<b>Dr. Dread Auto-Banisher</b>");
   if (!isDreadMonsterId(monster)) {
     print(`Unrecognized monster ${monster}.`, "red");
@@ -40,17 +36,7 @@ export const limitCommand = new Command("limit", usage, ([element, monster]: str
     throw "You don't have skeleton keys and you're almost out of Freddies. Fix that.";
   }
 
-  const overdrunk = myInebriety() > inebrietyLimit();
-  if (overdrunk) cliExecute("checkpoint");
-
-  try {
-    if (overdrunk) {
-      if (!have($item`Drunkula's wineglass`)) {
-        throw "Can't do banishes without wineglass while overdrunk!";
-      }
-      equip($item`Drunkula's wineglass`);
-    }
-
+  withWineglass(() => {
     for (const banish of planLimitTo(monsterZone(monster), monster, element)) {
       const [noncombat, subIndex, choiceIndex, targetZone, thing] = banish;
       const subnoncombat = noncombat.choices.get(subIndex) as DreadSubnoncombat;
@@ -70,9 +56,7 @@ export const limitCommand = new Command("limit", usage, ([element, monster]: str
       if (handlingChoice()) throw "Stuck in choice adventure!";
       print();
     }
-  } finally {
-    if (overdrunk) cliExecute("outfit checkpoint");
-  }
+  });
 
   const remaining = neededBanishes(monsterZone(monster), monster, element);
   if (remaining.length === 0) {

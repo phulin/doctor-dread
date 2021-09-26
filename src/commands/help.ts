@@ -1,11 +1,12 @@
 import { print, printHtml } from "kolmafia";
 
-import allCommands from ".";
-import { Command } from "./command";
+import { Command } from "../command";
 
-export const helpCommand = new Command("help", "dr help: Print help for each command.", () => {
+export default new Command("help", "dr help: Print help for each command.", () => {
+  const commandsContext = require.context(".", false, /\.(js|ts)$/);
+  const commands = commandsContext.keys().map((r) => commandsContext(r).default);
   printHtml("<b>Doctor Dread</b>");
-  for (const commandName of Object.keys(allCommands)) {
-    print(allCommands[commandName].help);
+  for (const command of commands) {
+    print(command.help);
   }
 });

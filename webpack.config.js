@@ -6,6 +6,8 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const { merge } = require("webpack-merge");
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
+const fs = require("fs");
 
 const sharedConfig = {
   mode: "production",
@@ -39,17 +41,28 @@ const sharedConfig = {
     ],
   },
   plugins: [new MiniCssExtractPlugin()],
-  externals: {
-    "canadv.ash": "commonjs canadv.ash",
-    kolmafia: "commonjs kolmafia",
-  },
+  externals: [
+    {
+      "canadv.ash": "commonjs canadv.ash",
+      kolmafia: "commonjs kolmafia",
+    },
+    /^\.\/commands\/(.*).js$/,
+  ],
 };
+
+const commands = fs
+  .readdirSync("./src/commands")
+  .map((name) => [
+    `commands/${name.replace(".ts", "")}`,
+    `./src/commands/${name.replace(".ts", "")}`,
+  ]);
 
 const scriptsConfig = merge(
   {
     entry: {
       dr: "./src/index.ts",
       "dr-combat": "./src/combat.ts",
+      ...Object.fromEntries(commands),
     },
     output: {
       path: path.resolve(__dirname, "KoLmafia", "scripts", "doctor-dread"),

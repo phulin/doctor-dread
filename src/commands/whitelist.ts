@@ -1,9 +1,9 @@
 import { getClanName, myName, print, todayToString } from "kolmafia";
 import { Clan, get } from "libram";
 
-import { Command } from "./command";
+import { Command } from "../command";
 
-export const whitelistCommand = new Command(
+export default new Command(
   "whitelist",
   "dr whitelist [player] [rank]: Whitelist [player] with rank [rank] (default normal member) to all clans in dr_clans",
   ([player, ...rankComponents]) => {

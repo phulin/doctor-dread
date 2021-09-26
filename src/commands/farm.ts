@@ -40,7 +40,7 @@ import {
   SourceTerminal,
 } from "libram";
 
-import { Command } from "./command";
+import { Command } from "../command";
 import { withStash } from "../clan";
 import { Macro } from "../combat";
 import { dailySetup } from "../dailies";
@@ -145,7 +145,7 @@ function dreadTurn() {
   }
 }
 
-export const farmCommand = new Command(
+export default new Command(
   "farm",
   "dr farm [ascend] [turncount]: Burn turns dreadfarming the Castle, up to turncount turns.",
   (args: string[]) => {

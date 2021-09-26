@@ -2,7 +2,7 @@ import { cliExecute, create, getRelated, getWorkshed, print, stashAmount } from 
 import { $item, $items, Clan, get, have, set } from "libram";
 
 import { DreadElementId, dreadElements, toDreadElementId, toElement } from "../dungeon/raidlog";
-import { Command } from "./command";
+import { Command } from "../command";
 
 function elementPocket(elementId: DreadElementId): Item {
   return Item.get(`Dreadsylvanian ${elementId} pocket`);
@@ -23,7 +23,7 @@ const smashables = new Map<DreadElementId, Item[]>(
 
 const usage = "dr cook [element]: Create a Dreadsylvanian [element] pocket.";
 
-export const cookCommand = new Command("cook", usage, ([element]) => {
+export default new Command("cook", usage, ([element]) => {
   if (element === undefined) {
     print(`Usage: ${usage}`);
     return;

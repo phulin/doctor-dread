@@ -1,3 +1,5 @@
+import "core-js/modules/es.object.entries";
+
 import { getClanId, myId, myName, totalTurnsPlayed, visitUrl } from "kolmafia";
 import { $element } from "libram";
 

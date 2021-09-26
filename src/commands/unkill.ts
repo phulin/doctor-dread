@@ -23,16 +23,16 @@ import {
   maximizeCached,
   Mood,
 } from "libram";
+
 import { adventureMacro, Macro } from "../combat";
+import { Command } from "../command";
 import { dreadBanished, dreadKilled } from "../dungeon/raidlog";
 import { propertyManager } from "../lib";
-
-import { Command } from "./command";
 
 const requiredSkills: Skill[] = [];
 const requiredItems = $items`Unkillable Skeleton's shield`;
 
-export const unkillCommand = new Command(
+export default new Command(
   "unkill",
   "dr unkill [normal?]: Kill the Unkillable Skeleton on hard or normal mode.",
   ([mode]) => {
