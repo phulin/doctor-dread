@@ -19677,7 +19677,7 @@ function withStash(itemsToTake, action) {
     manager.putBackAll();
   }
 }
-function clan_withVIPClan(action) {
+function withVIPClan(action) {
   var clanIdOrName = (0,dist.get)("dr_vipClan", undefined);
 
   if (!clanIdOrName && (0,dist.have)((0,dist.$item)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Clan VIP Lounge key"]))))) {
@@ -20795,7 +20795,7 @@ function prepFamiliars() {
 function horse() {
   (0,external_kolmafia_.visitUrl)("place.php?whichplace=town_right");
 
-  if ((0,dist.get)("horseryAvailable") && (0,dist.get)("_horsery") !== "dark horse") {
+  if ((0,dist.get)("horseryAvailable") && (0,dist.get)("_horsery") !== "crazy horse") {
     (0,external_kolmafia_.cliExecute)("horsery crazy");
   }
 }
@@ -20824,7 +20824,7 @@ function configureMisc() {
   }
 
   if (!(0,dist.get)("_olympicSwimmingPoolItemFound") && (0,dist.have)((0,dist.$item)(dailies_templateObject44 || (dailies_templateObject44 = dailies_taggedTemplateLiteral(["Clan VIP Lounge key"]))))) {
-    clan_withVIPClan(() => {
+    withVIPClan(() => {
       if ((0,external_kolmafia_.getClanLounge)()["Olympic-sized Clan crate"] !== undefined) {
         (0,external_kolmafia_.cliExecute)("swim item");
       }
@@ -21508,10 +21508,9 @@ function runNightcap() {
   maximize("Adventures", false);
 }
 ;// CONCATENATED MODULE: ./src/mood.ts
-var mood_templateObject, mood_templateObject2, mood_templateObject3, mood_templateObject4, mood_templateObject5, mood_templateObject6, mood_templateObject7, mood_templateObject8, mood_templateObject9, mood_templateObject10, mood_templateObject11, mood_templateObject12, mood_templateObject13, mood_templateObject14, mood_templateObject15, mood_templateObject16, mood_templateObject17, mood_templateObject18, mood_templateObject19, mood_templateObject20, mood_templateObject21, mood_templateObject22, mood_templateObject23, mood_templateObject24, mood_templateObject25, mood_templateObject26, mood_templateObject27, mood_templateObject28, mood_templateObject29, mood_templateObject30, mood_templateObject31, mood_templateObject32, mood_templateObject33, mood_templateObject34, mood_templateObject35, mood_templateObject36, mood_templateObject37, mood_templateObject38, mood_templateObject39, mood_templateObject40, mood_templateObject41, mood_templateObject42, mood_templateObject43, mood_templateObject44, mood_templateObject45, mood_templateObject46, mood_templateObject47;
+var mood_templateObject, mood_templateObject2, mood_templateObject3, mood_templateObject4, mood_templateObject5, mood_templateObject6, mood_templateObject7, mood_templateObject8, mood_templateObject9, mood_templateObject10, mood_templateObject11, mood_templateObject12, mood_templateObject13, mood_templateObject14, mood_templateObject15, mood_templateObject16, mood_templateObject17, mood_templateObject18, mood_templateObject19, mood_templateObject20, mood_templateObject21, mood_templateObject22, mood_templateObject23, mood_templateObject24, mood_templateObject25, mood_templateObject26, mood_templateObject27, mood_templateObject28, mood_templateObject29, mood_templateObject30, mood_templateObject31, mood_templateObject32, mood_templateObject33, mood_templateObject34, mood_templateObject35, mood_templateObject36;
 
 function mood_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
 
 
 
@@ -21536,6 +21535,9 @@ function itemMood() {
   mood.skill((0,dist.$skill)(mood_templateObject4 || (mood_templateObject4 = mood_taggedTemplateLiteral(["The Spirit of Taking"]))));
   mood.skill((0,dist.$skill)(mood_templateObject5 || (mood_templateObject5 = mood_taggedTemplateLiteral(["Fat Leon's Phat Loot Lyric"]))));
   mood.skill((0,dist.$skill)(mood_templateObject6 || (mood_templateObject6 = mood_taggedTemplateLiteral(["Singer's Faithful Ocelot"]))));
+  mood.effect((0,dist.$effect)(mood_templateObject7 || (mood_templateObject7 = mood_taggedTemplateLiteral(["Bubble Vision"]))), () => {
+    if ((0,external_kolmafia_.haveEffect)((0,dist.$effect)(mood_templateObject8 || (mood_templateObject8 = mood_taggedTemplateLiteral(["Bubble Vision"])))) === 0) (0,external_kolmafia_.use)((0,dist.$item)(mood_templateObject9 || (mood_templateObject9 = mood_taggedTemplateLiteral(["bottle of bubbles"]))));
+  });
 
   if (!(0,dist.get)("concertVisited") && (0,dist.get)("sidequestArenaCompleted") === "fratboy") {
     (0,external_kolmafia_.cliExecute)("concert winklered");
@@ -21543,28 +21545,78 @@ function itemMood() {
     (0,external_kolmafia_.cliExecute)("concert optimist primal");
   }
 
+  if (!(0,dist.get)("_clanFortuneBuffUsed")) {
+    withVIPClan(() => (0,external_kolmafia_.cliExecute)("fortune buff item"));
+  }
+
+  if (!(0,dist.have)((0,dist.$effect)(mood_templateObject10 || (mood_templateObject10 = mood_taggedTemplateLiteral(["items.enh"])))) && dist.SourceTerminal.have() && dist.SourceTerminal.getEnhanceUses() < 3) {
+    while (dist.SourceTerminal.getEnhanceUses() < 3) {
+      dist.SourceTerminal.enhance((0,dist.$effect)(mood_templateObject11 || (mood_templateObject11 = mood_taggedTemplateLiteral(["items.enh"]))));
+    }
+  }
+
+  if ((0,external_kolmafia_.getCampground)()["Asdon Martin keyfob"] !== undefined) {
+    if ((0,external_kolmafia_.getFuel)() < 37) (0,external_kolmafia_.cliExecute)("asdonmartin fuel 1 pie man was not meant to eat");
+    mood.effect((0,dist.$effect)(mood_templateObject12 || (mood_templateObject12 = mood_taggedTemplateLiteral(["Driving Observantly"]))));
+  }
+
+  if (!(0,dist.have)((0,dist.$effect)(mood_templateObject13 || (mood_templateObject13 = mood_taggedTemplateLiteral(["Items Are Forever"])))) && (0,dist.have)((0,dist.$item)(mood_templateObject14 || (mood_templateObject14 = mood_taggedTemplateLiteral(["Kremlin's Greatest Briefcase"])))) && (0,dist.get)("_kgbClicksUsed") < 22) {
+    var buffTries = Math.ceil((22 - (0,dist.get)("_kgbClicksUsed")) / 3);
+    (0,external_kolmafia_.cliExecute)("Briefcase buff ".concat(new Array(buffTries).fill("item").join(" ")));
+  }
+
+  if ((0,dist.have)((0,dist.$item)(mood_templateObject15 || (mood_templateObject15 = mood_taggedTemplateLiteral(["Bird-a-Day calendar"]))))) {
+    if (!(0,dist.have)((0,dist.$skill)(mood_templateObject16 || (mood_templateObject16 = mood_taggedTemplateLiteral(["Seek out a Bird"]))))) {
+      (0,external_kolmafia_.use)(1, (0,dist.$item)(mood_templateObject17 || (mood_templateObject17 = mood_taggedTemplateLiteral(["Bird-a-Day calendar"]))));
+    }
+
+    if ((0,dist.have)((0,dist.$skill)(mood_templateObject18 || (mood_templateObject18 = mood_taggedTemplateLiteral(["Visit your Favorite Bird"])))) && !(0,dist.get)("_favoriteBirdVisited") && ((0,external_kolmafia_.numericModifier)((0,dist.$effect)(mood_templateObject19 || (mood_templateObject19 = mood_taggedTemplateLiteral(["Blessing of your favorite Bird"]))), "Meat Drop") > 0 || (0,external_kolmafia_.numericModifier)((0,dist.$effect)(mood_templateObject20 || (mood_templateObject20 = mood_taggedTemplateLiteral(["Blessing of your favorite Bird"]))), "Item Drop") > 0)) {
+      (0,external_kolmafia_.useSkill)((0,dist.$skill)(mood_templateObject21 || (mood_templateObject21 = mood_taggedTemplateLiteral(["Visit your Favorite Bird"]))));
+    }
+
+    if ((0,dist.have)((0,dist.$skill)(mood_templateObject22 || (mood_templateObject22 = mood_taggedTemplateLiteral(["Seek out a Bird"])))) && (0,dist.get)("_birdsSoughtToday") < 6 && ((0,external_kolmafia_.numericModifier)((0,dist.$effect)(mood_templateObject23 || (mood_templateObject23 = mood_taggedTemplateLiteral(["Blessing of the Bird"]))), "Meat Drop") > 0 || (0,external_kolmafia_.numericModifier)((0,dist.$effect)(mood_templateObject24 || (mood_templateObject24 = mood_taggedTemplateLiteral(["Blessing of the Bird"]))), "Item Drop") > 0)) {
+      // Ensure we don't get stuck in the choice if the count is wrong
+      (0,lib/* setChoice */.Y7)(1399, 2);
+      (0,external_kolmafia_.useSkill)((0,dist.$skill)(mood_templateObject25 || (mood_templateObject25 = mood_taggedTemplateLiteral(["Seek out a Bird"]))), 6 - (0,dist.get)("_birdsSoughtToday"));
+    }
+  }
+
+  if ((0,dist.get)("_poolGames") < 3 && !(0,dist.get)("_dr_noPoolTable", false) && !(0,dist.have)((0,dist.$effect)(mood_templateObject26 || (mood_templateObject26 = mood_taggedTemplateLiteral(["Hustlin'"]))))) {
+    withVIPClan(() => {
+      if ((0,external_kolmafia_.getClanLounge)()["Clan pool table"] !== undefined) {
+        while ((0,dist.get)("_poolGames") < 3) {
+          (0,external_kolmafia_.cliExecute)("pool stylish");
+        }
+      } else (0,dist.set)("_dr_noPoolTable", true);
+    });
+  }
+
   return mood;
 }
 function freeFightMood() {
   var mood = new dist.Mood();
-  mood.skill((0,dist.$skill)(mood_templateObject7 || (mood_templateObject7 = mood_taggedTemplateLiteral(["Drescher's Annoying Noise"]))));
-  mood.skill((0,dist.$skill)(mood_templateObject8 || (mood_templateObject8 = mood_taggedTemplateLiteral(["Pride of the Puffin"]))));
+  mood.skill((0,dist.$skill)(mood_templateObject27 || (mood_templateObject27 = mood_taggedTemplateLiteral(["Drescher's Annoying Noise"]))));
+  mood.skill((0,dist.$skill)(mood_templateObject28 || (mood_templateObject28 = mood_taggedTemplateLiteral(["Pride of the Puffin"]))));
+
+  if ((0,external_kolmafia_.getCampground)()["Witchess Set"] !== undefined && !(0,dist.get)("_witchessBuff")) {
+    mood.effect((0,dist.$effect)(mood_templateObject29 || (mood_templateObject29 = mood_taggedTemplateLiteral(["Puzzle Champ"]))));
+  }
 
   if (!(0,dist.get)("_dr_defectiveTokenAttempted", false)) {
     (0,dist.set)("_dr_defectiveTokenAttempted", true);
-    withStash((0,dist.$items)(mood_templateObject9 || (mood_templateObject9 = mood_taggedTemplateLiteral(["defective Game Grid token"]))), () => {
-      if (!(0,dist.get)("_defectiveTokenUsed") && (0,dist.have)((0,dist.$item)(mood_templateObject10 || (mood_templateObject10 = mood_taggedTemplateLiteral(["defective Game Grid token"]))))) (0,external_kolmafia_.use)((0,dist.$item)(mood_templateObject11 || (mood_templateObject11 = mood_taggedTemplateLiteral(["defective Game Grid token"]))));
+    withStash((0,dist.$items)(mood_templateObject30 || (mood_templateObject30 = mood_taggedTemplateLiteral(["defective Game Grid token"]))), () => {
+      if (!(0,dist.get)("_defectiveTokenUsed") && (0,dist.have)((0,dist.$item)(mood_templateObject31 || (mood_templateObject31 = mood_taggedTemplateLiteral(["defective Game Grid token"]))))) (0,external_kolmafia_.use)((0,dist.$item)(mood_templateObject32 || (mood_templateObject32 = mood_taggedTemplateLiteral(["defective Game Grid token"]))));
     });
   }
 
-  var goodSongs = (0,dist.$skills)(mood_templateObject12 || (mood_templateObject12 = mood_taggedTemplateLiteral(["Chorale of Companionship, The Ballad of Richie Thingfinder, Fat Leon's Phat Loot Lyric"])));
+  var goodSongs = (0,dist.$skills)(mood_templateObject33 || (mood_templateObject33 = mood_taggedTemplateLiteral(["Chorale of Companionship, The Ballad of Richie Thingfinder, Fat Leon's Phat Loot Lyric"])));
 
   for (var _i = 0, _Object$keys = Object.keys((0,external_kolmafia_.myEffects)()); _i < _Object$keys.length; _i++) {
     var effectName = _Object$keys[_i];
     var effect = Effect.get(effectName);
     var skill = (0,external_kolmafia_.toSkill)(effect);
 
-    if (skill.class === (0,dist.$class)(mood_templateObject13 || (mood_templateObject13 = mood_taggedTemplateLiteral(["Accordion Thief"]))) && skill.buff && !goodSongs.includes(skill)) {
+    if (skill.class === (0,dist.$class)(mood_templateObject34 || (mood_templateObject34 = mood_taggedTemplateLiteral(["Accordion Thief"]))) && skill.buff && !goodSongs.includes(skill)) {
       (0,external_kolmafia_.cliExecute)("shrug ".concat(effectName));
     }
   }
@@ -21573,8 +21625,8 @@ function freeFightMood() {
     (0,external_kolmafia_.cliExecute)("daycare mysticality");
   }
 
-  if ((0,dist.have)((0,dist.$item)(mood_templateObject14 || (mood_templateObject14 = mood_taggedTemplateLiteral(["redwood rain stick"])))) && !(0,dist.get)("_redwoodRainStickUsed")) {
-    (0,external_kolmafia_.use)((0,dist.$item)(mood_templateObject15 || (mood_templateObject15 = mood_taggedTemplateLiteral(["redwood rain stick"]))));
+  if ((0,dist.have)((0,dist.$item)(mood_templateObject35 || (mood_templateObject35 = mood_taggedTemplateLiteral(["redwood rain stick"])))) && !(0,dist.get)("_redwoodRainStickUsed")) {
+    (0,external_kolmafia_.use)((0,dist.$item)(mood_templateObject36 || (mood_templateObject36 = mood_taggedTemplateLiteral(["redwood rain stick"]))));
   }
 
   if ((0,lib/* questStep */.cL)("questL06Friar") === 999 && !(0,dist.get)("friarsBlessingReceived")) {
@@ -21582,72 +21634,6 @@ function freeFightMood() {
   }
 
   return mood;
-}
-
-function mood_fillSpleenSynthesis() {
-  var needed = Math.floor((haveEffect($effect(mood_templateObject16 || (mood_templateObject16 = mood_taggedTemplateLiteral(["Riboflavin'"])))) - haveEffect($effect(mood_templateObject17 || (mood_templateObject17 = mood_taggedTemplateLiteral(["Synthesis: Collection"]))))) / 30);
-  sweetSynthesis(Math.min(needed, spleenLimit() - mySpleenUse()), $effect(mood_templateObject18 || (mood_templateObject18 = mood_taggedTemplateLiteral(["Synthesis: Collection"]))));
-}
-
-function boostItemDrop() {
-  if (have($familiar(mood_templateObject19 || (mood_templateObject19 = mood_taggedTemplateLiteral(["Reagnimated Gnome"])))) && myFamiliar() !== $familiar(mood_templateObject20 || (mood_templateObject20 = mood_taggedTemplateLiteral(["Reagnimated Gnome"])))) return;
-
-  if (numericModifier("Item Drop") < 1850 && !get("_clanFortuneBuffUsed")) {
-    withVIPClan(() => cliExecute("fortune buff item"));
-  }
-
-  if (numericModifier("Item Drop") < 1850 && !have($effect(mood_templateObject21 || (mood_templateObject21 = mood_taggedTemplateLiteral(["items.enh"])))) && SourceTerminal.have() && SourceTerminal.getEnhanceUses() < 3) {
-    while (SourceTerminal.getEnhanceUses() < 3) {
-      SourceTerminal.enhance($effect(mood_templateObject22 || (mood_templateObject22 = mood_taggedTemplateLiteral(["items.enh"]))));
-    }
-  }
-
-  if (numericModifier("Item Drop") < 1850 && !have($effect(mood_templateObject23 || (mood_templateObject23 = mood_taggedTemplateLiteral(["Items Are Forever"])))) && have($item(mood_templateObject24 || (mood_templateObject24 = mood_taggedTemplateLiteral(["Kremlin's Greatest Briefcase"])))) && get("_kgbClicksUsed") < 22) {
-    var buffTries = Math.ceil((22 - get("_kgbClicksUsed")) / 3);
-    cliExecute("Briefcase buff ".concat(new Array(buffTries).fill("item").join(" ")));
-  }
-
-  if (numericModifier("Item Drop") < 1850 && have($item(mood_templateObject25 || (mood_templateObject25 = mood_taggedTemplateLiteral(["Bird-a-Day calendar"]))))) {
-    if (!have($skill(mood_templateObject26 || (mood_templateObject26 = mood_taggedTemplateLiteral(["Seek out a Bird"]))))) {
-      use(1, $item(mood_templateObject27 || (mood_templateObject27 = mood_taggedTemplateLiteral(["Bird-a-Day calendar"]))));
-    }
-
-    if (have($skill(mood_templateObject28 || (mood_templateObject28 = mood_taggedTemplateLiteral(["Visit your Favorite Bird"])))) && !get("_favoriteBirdVisited") && (numericModifier($effect(mood_templateObject29 || (mood_templateObject29 = mood_taggedTemplateLiteral(["Blessing of your favorite Bird"]))), "Meat Drop") > 0 || numericModifier($effect(mood_templateObject30 || (mood_templateObject30 = mood_taggedTemplateLiteral(["Blessing of your favorite Bird"]))), "Item Drop") > 0)) {
-      useSkill($skill(mood_templateObject31 || (mood_templateObject31 = mood_taggedTemplateLiteral(["Visit your Favorite Bird"]))));
-    }
-
-    if (have($skill(mood_templateObject32 || (mood_templateObject32 = mood_taggedTemplateLiteral(["Seek out a Bird"])))) && get("_birdsSoughtToday") < 6 && (numericModifier($effect(mood_templateObject33 || (mood_templateObject33 = mood_taggedTemplateLiteral(["Blessing of the Bird"]))), "Meat Drop") > 0 || numericModifier($effect(mood_templateObject34 || (mood_templateObject34 = mood_taggedTemplateLiteral(["Blessing of the Bird"]))), "Item Drop") > 0)) {
-      // Ensure we don't get stuck in the choice if the count is wrong
-      setChoice(1399, 2);
-      useSkill($skill(mood_templateObject35 || (mood_templateObject35 = mood_taggedTemplateLiteral(["Seek out a Bird"]))), 6 - get("_birdsSoughtToday"));
-    }
-  }
-
-  if (get("_poolGames") < 3 && !get("_dr_noPoolTable", false) && !have($effect(mood_templateObject36 || (mood_templateObject36 = mood_taggedTemplateLiteral(["Hustlin'"]))))) {
-    withVIPClan(() => {
-      if (getClanLounge()["Clan pool table"] !== undefined) {
-        while (get("_poolGames") < 3) {
-          cliExecute("pool stylish");
-        }
-      } else set("_dr_noPoolTable", true);
-    });
-  }
-
-  if (numericModifier("Item Drop") < 1850 && mySpleenUse() < spleenLimit()) {
-    mood_fillSpleenSynthesis();
-    var mojoFilterCount = 3 - get("currentMojoFilters");
-    acquire(mojoFilterCount, $item(mood_templateObject37 || (mood_templateObject37 = mood_taggedTemplateLiteral(["mojo filter"]))), 15000, false);
-
-    if (have($item(mood_templateObject38 || (mood_templateObject38 = mood_taggedTemplateLiteral(["mojo filter"]))))) {
-      use(Math.min(mojoFilterCount, availableAmount($item(mood_templateObject39 || (mood_templateObject39 = mood_taggedTemplateLiteral(["mojo filter"]))))), $item(mood_templateObject40 || (mood_templateObject40 = mood_taggedTemplateLiteral(["mojo filter"]))));
-      mood_fillSpleenSynthesis();
-    }
-  } // TODO: More generic potion support
-
-
-  if (myClass() === $class(mood_templateObject41 || (mood_templateObject41 = mood_taggedTemplateLiteral(["Sauceror"]))) && mySign() === "Wallaby" && numericModifier("Item Drop") < 1850 && !have($effect(mood_templateObject42 || (mood_templateObject42 = mood_taggedTemplateLiteral(["Always be Collecting"])))) && effectModifier($item(mood_templateObject43 || (mood_templateObject43 = mood_taggedTemplateLiteral(["rubber nubbin"]))), "Effect") === $effect(mood_templateObject44 || (mood_templateObject44 = mood_taggedTemplateLiteral(["Always be Collecting"]))) && mallPrice($item(mood_templateObject45 || (mood_templateObject45 = mood_taggedTemplateLiteral(["rubber nubbin"])))) < 5 * numericModifier($item(mood_templateObject46 || (mood_templateObject46 = mood_taggedTemplateLiteral(["rubber nubbin"]))), "Effect Duration") * 50) {
-    use($item(mood_templateObject47 || (mood_templateObject47 = mood_taggedTemplateLiteral(["rubber nubbin"]))));
-  }
 }
 ;// CONCATENATED MODULE: ./src/fights.ts
 var fights_templateObject, fights_templateObject2, fights_templateObject3, fights_templateObject4, fights_templateObject5, fights_templateObject6, fights_templateObject7, fights_templateObject8, fights_templateObject9, fights_templateObject10, fights_templateObject11, fights_templateObject12, fights_templateObject13, fights_templateObject14, fights_templateObject15, fights_templateObject16, fights_templateObject17, fights_templateObject18, fights_templateObject19, fights_templateObject20, fights_templateObject21, fights_templateObject22, fights_templateObject23, fights_templateObject24, fights_templateObject25, fights_templateObject26, fights_templateObject27, fights_templateObject28, fights_templateObject29, fights_templateObject30, fights_templateObject31, fights_templateObject32, fights_templateObject33, fights_templateObject34, fights_templateObject35, fights_templateObject36, fights_templateObject37, fights_templateObject38, fights_templateObject39, fights_templateObject40, fights_templateObject41, fights_templateObject42, fights_templateObject43, fights_templateObject44, fights_templateObject45, fights_templateObject46, fights_templateObject47, fights_templateObject48, fights_templateObject49, fights_templateObject50, fights_templateObject51, fights_templateObject52, fights_templateObject53, fights_templateObject54, fights_templateObject55, fights_templateObject56, fights_templateObject57, fights_templateObject58, fights_templateObject59, fights_templateObject60, fights_templateObject61, fights_templateObject62, fights_templateObject63, fights_templateObject64, fights_templateObject65, fights_templateObject66, fights_templateObject67, fights_templateObject68, fights_templateObject69, fights_templateObject70, fights_templateObject71, fights_templateObject72, fights_templateObject73, fights_templateObject74, fights_templateObject75, fights_templateObject76, fights_templateObject77, fights_templateObject78, fights_templateObject79, fights_templateObject80, fights_templateObject81, fights_templateObject82, fights_templateObject83, fights_templateObject84, fights_templateObject85, fights_templateObject86, fights_templateObject87, fights_templateObject88, fights_templateObject89, fights_templateObject90, fights_templateObject91, fights_templateObject92, fights_templateObject93, fights_templateObject94, fights_templateObject95, fights_templateObject96, fights_templateObject97, fights_templateObject98, fights_templateObject99, fights_templateObject100, fights_templateObject101, fights_templateObject102, _templateObject103, _templateObject104, _templateObject105, _templateObject106, _templateObject107, _templateObject108, _templateObject109, _templateObject110, _templateObject111, _templateObject112, _templateObject113, _templateObject114, _templateObject115, _templateObject116, _templateObject117, _templateObject118, _templateObject119, _templateObject120, _templateObject121, _templateObject122, _templateObject123, _templateObject124, _templateObject125, _templateObject126, _templateObject127, _templateObject128, _templateObject129, _templateObject130, _templateObject131, _templateObject132, _templateObject133, _templateObject134, _templateObject135, _templateObject136, _templateObject137, _templateObject138, _templateObject139, _templateObject140, _templateObject141, _templateObject142, _templateObject143, _templateObject144, _templateObject145, _templateObject146, _templateObject147, _templateObject148, _templateObject149, _templateObject150, _templateObject151, _templateObject152, _templateObject153, _templateObject154, _templateObject155, _templateObject156, _templateObject157, _templateObject158, _templateObject159, _templateObject160, _templateObject161, _templateObject162, _templateObject163, _templateObject164, _templateObject165, _templateObject166, _templateObject167, _templateObject168, _templateObject169, _templateObject170, _templateObject171, _templateObject172, _templateObject173, _templateObject174, _templateObject175, _templateObject176, _templateObject177, _templateObject178, _templateObject179, _templateObject180, _templateObject181, _templateObject182, _templateObject183, _templateObject184, _templateObject185, _templateObject186, _templateObject187, _templateObject188, _templateObject189, _templateObject190, _templateObject191, _templateObject192, _templateObject193, _templateObject194, _templateObject195, _templateObject196, _templateObject197, _templateObject198, _templateObject199, _templateObject200, _templateObject201, _templateObject202, _templateObject203, _templateObject204, _templateObject205, _templateObject206, _templateObject207, _templateObject208, _templateObject209;
@@ -21764,7 +21750,7 @@ var copierMacro = () => combat.Macro.if_("monstername ".concat(copiedMonster()),
 var copierSources = [new CopierFight("Digitize", () => (0,dist.get)("_sourceTerminalDigitizeMonster") === copiedMonster() && (0,external_kolmafia_.getCounters)("Digitize Monster", 0, 0).trim() !== "", () => dist.SourceTerminal.have() && (0,dist.get)("_sourceTerminalDigitizeUses") === 0 ? 1 : 0, options => {
   (0,external_kolmafia_.adv1)(options.location || (0,dist.$location)(fights_templateObject30 || (fights_templateObject30 = fights_taggedTemplateLiteral(["Noob Cave"]))));
 }, [], true), new CopierFight("Fax", () => (0,dist.have)((0,dist.$item)(fights_templateObject31 || (fights_templateObject31 = fights_taggedTemplateLiteral(["Clan VIP Lounge key"])))) && !(0,dist.get)("_photocopyUsed"), () => (0,dist.have)((0,dist.$item)(fights_templateObject32 || (fights_templateObject32 = fights_taggedTemplateLiteral(["Clan VIP Lounge key"])))) && !(0,dist.get)("_photocopyUsed") ? 1 : 0, () => {
-  clan_withVIPClan(() => faxWitchess());
+  withVIPClan(() => faxWitchess());
   (0,external_kolmafia_.use)((0,dist.$item)(fights_templateObject33 || (fights_templateObject33 = fights_taggedTemplateLiteral(["photocopied monster"]))));
 }), new CopierFight("Chateau Painting", () => {
   var _ChateauMantegna$pain;
@@ -22283,8 +22269,12 @@ function doSausage() {
   if ((0,external_kolmafia_.getAutoAttack)() > 0) (0,external_kolmafia_.setAutoAttack)(0);
   (0,combat.adventureMacro)((0,lib/* determineDraggableZoneAndEnsureAccess */.xd)(), combat.Macro.basicCombat());
 }
+// EXTERNAL MODULE: ./src/dungeon/raidlog.ts + 1 modules
+var raidlog = __webpack_require__(4151);
 ;// CONCATENATED MODULE: ./src/commands/farm.ts
 var farm_templateObject, farm_templateObject2, farm_templateObject3, farm_templateObject4, farm_templateObject5, farm_templateObject6, farm_templateObject7, farm_templateObject8, farm_templateObject9, farm_templateObject10, farm_templateObject11, farm_templateObject12, farm_templateObject13, farm_templateObject14, farm_templateObject15, farm_templateObject16, farm_templateObject17, farm_templateObject18, farm_templateObject19, farm_templateObject20, farm_templateObject21, farm_templateObject22;
+
+function farm_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function farm_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = farm_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
@@ -22293,6 +22283,7 @@ function farm_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof
 function farm_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function farm_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
 
 
 
@@ -22361,7 +22352,7 @@ function dreadTurn() {
     // Dread turn.
     (0,external_kolmafia_.useFamiliar)(fairyFamiliar());
     dreadOutfit();
-    (0,dist.adventureMacro)((0,dist.$location)(farm_templateObject11 || (farm_templateObject11 = farm_taggedTemplateLiteral(["Dreadsylvanian Castle"]))), combat.Macro.tryFreeKill().skill((0,dist.$skill)(farm_templateObject12 || (farm_templateObject12 = farm_taggedTemplateLiteral(["Slay the Dead"])))));
+    (0,dist.adventureMacroAuto)((0,dist.$location)(farm_templateObject11 || (farm_templateObject11 = farm_taggedTemplateLiteral(["Dreadsylvanian Castle"]))), combat.Macro.if_("monstername sausage goblin", combat.Macro.kill()).tryFreeKill().skill((0,dist.$skill)(farm_templateObject12 || (farm_templateObject12 = farm_taggedTemplateLiteral(["Slay the Dead"])))));
   }
 
   if (Object.keys((0,external_kolmafia_.reverseNumberology)()).includes("69") && (0,dist.get)("_universeCalculated") < (0,dist.get)("skillLevel144")) {
@@ -22401,6 +22392,33 @@ function dreadTurn() {
   if ((0,external_kolmafia_.myLevel)() < 20) {
     (0,external_kolmafia_.print)("You need to be level 20 to eat Dread consumables.", "red");
     return;
+  }
+
+  var _iterator2 = farm_createForOfIteratorHelper(raidlog/* dreadZones */.e5),
+      _step2;
+
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var zone = _step2.value;
+
+      var _iterator3 = farm_createForOfIteratorHelper(zone.noncombats),
+          _step3;
+
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var noncombat = _step3.value;
+          lib/* propertyManager.setChoices */.kr.setChoices(farm_defineProperty({}, noncombat.id, 6));
+        }
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
+      }
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
   }
 
   var aaBossFlag = (0,external_kolmafia_.xpath)((0,external_kolmafia_.visitUrl)("account.php?tab=combat"), "//*[@id=\"opt_flag_aabosses\"]/label/input[@type='checkbox']@checked")[0] === "checked" ? 1 : 0;
@@ -22499,6 +22517,479 @@ function dreadTurn() {
     }
   }
 }));
+
+/***/ }),
+
+/***/ 4151:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "e5": () => (/* binding */ dreadZones)
+});
+
+// UNUSED EXPORTS: DreadChoice, DreadNoncombat, DreadSubnoncombat, DreadZone, dreadBanished, dreadElements, dreadKilled, dreadMonsters, dreadNoncombatsUsed, dreadZone, dreadZoneTypes, isDreadElementId, isDreadMonsterId, memoizedRaidlog, monsterPair, monsterSingular, monsterZone, raidlogBlocks, toDreadElementId, toElement
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.entries.js
+var es_object_entries = __webpack_require__(6737);
+// EXTERNAL MODULE: external "kolmafia"
+var external_kolmafia_ = __webpack_require__(7530);
+// EXTERNAL MODULE: ./node_modules/libram/dist/index.js
+var dist = __webpack_require__(9803);
+;// CONCATENATED MODULE: ./src/dungeon/layout.yml
+const layout_namespaceObject = JSON.parse('[{"name":"forest","fullName":"The Woods","monsters":["bugbear","werewolf"],"noncombats":[{"name":"Cabin","id":721,"index":1,"choices":{"1":{"name":"Kitchen","id":722,"choices":{"1":{"message":"acquired some dread tarragon","item":"dread tarragon"},"2":{"message":"made some bone flour","item":"bone flour"},"3":{"message":"made the forest less stinky","banish":["forest","stinky"]}}},"2":{"name":"Basement","id":723,"choices":{"1":{"message":"recycled some newspapers","item":"Freddy Kruegerand","maximum":10},"2":{"message":"read an old diary","effect":"Bored Stiff"},"3":{"message":"got a Dreadsylvania auditor\'s badge","requirement":"replica key","item":"Dreadsylvania auditor\'s badge","maximum":1},"4":{"message":"made an impression of a complicated lock","requirement":"wax banana","item":"complicated lock impression"}}},"3":{"name":"Attic","id":724,"locked":true,"choices":{"1":{"message":"made the forest less spooky","classes":["Accordion Thief"],"item":"intricate music box parts","maximum":1},"2":{"message":"drove some werewolves out of the forest","banish":["forest","werewolf"]},"3":{"message":"drove some vampires out of the castle","banish":["castle","vampire"]},"4":{"message":"flipped through a photo album","stat":"Moxie"}}}}},{"name":"Tallest Tree","id":725,"index":2,"choices":{"1":{"name":"Climb to the top","id":726,"classes":["Seal Clubber","Turtle Tamer"],"choices":{"1":{"messages":["knocked some fruit loose","wasted some fruit"]},"2":{"message":"made the forest less sleazy","banish":["forest","sleazy"]},"3":{"message":"acquired a chunk of moon-amber","item":"moon-amber","maximum":1}}},"2":{"name":"Fire watchtower","id":727,"locked":true,"choices":{"1":{"message":"drove some ghosts out of the village","banish":["village","ghost"]},"2":{"message":"rifled through a footlocker","item":"Freddy Kruegerand"},"3":{"message":"lifted some weights","stat":"Muscle"}}},"3":{"name":"Root around","id":728,"choices":{"1":{"message":"got a blood kiwi","item":"blood kiwi","maximum":1},"2":{"message":"got a cool seed pod","item":"Dreadsylvanian seed pod"}}}}},{"name":"Burrows","id":729,"index":3,"choices":{"1":{"name":"Towards heat","id":730,"choices":{"1":{"message":"made the forest less hot","banish":["forest","hot"]},"2":{"message":"got intimate with some hot coals","effect":"Dragged Through the Coals"},"3":{"message":"made a cool iron ingot","requirement":"old ball and chain","item":"cool iron ingot"}}},"2":{"name":"Towards cold","id":731,"choices":{"1":{"message":"made the forest less cold","banish":["forest","hot"]},"2":{"message":"listened to the forest\'s heart","stat":"Mysticality"},"3":{"message":"drank some nutritious forest goo","effect":"Nature\'s Bounty"}}},"3":{"name":"Towards smelly","id":732,"choices":{"1":{"message":"drove some bugbears out of the forest","banish":["forest","hot"]},"2":{"message":"found and sold a rare baseball card","item":"Freddy Kruegerand","maximum":10}}}}}]},{"name":"village","fullName":"The Village","monsters":["ghost","zombie"],"noncombats":[{"name":"Village Square","id":733,"index":4,"choices":{"1":{"name":"Schoolhouse","id":734,"locked":true,"choices":{"1":{"message":"drove some ghosts out of the village","banish":["village","ghost"]},"2":{"message":"collected a ghost pencil","item":"ghost pencil","maximum":10},"3":{"message":"read some naughty carvings","stat":"Mysticality"}}},"2":{"name":"Blacksmith","id":735,"choices":{"1":{"message":"made the village less cold","banish":["village","cold"]},"2":{"message":"looted the blacksmith\'s till","item":"Freddy Kruegerand","maximum":10},"3":{"messages":["made a cool iron breastplate","made a cool iron helmet","made some cool iron greaves"]}}},"3":{"name":"Gallows","id":736,"choices":{"1":{"message":"made the village less spooky","banish":["village","spooky"]},"2":{"message":"was hung by a clanmate"},"4":{"message":"hung a clanmate"}}}}},{"name":"Skid Row","id":737,"index":5,"choices":{"1":{"name":"Sewers","id":738,"choices":{"1":{"message":"made the village less stinky","banish":["village","stinky"]},"2":{"message":"swam in a sewer","effect":"Sewer-Drenched"}}},"2":{"name":"Tenements","id":740,"choices":{"1":{"message":"drove some skeletons out of the castle","banish":["castle","skeleton"]},"2":{"message":"made the village less sleazy","banish":["village","sleazy"]},"3":{"message":"moved some bricks around","stat":"Muscle"}}},"3":{"name":"Ticking shack","id":739,"classes":["Disco Bandit","Accordion Thief"],"choices":{"1":{"message":"looted the tinker\'s shack","item":"Freddy Kruegerand","maximum":10},"2":{"message":"made a complicated key","item":"replica key"},"3":{"message":"polished some moon-amber","requirement":"moon-amber","item":"polished moon-amber"},"4":{"message":"made a clockwork bird","item":"unwound mechanical songbird"},"5":{"message":"got some old fuse","quantity":3,"item":"old fuse"}}}}},{"name":"Old Duke\'s Estate","id":741,"index":6,"choices":{"1":{"name":"Family plot","id":742,"choices":{"1":{"message":"drove some zombies out of the village","banish":["village","zombie"]},"2":{"message":"robbed some graves","item":"Freddy Kruegerand","maximum":10},"3":{"message":"read some lurid epitaphs","effect":"Fifty Ways to Bereave Your Lover"}}},"2":{"name":"Servant\'s quarters","id":743,"choices":{"1":{"message":"made the village less hot","banish":["village","hot"]},"2":{"message":"made a shepherd\'s pie","item":"Dreadsylvanian shepherd\'s pie"},"3":{"message":"raided some naughty cabinets","stat":"Moxie"}}},"3":{"name":"Master suite","id":744,"locked":true,"choices":{"1":{"message":"drove some werewolves out of the forest","banish":["forest","werewolf"]},"2":{"message":"got a bottle of eau de mort","item":"eau de mort","maximum":10},"3":{"message":"made a ghost shawl","item":"ghost shawl"}}}}}]},{"name":"castle","fullName":"The Castle","monsters":["vampire","skeleton"],"noncombats":[{"name":"Tower","id":749,"index":8,"choices":{"1":{"name":"Laboratory","id":750,"locked":true,"choices":{"1":{"message":"drove some bugbears out of the forest","banish":["forest","bugbear"]},"2":{"message":"drove some zombies out of the village","banish":["village","zombie"]},"5":{"message":"made a blood kiwitini","classes":["Disco Bandit","Accordion Thief"],"item":"bloody kiwitini"}}},"2":{"name":"Books","id":751,"classes":["Pastamancer","Sauceror"],"choices":{"1":{"message":"drove some skeletons out of the castle","banish":["castle","skeleton"]},"2":{"message":"read some ancient secrets","stat":"Mysticality"},"3":{"message":"learned to make a moon-amber necklace"}}},"3":{"name":"Bedroom","id":752,"choices":{"1":{"message":"made the castle less sleazy","banish":["castle","sleazy"]},"2":{"message":"raided a dresser","item":"Freddy Kruegerand","maximum":10},"3":{"message":"got magically fingered","effect":"Magically Fingered"}}}}},{"name":"Great Hall","id":745,"index":7,"choices":{"1":{"name":"Ballroom","id":746,"locked":true,"choices":{"1":{"message":"drove some vampires out of the castle","banish":["castle","vampire"]},"2":{"message":"twirled on the dance floor","requirement":"muddy skirt","stat":"Moxie","item":"weedy skirt"}}},"2":{"name":"Kitchen","id":747,"choices":{"1":{"message":"made the castle less cold","banish":["castle","cold"]},"2":{"message":"frolicked in a freezer","effect":"Staying Frosty"}}},"3":{"name":"Dining room","id":748,"choices":{"1":{"message":"got some roast beast","item":"dreadful roast","maximum":1},"2":{"message":"made the castle less stinky","banish":["castle","stinky"]},"3":{"message":"got a wax banana","classes":["Pastamancer","Sauceror"],"item":"wax banana","maximum":1}}}}},{"name":"Dungeons","id":753,"index":9,"choices":{"1":{"name":"Cell block","id":754,"choices":{"1":{"message":"made the castle less spooky","banish":["castle","spooky"]},"2":{"message":"did a whole bunch of pushups","stat":"Muscle"},"3":{"message":"took a nap on a prison cot"}}},"2":{"name":"Boiler room","id":755,"choices":{"1":{"message":"made the castle less hot","banish":["castle","hot"]},"2":{"message":"sifted through some ashes","item":"Freddy Kruegerand","maximum":10},"3":{"message":"relaxed in a furnace"}}},"3":{"name":"Guardroom","id":756,"choices":{"1":{"message":"got some stinking agaric","item":"stinking agaricus","maximum":1},"2":{"message":"rolled around in some mushrooms","effect":"Spore-Wreathed"}}}}}]}]');
+;// CONCATENATED MODULE: ./src/dungeon/raidlog.ts
+var _templateObject, _templateObject2;
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+var dreadMonsters = (/* unused pure expression or super */ null && (["bugbear", "werewolf", "ghost", "zombie", "vampire", "skeleton"]));
+function isDreadMonsterId(x) {
+  return dreadMonsters.includes(x);
+}
+var dreadElements = (/* unused pure expression or super */ null && (["hot", "cold", "sleazy", "stinky", "spooky"]));
+function isDreadElementId(x) {
+  return dreadElements.includes(x);
+}
+function toDreadElementId(x) {
+  if (isDreadElementId(x)) return x;else if (x === "sleaze") return "sleazy";else if (x === "stench") return "stinky";else return undefined;
+}
+function toElement(dreadElement) {
+  switch (dreadElement) {
+    case "hot":
+    case "cold":
+    case "spooky":
+      return Element.get(dreadElement);
+
+    case "sleazy":
+      return $element(_templateObject || (_templateObject = _taggedTemplateLiteral(["sleaze"])));
+
+    case "stinky":
+      return $element(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["stench"])));
+  }
+}
+var DreadChoice = /*#__PURE__*/function () {
+  function DreadChoice(_ref) {
+    var message = _ref.message,
+        messages = _ref.messages,
+        classes = _ref.classes,
+        requirement = _ref.requirement,
+        item = _ref.item,
+        maximum = _ref.maximum,
+        banish = _ref.banish,
+        effect = _ref.effect,
+        stat = _ref.stat;
+
+    _classCallCheck(this, DreadChoice);
+
+    _defineProperty(this, "messages", void 0);
+
+    _defineProperty(this, "classes", void 0);
+
+    _defineProperty(this, "requirement", void 0);
+
+    _defineProperty(this, "item", void 0);
+
+    _defineProperty(this, "maximum", void 0);
+
+    _defineProperty(this, "banish", void 0);
+
+    _defineProperty(this, "effect", void 0);
+
+    _defineProperty(this, "stat", void 0);
+
+    this.messages = message ? [message] : messages;
+    if (classes) this.classes = classes.map(c => Class.get(c));
+    if (requirement) this.requirement = Item.get(requirement);
+    if (item) this.item = Item.get(item);
+    if (maximum) this.maximum = maximum;
+    if (banish) this.banish = banish;
+    if (effect) this.effect = Effect.get(effect);
+    if (stat) this.stat = stat;
+  }
+
+  _createClass(DreadChoice, [{
+    key: "count",
+    value: function count() {
+      var _ref2 = raidlogBlocks().find(_ref4 => {
+        var _ref5 = _slicedToArray(_ref4, 1),
+            zone = _ref5[0];
+
+        return zone.subnoncombats().some(sub => _toConsumableArray(sub.choices.values()).some(choice => choice === this));
+      }),
+          _ref3 = _slicedToArray(_ref2, 2),
+          block = _ref3[1];
+
+      return (0,dist.sum)(this.messages, message => {
+        var _block$match$length, _block$match;
+
+        return (_block$match$length = (_block$match = block.match(new RegExp(message, "g"))) === null || _block$match === void 0 ? void 0 : _block$match.length) !== null && _block$match$length !== void 0 ? _block$match$length : 0;
+      });
+    }
+  }]);
+
+  return DreadChoice;
+}();
+var DreadSubnoncombat = /*#__PURE__*/function () {
+  function DreadSubnoncombat(_ref6) {
+    var name = _ref6.name,
+        id = _ref6.id,
+        locked = _ref6.locked,
+        classes = _ref6.classes,
+        choices = _ref6.choices;
+
+    _classCallCheck(this, DreadSubnoncombat);
+
+    _defineProperty(this, "name", void 0);
+
+    _defineProperty(this, "id", void 0);
+
+    _defineProperty(this, "needsUnlocked", void 0);
+
+    _defineProperty(this, "classes", void 0);
+
+    _defineProperty(this, "choices", void 0);
+
+    this.name = name;
+    this.id = id;
+    this.needsUnlocked = !!locked;
+    if (classes) this.classes = classes.map(c => Class.get(c));
+    this.choices = new Map(Object.entries(choices).map(_ref7 => {
+      var _ref8 = _slicedToArray(_ref7, 2),
+          index = _ref8[0],
+          choice = _ref8[1];
+
+      return [parseInt(index), new DreadChoice(choice)];
+    }));
+  }
+
+  _createClass(DreadSubnoncombat, [{
+    key: "messages",
+    value: function messages() {
+      var _ref9;
+
+      return (_ref9 = []).concat.apply(_ref9, _toConsumableArray(_toConsumableArray(this.choices.values()).map(choice => choice.messages)));
+    }
+  }, {
+    key: "isLocked",
+    value: function isLocked() {
+      return this.needsUnlocked && !memoizedRaidlog().includes("unlocked the ".concat(this.name.toLowerCase()));
+    }
+  }]);
+
+  return DreadSubnoncombat;
+}();
+var DreadNoncombat = /*#__PURE__*/function () {
+  function DreadNoncombat(_ref10) {
+    var name = _ref10.name,
+        id = _ref10.id,
+        index = _ref10.index,
+        choices = _ref10.choices;
+
+    _classCallCheck(this, DreadNoncombat);
+
+    _defineProperty(this, "name", void 0);
+
+    _defineProperty(this, "id", void 0);
+
+    _defineProperty(this, "index", void 0);
+
+    _defineProperty(this, "choices", void 0);
+
+    this.name = name;
+    this.id = id;
+    this.index = index;
+    this.choices = new Map(Object.entries(choices).map(_ref11 => {
+      var _ref12 = _slicedToArray(_ref11, 2),
+          index = _ref12[0],
+          choice = _ref12[1];
+
+      return [parseInt(index), new DreadSubnoncombat(choice)];
+    }));
+  }
+
+  _createClass(DreadNoncombat, [{
+    key: "zone",
+    value: function zone() {
+      switch (this.name) {
+        case "Cabin":
+        case "Tallest Tree":
+        case "Burrows":
+          return "forest";
+
+        case "Village Square":
+        case "Skid Row":
+        case "Old Duke's Estate":
+          return "village";
+
+        case "Tower":
+        case "Great Hall":
+        case "Dungeons":
+          return "castle";
+      }
+    }
+  }, {
+    key: "messages",
+    value: function messages() {
+      var _ref13;
+
+      return (_ref13 = []).concat.apply(_ref13, _toConsumableArray(_toConsumableArray(this.choices.values()).map(choice => choice.messages())));
+    }
+  }]);
+
+  return DreadNoncombat;
+}();
+var dreadZoneTypes = (/* unused pure expression or super */ null && (["forest", "village", "castle"]));
+var DreadZone = /*#__PURE__*/function () {
+  function DreadZone(_ref14) {
+    var name = _ref14.name,
+        fullName = _ref14.fullName,
+        monsters = _ref14.monsters,
+        noncombats = _ref14.noncombats;
+
+    _classCallCheck(this, DreadZone);
+
+    _defineProperty(this, "name", void 0);
+
+    _defineProperty(this, "fullName", void 0);
+
+    _defineProperty(this, "monsters", void 0);
+
+    _defineProperty(this, "noncombats", void 0);
+
+    this.name = name;
+    this.fullName = fullName;
+    this.monsters = monsters;
+    this.noncombats = noncombats.map(noncombat => new DreadNoncombat(noncombat));
+  }
+
+  _createClass(DreadZone, [{
+    key: "subnoncombats",
+    value: function subnoncombats() {
+      var _ref15;
+
+      return (_ref15 = []).concat.apply(_ref15, _toConsumableArray(this.noncombats.map(nc => _toConsumableArray(nc.choices.values()))));
+    }
+  }]);
+
+  return DreadZone;
+}();
+function monsterPair(monster) {
+  switch (monster) {
+    case "bugbear":
+      return "werewolf";
+
+    case "werewolf":
+      return "bugbear";
+
+    case "ghost":
+      return "zombie";
+
+    case "zombie":
+      return "ghost";
+
+    case "vampire":
+      return "skeleton";
+
+    case "skeleton":
+      return "vampire";
+  }
+}
+function monsterZone(monster) {
+  switch (monster) {
+    case "bugbear":
+    case "werewolf":
+      return "forest";
+
+    case "ghost":
+    case "zombie":
+      return "village";
+
+    case "vampire":
+    case "skeleton":
+      return "castle";
+  }
+}
+function monsterSingular(monster) {
+  return monster === "werewolves" ? "werewolf" : monster.slice(0, -1);
+}
+var dreadZones = layout_namespaceObject.map(zone => new DreadZone(zone));
+function dreadZone(name) {
+  return dreadZones.find(zone => zone.name === name);
+}
+var lastRaidlogTurncount = -1;
+var lastRaidlogClan = -1;
+var savedRaidlog = undefined;
+function memoizedRaidlog() {
+  if (lastRaidlogTurncount !== (0,external_kolmafia_.totalTurnsPlayed)() || lastRaidlogClan !== (0,external_kolmafia_.getClanId)() || savedRaidlog === undefined) {
+    lastRaidlogTurncount = (0,external_kolmafia_.totalTurnsPlayed)();
+    lastRaidlogClan = (0,external_kolmafia_.getClanId)();
+    savedRaidlog = (0,external_kolmafia_.visitUrl)("clan_raidlogs.php");
+  }
+
+  return savedRaidlog;
+}
+function raidlogBlocks() {
+  return dreadZones.map(zone => {
+    var raidlog = memoizedRaidlog();
+    var blockquoteRegex = new RegExp("<b>".concat(zone.fullName, "</b>\\s*<blockquote>(.*?)</blockquote>"));
+    var blockquoteMatch = raidlog.match(blockquoteRegex);
+    var blockquote = blockquoteMatch ? blockquoteMatch[1] : "";
+    return [zone, blockquote];
+  });
+}
+function dreadBanished() {
+  var result = [];
+
+  var _iterator = _createForOfIteratorHelper(raidlogBlocks()),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var _step$value = _slicedToArray(_step.value, 2),
+          name = _step$value[0].name,
+          block = _step$value[1];
+
+      var elementRegex = /made the (.*?) less (.*?) \(1 turn\)/gi;
+      var match = void 0;
+
+      while ((match = elementRegex.exec(block)) !== null) {
+        result.push({
+          targetZone: match[1],
+          noncombatZone: name,
+          banished: match[2]
+        });
+      }
+
+      var monsterRegex = /drove some (.*?) out of the (.*?) \(1 turn\)/gi;
+
+      while ((match = monsterRegex.exec(block)) !== null) {
+        result.push({
+          targetZone: match[2],
+          noncombatZone: name,
+          banished: monsterSingular(match[1])
+        });
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  return result;
+}
+function dreadKilled() {
+  return raidlogBlocks().map(_ref16 => {
+    var _ref17 = _slicedToArray(_ref16, 2),
+        zone = _ref17[0],
+        block = _ref17[1];
+
+    var zoneTotal = 0;
+
+    var _iterator2 = _createForOfIteratorHelper(zone.monsters),
+        _step2;
+
+    try {
+      for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+        var monster = _step2.value;
+        var monsterRe = new RegExp("defeated (.*?) ".concat(monster, " x ([0-9]+)"), "gi");
+        var match = void 0;
+
+        while ((match = monsterRe.exec(block)) !== null) {
+          zoneTotal += parseInt(match[2]);
+        }
+
+        var singleMonsterRe = new RegExp("defeated (.*?) ".concat(monster, " \\("), "gi");
+
+        while ((match = singleMonsterRe.exec(block)) !== null) {
+          zoneTotal += 1;
+        }
+      }
+    } catch (err) {
+      _iterator2.e(err);
+    } finally {
+      _iterator2.f();
+    }
+
+    return [zone, zoneTotal];
+  });
+}
+function dreadNoncombatsUsed() {
+  var result = [];
+
+  var _iterator3 = _createForOfIteratorHelper(raidlogBlocks()),
+      _step3;
+
+  try {
+    var _loop = function _loop() {
+      var _step3$value = _slicedToArray(_step3.value, 2),
+          zone = _step3$value[0],
+          block = _step3$value[1];
+
+      var _iterator4 = _createForOfIteratorHelper(zone.noncombats),
+          _step4;
+
+      try {
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+          var noncombat = _step4.value;
+          var messageRes = noncombat.messages().map(s => new RegExp("".concat(myName(), " \\(#").concat(myId(), "\\) ").concat(s), "i"));
+          if (messageRes.some(re => block.match(re))) result.push(noncombat.name);
+        }
+      } catch (err) {
+        _iterator4.e(err);
+      } finally {
+        _iterator4.f();
+      }
+    };
+
+    for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+      _loop();
+    }
+  } catch (err) {
+    _iterator3.e(err);
+  } finally {
+    _iterator3.f();
+  }
+
+  return result;
+}
 
 /***/ }),
 
