@@ -6,8 +6,9 @@ const MPA = get("valueOfAdventure");
 
 export function fairyFamiliar(): Familiar {
   return (
-    $familiars`Mechanical Songbird, Jumpsuited Hound Dog`.find((familiar) => have(familiar)) ??
-    $familiar`Baby Gravy Fairy`
+    $familiars`Mechanical Songbird, Reagnimated Gnome, Jumpsuited Hound Dog`.find((familiar) =>
+      have(familiar)
+    ) ?? $familiar`Baby Gravy Fairy`
   );
 }
 

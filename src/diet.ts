@@ -142,6 +142,11 @@ export function fillAllSpleen(): void {
   }
 }
 
+export function fillSpleenSynthesis(): void {
+  const needed = Math.floor((700 - haveEffect($effect`Synthesis: Collection`)) / 30);
+  sweetSynthesis(Math.min(needed, spleenLimit() - mySpleenUse()), $effect`Synthesis: Collection`);
+}
+
 function fillSpleenWith(spleenItem: Item) {
   if (mySpleenUse() + spleenItem.spleen <= spleenLimit()) {
     // (adventureGain * spleenA + adventures) * 1.04 + 40 = 30 * spleenB + synthTurns
@@ -186,6 +191,9 @@ export function fillStomach(finish: boolean): void {
   mindMayo(Mayo.zapine, stewCount);
   eatSafe(stewCount, $item`Dreadsylvanian stew`);
 
+  fillSpleenSynthesis();
+  fillSomeSpleen();
+
   while (myFullness() + 5 <= fullnessLimit()) {
     if (have($item`Universal Seasoning`) && !get("_universalSeasoningUsed")) {
       use($item`Universal Seasoning`);
@@ -198,6 +206,7 @@ export function fillStomach(finish: boolean): void {
     }
     mindMayo(Mayo.flex, count);
     eatSpleen(count, $item`extra-greasy slider`);
+    fillSpleenSynthesis();
     fillSomeSpleen();
   }
 
@@ -210,7 +219,7 @@ export function fillStomach(finish: boolean): void {
     availableStomach = Math.max(0, fullnessLimit() - myFullness());
     mindMayo(Mayo.flex, availableStomach);
     // eslint-disable-next-line libram/verify-constants
-    eatSafe(availableStomach, cheaper(...$items`meteoreo, ice rice, Tea\, Earl Grey\, Hot`));
+    eatSafe(availableStomach, cheaper(...$items`meteoreo, ice rice`, $item`Tea, Earl Grey, Hot`));
   }
 }
 
@@ -256,6 +265,8 @@ function fillLiver(finish: boolean) {
   drinkSafe(whiteCount, $item`white Dreadsylvanian`);
 
   fillLiverAstralPilsner();
+  fillSpleenSynthesis();
+  fillSomeSpleen();
 
   while (myInebriety() + 5 <= inebrietyLimit()) {
     if (myMaxhp() < 1000) maximize("0.05hp, cold res", false);
@@ -265,6 +276,7 @@ function fillLiver(finish: boolean) {
       drink(Math.min(count, itemAmount(frostyMug)), frostyMug);
     }
     drinkSpleen(count, $item`jar of fermented pickle juice`);
+    fillSpleenSynthesis();
     fillSomeSpleen();
   }
 

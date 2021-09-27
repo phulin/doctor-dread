@@ -5,12 +5,14 @@ import {
   itemAmount,
   mallPrice,
   print,
+  retrieveItem,
   shopAmount,
   storageAmount,
   takeCloset,
   takeShop,
   takeStorage,
 } from "kolmafia";
+import { $items } from "libram";
 
 const priceCaps: { [index: string]: number } = {
   "jar of fermented pickle juice": 75000,
@@ -30,12 +32,16 @@ const priceCaps: { [index: string]: number } = {
   "bottle of vodka": 500,
   "bottle of Blank-Out": 25000,
   "peppermint parasol": 25000,
-  "Oh, the Humanitini": 25000,
+  "Sacramento wine": 10000,
+  meteoreo: 10000,
+  "Tea, Early Grey, Hot": 10000,
 };
+
+const npcItems = $items`white Dreadsylvanian, Dreadsylvanian stew, glass of raw eggs`;
 
 export function acquire(qty: number, item: Item, maxPrice?: number, throwOnFail = true): number {
   if (maxPrice === undefined) maxPrice = priceCaps[item.name];
-  if (maxPrice === undefined) throw `No price cap for ${item.name}.`;
+  if (maxPrice === undefined && !npcItems.includes(item)) throw `No price cap for ${item.name}.`;
 
   if (qty * mallPrice(item) > 1000000) throw "bad get!";
 
@@ -44,7 +50,10 @@ export function acquire(qty: number, item: Item, maxPrice?: number, throwOnFail 
   let remaining = qty - startAmount;
   if (remaining <= 0) return qty;
 
-  print(`Trying to acquire ${qty} ${item.plural}; max price ${maxPrice.toFixed(0)}.`, "green");
+  print(
+    `Trying to acquire ${qty} ${item.plural}; max price ${maxPrice?.toFixed(0) ?? "none"}.`,
+    "green"
+  );
 
   const getCloset = Math.min(remaining, closetAmount(item));
   if (!takeCloset(getCloset, item) && throwOnFail) throw "failed to remove from closet";
@@ -67,9 +76,16 @@ export function acquire(qty: number, item: Item, maxPrice?: number, throwOnFail 
   remaining -= getMall;
   if (remaining <= 0) return qty;
 
-  if (maxPrice <= 0) throw `buying disabled for ${item.name}.`;
+  if (maxPrice !== undefined && maxPrice <= 0) throw `buying disabled for ${item.name}.`;
 
-  buy(remaining, item, maxPrice);
-  if (itemAmount(item) < qty && throwOnFail) throw `Mall price too high for ${item.name}.`;
+  if (npcItems.includes(item)) {
+    if (!retrieveItem(remaining, item)) {
+      remaining = qty - itemAmount(item);
+    }
+  } else {
+    buy(remaining, item, maxPrice);
+    if (itemAmount(item) < qty && throwOnFail) throw `Mall price too high for ${item.name}.`;
+  }
+
   return itemAmount(item) - startAmount;
 }

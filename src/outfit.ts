@@ -109,7 +109,7 @@ export function refreshLatte(): boolean {
   return have($item`latte lovers member's mug`);
 }
 
-export const dreadDefaultRequirement = new Requirement(["1 Item Drop"], {
+export const dreadDefaultRequirement = new Requirement(["1 Item Drop", "Sword"], {
   forceEquip: [
     ...[
       $item`dreadful fedora`,
@@ -171,14 +171,22 @@ export function dreadOutfit(requirement = dreadDefaultRequirement): void {
         [$item`Snow Suit`, -500], // This should ensure we only equip on last Bander stage.
       ]),
       preventEquip: [
-        ...$items`broken champagne bottle, unwrapped knock-off retro superhero cape`,
+        ...$items`broken champagne bottle`,
         bjornAlike === $item`Buddy Bjorn` ? $item`Crown of Thrones` : $item`Buddy Bjorn`,
       ],
       preventSlot: $slots`crown-of-thrones, buddy-bjorn`,
+      useOutfitCaching: false,
     })
   );
 
   maximizeCached(compiledRequirements.maximizeParameters(), compiledRequirements.maximizeOptions());
+
+  if (
+    haveEquipped($item`unwrapped knock-off retro superhero cape`) &&
+    (get("retroCapeSuperhero") !== "vampire" || get("retroCapeWashingInstructions") !== "kill")
+  ) {
+    cliExecute("retrocape vampire kill");
+  }
 
   if (haveEquipped($item`Buddy Bjorn`)) bjornifyFamiliar(bjornChoice.familiar);
   if (haveEquipped($item`Crown of Thrones`)) enthroneFamiliar(bjornChoice.familiar);

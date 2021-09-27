@@ -4,13 +4,13 @@ import {
   getCampground,
   getCounters,
   guildStoreAvailable,
-  haveEquipped,
   inebrietyLimit,
   myAdventures,
   myClass,
   myFullness,
   myGardenType,
   myInebriety,
+  myLevel,
   myTurncount,
   print,
   reverseNumberology,
@@ -45,7 +45,7 @@ import { withStash } from "../clan";
 import { Macro } from "../combat";
 import { dailySetup } from "../dailies";
 import { fillStomach, runDiet } from "../diet";
-import { freeFightFamiliar } from "../familiar";
+import { fairyFamiliar, freeFightFamiliar } from "../familiar";
 import { dailyFights, freeFights, safeRestore } from "../fights";
 import { estimatedTurns, globalOptions } from "../globalvars";
 import {
@@ -79,13 +79,6 @@ function dreadTurn() {
   }
 
   if (SongBoom.songChangesLeft() > 0) SongBoom.setSong("Food Vibrations");
-
-  if (
-    haveEquipped($item`unwrapped knock-off retro superhero cape`) &&
-    (get("retroCapeSuperhero") !== "vampire" || get("retroCapeWashingInstructions") !== "kill")
-  ) {
-    cliExecute("retrocape vampire kill");
-  }
 
   const digitizeUp = getCounters("Digitize Monster", 0, 0).trim() !== "";
 
@@ -129,8 +122,12 @@ function dreadTurn() {
     adventureMacroAuto(determineDraggableZoneAndEnsureAccess(), Macro.basicCombat());
   } else {
     // Dread turn.
+    useFamiliar(fairyFamiliar());
     dreadOutfit();
-    adventureMacro($location`Dreadsylvanian Castle`, Macro.skill($skill`Slay the Dead`));
+    adventureMacro(
+      $location`Dreadsylvanian Castle`,
+      Macro.tryFreeKill().skill($skill`Slay the Dead`)
+    );
   }
 
   if (
@@ -156,15 +153,19 @@ export default new Command(
       if (arg === "ascend") globalOptions.ascending = true;
     }
 
-    if (get("valueOfAdventure") <= 3500) {
-      throw `Your valueOfAdventure is set to ${get(
-        "valueOfAdventure"
-      )}, which is too low for barf farming to be worthwhile. If you forgot to set it, use "set valueOfAdventure = XXXX" to set it to your marginal turn meat value.`;
+    if (get("valueOfAdventure") >= 10000) {
+      print(
+        `Your valueOfAdventure is set to ${get(
+          "valueOfAdventure"
+        )}, which is definitely incorrect. Please set it to your reliable marginal turn value.`,
+        "red"
+      );
+      return;
     }
-    if (get("valueOfAdventure") >= 25000) {
-      throw `Your valueOfAdventure is set to ${get(
-        "valueOfAdventure"
-      )}, which is definitely incorrect. Please set it to your reliable marginal turn value.`;
+
+    if (myLevel() < 20) {
+      print("You need to be level 20 to eat Dread consumables.", "red");
+      return;
     }
 
     const aaBossFlag =
