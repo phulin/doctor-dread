@@ -21508,7 +21508,7 @@ function runNightcap() {
   maximize("Adventures", false);
 }
 ;// CONCATENATED MODULE: ./src/mood.ts
-var mood_templateObject, mood_templateObject2, mood_templateObject3, mood_templateObject4, mood_templateObject5, mood_templateObject6, mood_templateObject7, mood_templateObject8, mood_templateObject9, mood_templateObject10, mood_templateObject11, mood_templateObject12, mood_templateObject13, mood_templateObject14, mood_templateObject15, mood_templateObject16, mood_templateObject17, mood_templateObject18, mood_templateObject19, mood_templateObject20, mood_templateObject21, mood_templateObject22, mood_templateObject23, mood_templateObject24, mood_templateObject25, mood_templateObject26, mood_templateObject27, mood_templateObject28, mood_templateObject29, mood_templateObject30, mood_templateObject31, mood_templateObject32, mood_templateObject33, mood_templateObject34, mood_templateObject35, mood_templateObject36;
+var mood_templateObject, mood_templateObject2, mood_templateObject3, mood_templateObject4, mood_templateObject5, mood_templateObject6, mood_templateObject7, mood_templateObject8, mood_templateObject9, mood_templateObject10, mood_templateObject11, mood_templateObject12, mood_templateObject13, mood_templateObject14, mood_templateObject15, mood_templateObject16, mood_templateObject17, mood_templateObject18, mood_templateObject19, mood_templateObject20, mood_templateObject21, mood_templateObject22, mood_templateObject23, mood_templateObject24, mood_templateObject25, mood_templateObject26, mood_templateObject27, mood_templateObject28, mood_templateObject29, mood_templateObject30, mood_templateObject31, mood_templateObject32, mood_templateObject33, mood_templateObject34, mood_templateObject35, mood_templateObject36, mood_templateObject37;
 
 function mood_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -21535,8 +21535,9 @@ function itemMood() {
   mood.skill((0,dist.$skill)(mood_templateObject4 || (mood_templateObject4 = mood_taggedTemplateLiteral(["The Spirit of Taking"]))));
   mood.skill((0,dist.$skill)(mood_templateObject5 || (mood_templateObject5 = mood_taggedTemplateLiteral(["Fat Leon's Phat Loot Lyric"]))));
   mood.skill((0,dist.$skill)(mood_templateObject6 || (mood_templateObject6 = mood_taggedTemplateLiteral(["Singer's Faithful Ocelot"]))));
-  mood.effect((0,dist.$effect)(mood_templateObject7 || (mood_templateObject7 = mood_taggedTemplateLiteral(["Bubble Vision"]))), () => {
-    if ((0,external_kolmafia_.haveEffect)((0,dist.$effect)(mood_templateObject8 || (mood_templateObject8 = mood_taggedTemplateLiteral(["Bubble Vision"])))) === 0) (0,external_kolmafia_.use)((0,dist.$item)(mood_templateObject9 || (mood_templateObject9 = mood_taggedTemplateLiteral(["bottle of bubbles"]))));
+  mood.potion((0,dist.$item)(mood_templateObject7 || (mood_templateObject7 = mood_taggedTemplateLiteral(["go-go potion"]))), 100);
+  mood.effect((0,dist.$effect)(mood_templateObject8 || (mood_templateObject8 = mood_taggedTemplateLiteral(["Bubble Vision"]))), () => {
+    if ((0,external_kolmafia_.haveEffect)((0,dist.$effect)(mood_templateObject9 || (mood_templateObject9 = mood_taggedTemplateLiteral(["Bubble Vision"])))) === 0) (0,external_kolmafia_.use)((0,dist.$item)(mood_templateObject10 || (mood_templateObject10 = mood_taggedTemplateLiteral(["bottle of bubbles"]))));
   });
 
   if (!(0,dist.get)("concertVisited") && (0,dist.get)("sidequestArenaCompleted") === "fratboy") {
@@ -21549,39 +21550,39 @@ function itemMood() {
     withVIPClan(() => (0,external_kolmafia_.cliExecute)("fortune buff item"));
   }
 
-  if (!(0,dist.have)((0,dist.$effect)(mood_templateObject10 || (mood_templateObject10 = mood_taggedTemplateLiteral(["items.enh"])))) && dist.SourceTerminal.have() && dist.SourceTerminal.getEnhanceUses() < 3) {
+  if (!(0,dist.have)((0,dist.$effect)(mood_templateObject11 || (mood_templateObject11 = mood_taggedTemplateLiteral(["items.enh"])))) && dist.SourceTerminal.have() && dist.SourceTerminal.getEnhanceUses() < 3) {
     while (dist.SourceTerminal.getEnhanceUses() < 3) {
-      dist.SourceTerminal.enhance((0,dist.$effect)(mood_templateObject11 || (mood_templateObject11 = mood_taggedTemplateLiteral(["items.enh"]))));
+      dist.SourceTerminal.enhance((0,dist.$effect)(mood_templateObject12 || (mood_templateObject12 = mood_taggedTemplateLiteral(["items.enh"]))));
     }
   }
 
   if ((0,external_kolmafia_.getCampground)()["Asdon Martin keyfob"] !== undefined) {
     if ((0,external_kolmafia_.getFuel)() < 37) (0,external_kolmafia_.cliExecute)("asdonmartin fuel 1 pie man was not meant to eat");
-    mood.effect((0,dist.$effect)(mood_templateObject12 || (mood_templateObject12 = mood_taggedTemplateLiteral(["Driving Observantly"]))));
+    mood.effect((0,dist.$effect)(mood_templateObject13 || (mood_templateObject13 = mood_taggedTemplateLiteral(["Driving Observantly"]))));
   }
 
-  if (!(0,dist.have)((0,dist.$effect)(mood_templateObject13 || (mood_templateObject13 = mood_taggedTemplateLiteral(["Items Are Forever"])))) && (0,dist.have)((0,dist.$item)(mood_templateObject14 || (mood_templateObject14 = mood_taggedTemplateLiteral(["Kremlin's Greatest Briefcase"])))) && (0,dist.get)("_kgbClicksUsed") < 22) {
+  if (!(0,dist.have)((0,dist.$effect)(mood_templateObject14 || (mood_templateObject14 = mood_taggedTemplateLiteral(["Items Are Forever"])))) && (0,dist.have)((0,dist.$item)(mood_templateObject15 || (mood_templateObject15 = mood_taggedTemplateLiteral(["Kremlin's Greatest Briefcase"])))) && (0,dist.get)("_kgbClicksUsed") < 22) {
     var buffTries = Math.ceil((22 - (0,dist.get)("_kgbClicksUsed")) / 3);
     (0,external_kolmafia_.cliExecute)("Briefcase buff ".concat(new Array(buffTries).fill("item").join(" ")));
   }
 
-  if ((0,dist.have)((0,dist.$item)(mood_templateObject15 || (mood_templateObject15 = mood_taggedTemplateLiteral(["Bird-a-Day calendar"]))))) {
-    if (!(0,dist.have)((0,dist.$skill)(mood_templateObject16 || (mood_templateObject16 = mood_taggedTemplateLiteral(["Seek out a Bird"]))))) {
-      (0,external_kolmafia_.use)(1, (0,dist.$item)(mood_templateObject17 || (mood_templateObject17 = mood_taggedTemplateLiteral(["Bird-a-Day calendar"]))));
+  if ((0,dist.have)((0,dist.$item)(mood_templateObject16 || (mood_templateObject16 = mood_taggedTemplateLiteral(["Bird-a-Day calendar"]))))) {
+    if (!(0,dist.have)((0,dist.$skill)(mood_templateObject17 || (mood_templateObject17 = mood_taggedTemplateLiteral(["Seek out a Bird"]))))) {
+      (0,external_kolmafia_.use)(1, (0,dist.$item)(mood_templateObject18 || (mood_templateObject18 = mood_taggedTemplateLiteral(["Bird-a-Day calendar"]))));
     }
 
-    if ((0,dist.have)((0,dist.$skill)(mood_templateObject18 || (mood_templateObject18 = mood_taggedTemplateLiteral(["Visit your Favorite Bird"])))) && !(0,dist.get)("_favoriteBirdVisited") && ((0,external_kolmafia_.numericModifier)((0,dist.$effect)(mood_templateObject19 || (mood_templateObject19 = mood_taggedTemplateLiteral(["Blessing of your favorite Bird"]))), "Meat Drop") > 0 || (0,external_kolmafia_.numericModifier)((0,dist.$effect)(mood_templateObject20 || (mood_templateObject20 = mood_taggedTemplateLiteral(["Blessing of your favorite Bird"]))), "Item Drop") > 0)) {
-      (0,external_kolmafia_.useSkill)((0,dist.$skill)(mood_templateObject21 || (mood_templateObject21 = mood_taggedTemplateLiteral(["Visit your Favorite Bird"]))));
+    if ((0,dist.have)((0,dist.$skill)(mood_templateObject19 || (mood_templateObject19 = mood_taggedTemplateLiteral(["Visit your Favorite Bird"])))) && !(0,dist.get)("_favoriteBirdVisited") && ((0,external_kolmafia_.numericModifier)((0,dist.$effect)(mood_templateObject20 || (mood_templateObject20 = mood_taggedTemplateLiteral(["Blessing of your favorite Bird"]))), "Meat Drop") > 0 || (0,external_kolmafia_.numericModifier)((0,dist.$effect)(mood_templateObject21 || (mood_templateObject21 = mood_taggedTemplateLiteral(["Blessing of your favorite Bird"]))), "Item Drop") > 0)) {
+      (0,external_kolmafia_.useSkill)((0,dist.$skill)(mood_templateObject22 || (mood_templateObject22 = mood_taggedTemplateLiteral(["Visit your Favorite Bird"]))));
     }
 
-    if ((0,dist.have)((0,dist.$skill)(mood_templateObject22 || (mood_templateObject22 = mood_taggedTemplateLiteral(["Seek out a Bird"])))) && (0,dist.get)("_birdsSoughtToday") < 6 && ((0,external_kolmafia_.numericModifier)((0,dist.$effect)(mood_templateObject23 || (mood_templateObject23 = mood_taggedTemplateLiteral(["Blessing of the Bird"]))), "Meat Drop") > 0 || (0,external_kolmafia_.numericModifier)((0,dist.$effect)(mood_templateObject24 || (mood_templateObject24 = mood_taggedTemplateLiteral(["Blessing of the Bird"]))), "Item Drop") > 0)) {
+    if ((0,dist.have)((0,dist.$skill)(mood_templateObject23 || (mood_templateObject23 = mood_taggedTemplateLiteral(["Seek out a Bird"])))) && (0,dist.get)("_birdsSoughtToday") < 6 && ((0,external_kolmafia_.numericModifier)((0,dist.$effect)(mood_templateObject24 || (mood_templateObject24 = mood_taggedTemplateLiteral(["Blessing of the Bird"]))), "Meat Drop") > 0 || (0,external_kolmafia_.numericModifier)((0,dist.$effect)(mood_templateObject25 || (mood_templateObject25 = mood_taggedTemplateLiteral(["Blessing of the Bird"]))), "Item Drop") > 0)) {
       // Ensure we don't get stuck in the choice if the count is wrong
       (0,lib/* setChoice */.Y7)(1399, 2);
-      (0,external_kolmafia_.useSkill)((0,dist.$skill)(mood_templateObject25 || (mood_templateObject25 = mood_taggedTemplateLiteral(["Seek out a Bird"]))), 6 - (0,dist.get)("_birdsSoughtToday"));
+      (0,external_kolmafia_.useSkill)((0,dist.$skill)(mood_templateObject26 || (mood_templateObject26 = mood_taggedTemplateLiteral(["Seek out a Bird"]))), 6 - (0,dist.get)("_birdsSoughtToday"));
     }
   }
 
-  if ((0,dist.get)("_poolGames") < 3 && !(0,dist.get)("_dr_noPoolTable", false) && !(0,dist.have)((0,dist.$effect)(mood_templateObject26 || (mood_templateObject26 = mood_taggedTemplateLiteral(["Hustlin'"]))))) {
+  if ((0,dist.get)("_poolGames") < 3 && !(0,dist.get)("_dr_noPoolTable", false) && !(0,dist.have)((0,dist.$effect)(mood_templateObject27 || (mood_templateObject27 = mood_taggedTemplateLiteral(["Hustlin'"]))))) {
     withVIPClan(() => {
       if ((0,external_kolmafia_.getClanLounge)()["Clan pool table"] !== undefined) {
         while ((0,dist.get)("_poolGames") < 3) {
@@ -21595,28 +21596,28 @@ function itemMood() {
 }
 function freeFightMood() {
   var mood = new dist.Mood();
-  mood.skill((0,dist.$skill)(mood_templateObject27 || (mood_templateObject27 = mood_taggedTemplateLiteral(["Drescher's Annoying Noise"]))));
-  mood.skill((0,dist.$skill)(mood_templateObject28 || (mood_templateObject28 = mood_taggedTemplateLiteral(["Pride of the Puffin"]))));
+  mood.skill((0,dist.$skill)(mood_templateObject28 || (mood_templateObject28 = mood_taggedTemplateLiteral(["Drescher's Annoying Noise"]))));
+  mood.skill((0,dist.$skill)(mood_templateObject29 || (mood_templateObject29 = mood_taggedTemplateLiteral(["Pride of the Puffin"]))));
 
   if ((0,external_kolmafia_.getCampground)()["Witchess Set"] !== undefined && !(0,dist.get)("_witchessBuff")) {
-    mood.effect((0,dist.$effect)(mood_templateObject29 || (mood_templateObject29 = mood_taggedTemplateLiteral(["Puzzle Champ"]))));
+    mood.effect((0,dist.$effect)(mood_templateObject30 || (mood_templateObject30 = mood_taggedTemplateLiteral(["Puzzle Champ"]))));
   }
 
   if (!(0,dist.get)("_dr_defectiveTokenAttempted", false)) {
     (0,dist.set)("_dr_defectiveTokenAttempted", true);
-    withStash((0,dist.$items)(mood_templateObject30 || (mood_templateObject30 = mood_taggedTemplateLiteral(["defective Game Grid token"]))), () => {
-      if (!(0,dist.get)("_defectiveTokenUsed") && (0,dist.have)((0,dist.$item)(mood_templateObject31 || (mood_templateObject31 = mood_taggedTemplateLiteral(["defective Game Grid token"]))))) (0,external_kolmafia_.use)((0,dist.$item)(mood_templateObject32 || (mood_templateObject32 = mood_taggedTemplateLiteral(["defective Game Grid token"]))));
+    withStash((0,dist.$items)(mood_templateObject31 || (mood_templateObject31 = mood_taggedTemplateLiteral(["defective Game Grid token"]))), () => {
+      if (!(0,dist.get)("_defectiveTokenUsed") && (0,dist.have)((0,dist.$item)(mood_templateObject32 || (mood_templateObject32 = mood_taggedTemplateLiteral(["defective Game Grid token"]))))) (0,external_kolmafia_.use)((0,dist.$item)(mood_templateObject33 || (mood_templateObject33 = mood_taggedTemplateLiteral(["defective Game Grid token"]))));
     });
   }
 
-  var goodSongs = (0,dist.$skills)(mood_templateObject33 || (mood_templateObject33 = mood_taggedTemplateLiteral(["Chorale of Companionship, The Ballad of Richie Thingfinder, Fat Leon's Phat Loot Lyric"])));
+  var goodSongs = (0,dist.$skills)(mood_templateObject34 || (mood_templateObject34 = mood_taggedTemplateLiteral(["Chorale of Companionship, The Ballad of Richie Thingfinder, Fat Leon's Phat Loot Lyric"])));
 
   for (var _i = 0, _Object$keys = Object.keys((0,external_kolmafia_.myEffects)()); _i < _Object$keys.length; _i++) {
     var effectName = _Object$keys[_i];
     var effect = Effect.get(effectName);
     var skill = (0,external_kolmafia_.toSkill)(effect);
 
-    if (skill.class === (0,dist.$class)(mood_templateObject34 || (mood_templateObject34 = mood_taggedTemplateLiteral(["Accordion Thief"]))) && skill.buff && !goodSongs.includes(skill)) {
+    if (skill.class === (0,dist.$class)(mood_templateObject35 || (mood_templateObject35 = mood_taggedTemplateLiteral(["Accordion Thief"]))) && skill.buff && !goodSongs.includes(skill)) {
       (0,external_kolmafia_.cliExecute)("shrug ".concat(effectName));
     }
   }
@@ -21625,8 +21626,8 @@ function freeFightMood() {
     (0,external_kolmafia_.cliExecute)("daycare mysticality");
   }
 
-  if ((0,dist.have)((0,dist.$item)(mood_templateObject35 || (mood_templateObject35 = mood_taggedTemplateLiteral(["redwood rain stick"])))) && !(0,dist.get)("_redwoodRainStickUsed")) {
-    (0,external_kolmafia_.use)((0,dist.$item)(mood_templateObject36 || (mood_templateObject36 = mood_taggedTemplateLiteral(["redwood rain stick"]))));
+  if ((0,dist.have)((0,dist.$item)(mood_templateObject36 || (mood_templateObject36 = mood_taggedTemplateLiteral(["redwood rain stick"])))) && !(0,dist.get)("_redwoodRainStickUsed")) {
+    (0,external_kolmafia_.use)((0,dist.$item)(mood_templateObject37 || (mood_templateObject37 = mood_taggedTemplateLiteral(["redwood rain stick"]))));
   }
 
   if ((0,lib/* questStep */.cL)("questL06Friar") === 999 && !(0,dist.get)("friarsBlessingReceived")) {
