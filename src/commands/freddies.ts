@@ -21,6 +21,7 @@ export default new Command(
 
             for (const [choiceIndex, choice] of subnoncombat.choices) {
               if (choice.item !== $item`Freddy Kruegerand`) continue;
+              if (choice.maximum && choice.count() >= choice.maximum) continue;
               if (choice.classes && !choice.classes.includes(myClass())) continue;
 
               propertyManager.setChoices({

@@ -79,7 +79,7 @@
               item: moon-amber
               maximum: 1
         2:
-          name: Fire tower
+          name: Fire watchtower
           id: 727
           locked: true
           choices:
