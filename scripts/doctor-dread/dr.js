@@ -17982,22 +17982,24 @@ function main() {
   var argString = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
   (0,libram__WEBPACK_IMPORTED_MODULE_1__.sinceKolmafiaRevision)(20815);
   var args = argString.split(" ");
+  var commandModule = null;
 
   try {
     // This is a horrible hack to force webpack not to try to interpret this.
-    var command = eval("require(\"./commands/".concat(args[0], ".js\")")).default;
-
-    try {
-      command.run(args.slice(1));
-    } finally {
-      _lib__WEBPACK_IMPORTED_MODULE_2__/* .propertyManager.resetAll */ .kr.resetAll();
-    }
+    commandModule = eval("require(\"./commands/".concat(args[0], ".js\")"));
   } catch (e) {
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Unknown command ".concat(args[0], "."), "red"); // eslint-disable-next-line @typescript-eslint/no-var-requires
 
     var helpCommand = __webpack_require__(8482)["default"];
 
     helpCommand.run(args.slice(1));
+    return;
+  }
+
+  try {
+    commandModule.default.run(args.slice(1));
+  } finally {
+    _lib__WEBPACK_IMPORTED_MODULE_2__/* .propertyManager.resetAll */ .kr.resetAll();
   }
 }
 

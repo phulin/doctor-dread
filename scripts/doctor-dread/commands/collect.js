@@ -19242,9 +19242,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var kolmafia__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(kolmafia__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var libram__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9803);
 /* harmony import */ var libram__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(libram__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _command__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(463);
 /* harmony import */ var _dungeon_raidlog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4151);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(644);
-/* harmony import */ var _command__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(463);
 var _templateObject;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -19271,7 +19271,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new _command__WEBPACK_IMPORTED_MODULE_1__/* .Command */ .m("collect", "dr collect: Collect useful items from instance.", () => {
-  var items = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject || (_templateObject = _taggedTemplateLiteral(["dreadful roast, stinking agaricus, dread tarragon, Freddy Kruegerand"])));
+  var items = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject || (_templateObject = _taggedTemplateLiteral(["dreadful roast, stinking agaricus, dread tarragon"])));
   var itemPriority = new Map((0,_lib__WEBPACK_IMPORTED_MODULE_3__/* .entries */ .qh)(items).map(_ref => {
     var _ref2 = _slicedToArray(_ref, 2),
         index = _ref2[0],
@@ -19324,6 +19324,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
                       choice = _step5$value[1];
 
                   if (!choice.item) continue;
+                  if (choice.maximum && choice.count() >= choice.maximum) continue;
                   var priority = (_itemPriority$get = itemPriority.get(choice.item)) !== null && _itemPriority$get !== void 0 ? _itemPriority$get : 999;
 
                   if (priority < currentPriority) {
@@ -19402,14 +19403,16 @@ __webpack_require__.d(__webpack_exports__, {
   "e5": () => (/* binding */ dreadZones)
 });
 
-// UNUSED EXPORTS: DreadNoncombat, DreadSubnoncombat, DreadZone, dreadBanished, dreadElements, dreadKilled, dreadMonsters, dreadZone, dreadZoneTypes, isDreadElementId, isDreadMonsterId, memoizedRaidlog, monsterPair, monsterSingular, monsterZone, raidlogBlocks, toDreadElementId, toElement
+// UNUSED EXPORTS: DreadChoice, DreadNoncombat, DreadSubnoncombat, DreadZone, dreadBanished, dreadElements, dreadKilled, dreadMonsters, dreadZone, dreadZoneTypes, isDreadElementId, isDreadMonsterId, memoizedRaidlog, monsterPair, monsterSingular, monsterZone, raidlogBlocks, toDreadElementId, toElement
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.entries.js
 var es_object_entries = __webpack_require__(6737);
 // EXTERNAL MODULE: external "kolmafia"
 var external_kolmafia_ = __webpack_require__(7530);
+// EXTERNAL MODULE: ./node_modules/libram/dist/index.js
+var dist = __webpack_require__(9803);
 ;// CONCATENATED MODULE: ./src/dungeon/layout.yml
-const layout_namespaceObject = JSON.parse('[{"name":"forest","fullName":"The Woods","monsters":["bugbear","werewolf"],"noncombats":[{"name":"Cabin","id":721,"index":1,"choices":{"1":{"name":"Kitchen","id":722,"choices":{"1":{"message":"acquired some dread tarragon","item":"dread tarragon"},"2":{"message":"made some bone flour","item":"bone flour"},"3":{"message":"made the forest less stinky","banish":["forest","stinky"]}}},"2":{"name":"Basement","id":723,"choices":{"1":{"message":"recycled some newspapers","item":"Freddy Kruegerand"},"2":{"message":"read an old diary","effect":"Bored Stiff"},"3":{"message":"got a Dreadsylvania auditor\'s badge","requirement":"replica key","item":"Dreadsylvania auditor\'s badge"},"4":{"message":"made an impression of a complicated lock","requirement":"wax banana","item":"complicated lock impression"}}},"3":{"name":"Attic","id":724,"locked":true,"choices":{"1":{"message":"made the forest less spooky","classes":["Accordion Thief"],"item":"intricate music box parts"},"2":{"message":"drove some werewolves out of the forest","banish":["forest","werewolf"]},"3":{"message":"drove some vampires out of the castle","banish":["castle","vampire"]},"4":{"message":"flipped through a photo album","stat":"Moxie"}}}}},{"name":"Tallest Tree","id":725,"index":2,"choices":{"1":{"name":"Climb to the top","id":726,"classes":["Seal Clubber","Turtle Tamer"],"choices":{"1":{"messages":["knocked some fruit loose","wasted some fruit"]},"2":{"message":"made the forest less sleazy","banish":["forest","sleazy"]},"3":{"message":"acquired a chunk of moon-amber","item":"moon-amber"}}},"2":{"name":"Fire tower","id":727,"locked":true,"choices":{"1":{"message":"drove some ghosts out of the village","banish":["village","ghost"]},"2":{"message":"rifled through a footlocker","item":"Freddy Kruegerand"},"3":{"message":"lifted some weights","stat":"Muscle"}}},"3":{"name":"Root around","id":728,"choices":{"1":{"message":"got a blood kiwi","item":"blood kiwi"},"2":{"message":"got a cool seed pod","item":"Dreadsylvanian seed pod"}}}}},{"name":"Burrows","id":729,"index":3,"choices":{"1":{"name":"Towards heat","id":730,"choices":{"1":{"message":"made the forest less hot","banish":["forest","hot"]},"2":{"message":"got intimate with some hot coals","effect":"Dragged Through the Coals"},"3":{"message":"made a cool iron ingot","requirement":"old ball and chain","item":"cool iron ingot"}}},"2":{"name":"Towards cold","id":731,"choices":{"1":{"message":"made the forest less cold","banish":["forest","hot"]},"2":{"message":"listened to the forest\'s heart","stat":"Mysticality"},"3":{"message":"drank some nutritious forest goo","effect":"Nature\'s Bounty"}}},"3":{"name":"Towards smelly","id":732,"choices":{"1":{"message":"drove some bugbears out of the forest","banish":["forest","hot"]},"2":{"message":"found and sold a rare baseball card","item":"Freddy Kruegerand"}}}}}]},{"name":"village","fullName":"The Village","monsters":["ghost","zombie"],"noncombats":[{"name":"Village Square","id":733,"index":4,"choices":{"1":{"name":"Schoolhouse","id":734,"locked":true,"choices":{"1":{"message":"drove some ghosts out of the village","banish":["village","ghost"]},"2":{"message":"collected a ghost pencil","item":"ghost pencil"},"3":{"message":"read some naughty carvings","stat":"Mysticality"}}},"2":{"name":"Blacksmith","id":735,"choices":{"1":{"message":"made the village less cold","banish":["village","cold"]},"2":{"message":"looted the blacksmith\'s till","item":"Freddy Kruegerand"},"3":{"messages":["made a cool iron breastplate","made a cool iron helmet","made some cool iron greaves"]}}},"3":{"name":"Gallows","id":736,"choices":{"1":{"message":"made the village less spooky","banish":["village","spooky"]},"2":{"message":"was hung by a clanmate"},"4":{"message":"hung a clanmate"}}}}},{"name":"Skid Row","id":737,"index":5,"choices":{"1":{"name":"Sewers","id":738,"choices":{"1":{"message":"made the village less stinky","banish":["village","stinky"]},"2":{"message":"swam in a sewer","effect":"Sewer-Drenched"}}},"2":{"name":"Tenements","id":740,"choices":{"1":{"message":"drove some skeletons out of the castle","banish":["castle","skeleton"]},"2":{"message":"made the village less sleazy","banish":["village","sleazy"]},"3":{"message":"moved some bricks around","stat":"Muscle"}}},"3":{"name":"Ticking shack","id":739,"classes":["Disco Bandit","Accordion Thief"],"choices":{"1":{"message":"looted the tinker\'s shack","item":"Freddy Kruegerand"},"2":{"message":"made a complicated key","item":"replica key"},"3":{"message":"polished some moon-amber","requirement":"moon-amber","item":"polished moon-amber"},"4":{"message":"made a clockwork bird","item":"unwound mechanical songbird"},"5":{"message":"got some old fuse","quantity":3,"item":"old fuse"}}}}},{"name":"Old Duke\'s Estate","id":741,"index":6,"choices":{"1":{"name":"Family plot","id":742,"choices":{"1":{"message":"drove some zombies out of the village","banish":["village","zombie"]},"2":{"message":"robbed some graves","item":"Freddy Kruegerand"},"3":{"message":"read some lurid epitaphs","effect":"Fifty Ways to Bereave Your Lover"}}},"2":{"name":"Servant\'s quarters","id":743,"choices":{"1":{"message":"made the village less hot","banish":["village","hot"]},"2":{"message":"made a shepherd\'s pie","item":"Dreadsylvanian shepherd\'s pie"},"3":{"message":"raided some naughty cabinets","stat":"Moxie"}}},"3":{"name":"Master suite","id":744,"locked":true,"choices":{"1":{"message":"drove some werewolves out of the forest","banish":["forest","werewolf"]},"2":{"message":"got a bottle of eau de mort","item":"eau de mort"},"3":{"message":"made a ghost shawl","item":"ghost shawl"}}}}}]},{"name":"castle","fullName":"The Castle","monsters":["vampire","skeleton"],"noncombats":[{"name":"Tower","id":749,"index":8,"choices":{"1":{"name":"Laboratory","id":750,"locked":true,"choices":{"1":{"message":"drove some bugbears out of the forest","banish":["forest","bugbear"]},"2":{"message":"drove some zombies out of the village","banish":["village","zombie"]},"5":{"message":"made a blood kiwitini","classes":["Disco Bandit","Accordion Thief"],"item":"bloody kiwitini"}}},"2":{"name":"Books","id":751,"classes":["Pastamancer","Sauceror"],"choices":{"1":{"message":"drove some skeletons out of the castle","banish":["castle","skeleton"]},"2":{"message":"read some ancient secrets","stat":"Mysticality"},"3":{"message":"learned to make a moon-amber necklace"}}},"3":{"name":"Bedroom","id":752,"choices":{"1":{"message":"made the castle less sleazy","banish":["castle","sleazy"]},"2":{"message":"raided a dresser","item":"Freddy Kruegerand"},"3":{"message":"got magically fingered","effect":"Magically Fingered"}}}}},{"name":"Great Hall","id":745,"index":7,"choices":{"1":{"name":"Ballroom","id":746,"locked":true,"choices":{"1":{"message":"drove some vampires out of the castle","banish":["castle","vampire"]},"2":{"message":"twirled on the dance floor","requirement":"muddy skirt","stat":"Moxie","item":"weedy skirt"}}},"2":{"name":"Kitchen","id":747,"choices":{"1":{"message":"made the castle less cold","banish":["castle","cold"]},"2":{"message":"frolicked in a freezer","effect":"Staying Frosty"}}},"3":{"name":"Dining room","id":748,"choices":{"1":{"message":"got some roast beast","item":"dreadful roast"},"2":{"message":"made the castle less stinky","banish":["castle","stinky"]},"3":{"message":"got a wax banana","classes":["Pastamancer","Sauceror"],"item":"wax banana"}}}}},{"name":"Dungeons","id":753,"index":9,"choices":{"1":{"name":"Cell block","id":754,"choices":{"1":{"message":"made the castle less spooky","banish":["castle","spooky"]},"2":{"message":"did a whole bunch of pushups","stat":"Muscle"},"3":{"message":"took a nap on a prison cot"}}},"2":{"name":"Boiler room","id":755,"choices":{"1":{"message":"made the castle less hot","banish":["castle","hot"]},"2":{"message":"sifted through some ashes","item":"Freddy Kruegerand"},"3":{"message":"relaxed in a furnace"}}},"3":{"name":"Guardroom","id":756,"choices":{"1":{"message":"got some stinking agaric","item":"stinking agaricus"},"2":{"message":"rolled around in some mushrooms","effect":"Spore-Wreathed"}}}}}]}]');
+const layout_namespaceObject = JSON.parse('[{"name":"forest","fullName":"The Woods","monsters":["bugbear","werewolf"],"noncombats":[{"name":"Cabin","id":721,"index":1,"choices":{"1":{"name":"Kitchen","id":722,"choices":{"1":{"message":"acquired some dread tarragon","item":"dread tarragon"},"2":{"message":"made some bone flour","item":"bone flour"},"3":{"message":"made the forest less stinky","banish":["forest","stinky"]}}},"2":{"name":"Basement","id":723,"choices":{"1":{"message":"recycled some newspapers","item":"Freddy Kruegerand","maximum":10},"2":{"message":"read an old diary","effect":"Bored Stiff"},"3":{"message":"got a Dreadsylvania auditor\'s badge","requirement":"replica key","item":"Dreadsylvania auditor\'s badge","maximum":1},"4":{"message":"made an impression of a complicated lock","requirement":"wax banana","item":"complicated lock impression"}}},"3":{"name":"Attic","id":724,"locked":true,"choices":{"1":{"message":"made the forest less spooky","classes":["Accordion Thief"],"item":"intricate music box parts","maximum":1},"2":{"message":"drove some werewolves out of the forest","banish":["forest","werewolf"]},"3":{"message":"drove some vampires out of the castle","banish":["castle","vampire"]},"4":{"message":"flipped through a photo album","stat":"Moxie"}}}}},{"name":"Tallest Tree","id":725,"index":2,"choices":{"1":{"name":"Climb to the top","id":726,"classes":["Seal Clubber","Turtle Tamer"],"choices":{"1":{"messages":["knocked some fruit loose","wasted some fruit"]},"2":{"message":"made the forest less sleazy","banish":["forest","sleazy"]},"3":{"message":"acquired a chunk of moon-amber","item":"moon-amber","maximum":1}}},"2":{"name":"Fire tower","id":727,"locked":true,"choices":{"1":{"message":"drove some ghosts out of the village","banish":["village","ghost"]},"2":{"message":"rifled through a footlocker","item":"Freddy Kruegerand"},"3":{"message":"lifted some weights","stat":"Muscle"}}},"3":{"name":"Root around","id":728,"choices":{"1":{"message":"got a blood kiwi","item":"blood kiwi","maximum":1},"2":{"message":"got a cool seed pod","item":"Dreadsylvanian seed pod"}}}}},{"name":"Burrows","id":729,"index":3,"choices":{"1":{"name":"Towards heat","id":730,"choices":{"1":{"message":"made the forest less hot","banish":["forest","hot"]},"2":{"message":"got intimate with some hot coals","effect":"Dragged Through the Coals"},"3":{"message":"made a cool iron ingot","requirement":"old ball and chain","item":"cool iron ingot"}}},"2":{"name":"Towards cold","id":731,"choices":{"1":{"message":"made the forest less cold","banish":["forest","hot"]},"2":{"message":"listened to the forest\'s heart","stat":"Mysticality"},"3":{"message":"drank some nutritious forest goo","effect":"Nature\'s Bounty"}}},"3":{"name":"Towards smelly","id":732,"choices":{"1":{"message":"drove some bugbears out of the forest","banish":["forest","hot"]},"2":{"message":"found and sold a rare baseball card","item":"Freddy Kruegerand","maximum":10}}}}}]},{"name":"village","fullName":"The Village","monsters":["ghost","zombie"],"noncombats":[{"name":"Village Square","id":733,"index":4,"choices":{"1":{"name":"Schoolhouse","id":734,"locked":true,"choices":{"1":{"message":"drove some ghosts out of the village","banish":["village","ghost"]},"2":{"message":"collected a ghost pencil","item":"ghost pencil","maximum":10},"3":{"message":"read some naughty carvings","stat":"Mysticality"}}},"2":{"name":"Blacksmith","id":735,"choices":{"1":{"message":"made the village less cold","banish":["village","cold"]},"2":{"message":"looted the blacksmith\'s till","item":"Freddy Kruegerand","maximum":10},"3":{"messages":["made a cool iron breastplate","made a cool iron helmet","made some cool iron greaves"]}}},"3":{"name":"Gallows","id":736,"choices":{"1":{"message":"made the village less spooky","banish":["village","spooky"]},"2":{"message":"was hung by a clanmate"},"4":{"message":"hung a clanmate"}}}}},{"name":"Skid Row","id":737,"index":5,"choices":{"1":{"name":"Sewers","id":738,"choices":{"1":{"message":"made the village less stinky","banish":["village","stinky"]},"2":{"message":"swam in a sewer","effect":"Sewer-Drenched"}}},"2":{"name":"Tenements","id":740,"choices":{"1":{"message":"drove some skeletons out of the castle","banish":["castle","skeleton"]},"2":{"message":"made the village less sleazy","banish":["village","sleazy"]},"3":{"message":"moved some bricks around","stat":"Muscle"}}},"3":{"name":"Ticking shack","id":739,"classes":["Disco Bandit","Accordion Thief"],"choices":{"1":{"message":"looted the tinker\'s shack","item":"Freddy Kruegerand","maximum":10},"2":{"message":"made a complicated key","item":"replica key"},"3":{"message":"polished some moon-amber","requirement":"moon-amber","item":"polished moon-amber"},"4":{"message":"made a clockwork bird","item":"unwound mechanical songbird"},"5":{"message":"got some old fuse","quantity":3,"item":"old fuse"}}}}},{"name":"Old Duke\'s Estate","id":741,"index":6,"choices":{"1":{"name":"Family plot","id":742,"choices":{"1":{"message":"drove some zombies out of the village","banish":["village","zombie"]},"2":{"message":"robbed some graves","item":"Freddy Kruegerand","maximum":10},"3":{"message":"read some lurid epitaphs","effect":"Fifty Ways to Bereave Your Lover"}}},"2":{"name":"Servant\'s quarters","id":743,"choices":{"1":{"message":"made the village less hot","banish":["village","hot"]},"2":{"message":"made a shepherd\'s pie","item":"Dreadsylvanian shepherd\'s pie"},"3":{"message":"raided some naughty cabinets","stat":"Moxie"}}},"3":{"name":"Master suite","id":744,"locked":true,"choices":{"1":{"message":"drove some werewolves out of the forest","banish":["forest","werewolf"]},"2":{"message":"got a bottle of eau de mort","item":"eau de mort","maximum":10},"3":{"message":"made a ghost shawl","item":"ghost shawl"}}}}}]},{"name":"castle","fullName":"The Castle","monsters":["vampire","skeleton"],"noncombats":[{"name":"Tower","id":749,"index":8,"choices":{"1":{"name":"Laboratory","id":750,"locked":true,"choices":{"1":{"message":"drove some bugbears out of the forest","banish":["forest","bugbear"]},"2":{"message":"drove some zombies out of the village","banish":["village","zombie"]},"5":{"message":"made a blood kiwitini","classes":["Disco Bandit","Accordion Thief"],"item":"bloody kiwitini"}}},"2":{"name":"Books","id":751,"classes":["Pastamancer","Sauceror"],"choices":{"1":{"message":"drove some skeletons out of the castle","banish":["castle","skeleton"]},"2":{"message":"read some ancient secrets","stat":"Mysticality"},"3":{"message":"learned to make a moon-amber necklace"}}},"3":{"name":"Bedroom","id":752,"choices":{"1":{"message":"made the castle less sleazy","banish":["castle","sleazy"]},"2":{"message":"raided a dresser","item":"Freddy Kruegerand","maximum":10},"3":{"message":"got magically fingered","effect":"Magically Fingered"}}}}},{"name":"Great Hall","id":745,"index":7,"choices":{"1":{"name":"Ballroom","id":746,"locked":true,"choices":{"1":{"message":"drove some vampires out of the castle","banish":["castle","vampire"]},"2":{"message":"twirled on the dance floor","requirement":"muddy skirt","stat":"Moxie","item":"weedy skirt"}}},"2":{"name":"Kitchen","id":747,"choices":{"1":{"message":"made the castle less cold","banish":["castle","cold"]},"2":{"message":"frolicked in a freezer","effect":"Staying Frosty"}}},"3":{"name":"Dining room","id":748,"choices":{"1":{"message":"got some roast beast","item":"dreadful roast","maximum":1},"2":{"message":"made the castle less stinky","banish":["castle","stinky"]},"3":{"message":"got a wax banana","classes":["Pastamancer","Sauceror"],"item":"wax banana","maximum":1}}}}},{"name":"Dungeons","id":753,"index":9,"choices":{"1":{"name":"Cell block","id":754,"choices":{"1":{"message":"made the castle less spooky","banish":["castle","spooky"]},"2":{"message":"did a whole bunch of pushups","stat":"Muscle"},"3":{"message":"took a nap on a prison cot"}}},"2":{"name":"Boiler room","id":755,"choices":{"1":{"message":"made the castle less hot","banish":["castle","hot"]},"2":{"message":"sifted through some ashes","item":"Freddy Kruegerand","maximum":10},"3":{"message":"relaxed in a furnace"}}},"3":{"name":"Guardroom","id":756,"choices":{"1":{"message":"got some stinking agaric","item":"stinking agaricus","maximum":1},"2":{"message":"rolled around in some mushrooms","effect":"Spore-Wreathed"}}}}}]}]');
 ;// CONCATENATED MODULE: ./src/dungeon/raidlog.ts
 var _templateObject, _templateObject2;
 
@@ -19422,10 +19425,6 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -19478,13 +19477,75 @@ function toElement(dreadElement) {
       return $element(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["stench"])));
   }
 }
-var DreadSubnoncombat = /*#__PURE__*/function () {
-  function DreadSubnoncombat(_ref) {
-    var name = _ref.name,
-        id = _ref.id,
-        locked = _ref.locked,
+var DreadChoice = /*#__PURE__*/function () {
+  function DreadChoice(_ref) {
+    var message = _ref.message,
+        messages = _ref.messages,
         classes = _ref.classes,
-        choices = _ref.choices;
+        requirement = _ref.requirement,
+        item = _ref.item,
+        maximum = _ref.maximum,
+        banish = _ref.banish,
+        effect = _ref.effect,
+        stat = _ref.stat;
+
+    _classCallCheck(this, DreadChoice);
+
+    _defineProperty(this, "messages", void 0);
+
+    _defineProperty(this, "classes", void 0);
+
+    _defineProperty(this, "requirement", void 0);
+
+    _defineProperty(this, "item", void 0);
+
+    _defineProperty(this, "maximum", void 0);
+
+    _defineProperty(this, "banish", void 0);
+
+    _defineProperty(this, "effect", void 0);
+
+    _defineProperty(this, "stat", void 0);
+
+    this.messages = message ? [message] : messages;
+    if (classes) this.classes = classes.map(c => Class.get(c));
+    if (requirement) this.requirement = Item.get(requirement);
+    if (item) this.item = Item.get(item);
+    if (maximum) this.maximum = maximum;
+    if (banish) this.banish = banish;
+    if (effect) this.effect = Effect.get(effect);
+    if (stat) this.stat = stat;
+  }
+
+  _createClass(DreadChoice, [{
+    key: "count",
+    value: function count() {
+      var _ref2 = raidlogBlocks().find(_ref4 => {
+        var _ref5 = _slicedToArray(_ref4, 1),
+            zone = _ref5[0];
+
+        return zone.subnoncombats().some(sub => _toConsumableArray(sub.choices.values()).some(choice => choice === this));
+      }),
+          _ref3 = _slicedToArray(_ref2, 2),
+          block = _ref3[1];
+
+      return (0,dist.sum)(this.messages, message => {
+        var _block$match$length, _block$match;
+
+        return (_block$match$length = (_block$match = block.match(new RegExp(message, "g"))) === null || _block$match === void 0 ? void 0 : _block$match.length) !== null && _block$match$length !== void 0 ? _block$match$length : 0;
+      });
+    }
+  }]);
+
+  return DreadChoice;
+}();
+var DreadSubnoncombat = /*#__PURE__*/function () {
+  function DreadSubnoncombat(_ref6) {
+    var name = _ref6.name,
+        id = _ref6.id,
+        locked = _ref6.locked,
+        classes = _ref6.classes,
+        choices = _ref6.choices;
 
     _classCallCheck(this, DreadSubnoncombat);
 
@@ -19502,37 +19563,21 @@ var DreadSubnoncombat = /*#__PURE__*/function () {
     this.id = id;
     this.needsUnlocked = !!locked;
     if (classes) this.classes = classes.map(c => Class.get(c));
-    this.choices = new Map(Object.entries(choices).map(_ref2 => {
-      var _choice$messages;
+    this.choices = new Map(Object.entries(choices).map(_ref7 => {
+      var _ref8 = _slicedToArray(_ref7, 2),
+          index = _ref8[0],
+          choice = _ref8[1];
 
-      var _ref3 = _slicedToArray(_ref2, 2),
-          index = _ref3[0],
-          choice = _ref3[1];
-
-      return [parseInt(index), _objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread({
-        messages: (_choice$messages = choice.messages) !== null && _choice$messages !== void 0 ? _choice$messages : [choice.message]
-      }, choice.classes ? {
-        classes: choice.classes.map(c => Class.get(c))
-      } : {}), choice.requirement ? {
-        requirement: Item.get(choice.requirement)
-      } : {}), choice.item ? {
-        item: Item.get(choice.item)
-      } : {}), choice.banish ? {
-        banish: choice.banish
-      } : {}), choice.effect ? {
-        effect: Effect.get(choice.effect)
-      } : {}), choice.stat ? {
-        stat: Stat.get(choice.stat)
-      } : {})];
+      return [parseInt(index), new DreadChoice(choice)];
     }));
   }
 
   _createClass(DreadSubnoncombat, [{
     key: "messages",
     value: function messages() {
-      var _ref4;
+      var _ref9;
 
-      return (_ref4 = []).concat.apply(_ref4, _toConsumableArray(_toConsumableArray(this.choices.values()).map(choice => choice.messages)));
+      return (_ref9 = []).concat.apply(_ref9, _toConsumableArray(_toConsumableArray(this.choices.values()).map(choice => choice.messages)));
     }
   }, {
     key: "isLocked",
@@ -19544,11 +19589,11 @@ var DreadSubnoncombat = /*#__PURE__*/function () {
   return DreadSubnoncombat;
 }();
 var DreadNoncombat = /*#__PURE__*/function () {
-  function DreadNoncombat(_ref5) {
-    var name = _ref5.name,
-        id = _ref5.id,
-        index = _ref5.index,
-        choices = _ref5.choices;
+  function DreadNoncombat(_ref10) {
+    var name = _ref10.name,
+        id = _ref10.id,
+        index = _ref10.index,
+        choices = _ref10.choices;
 
     _classCallCheck(this, DreadNoncombat);
 
@@ -19563,10 +19608,10 @@ var DreadNoncombat = /*#__PURE__*/function () {
     this.name = name;
     this.id = id;
     this.index = index;
-    this.choices = new Map(Object.entries(choices).map(_ref6 => {
-      var _ref7 = _slicedToArray(_ref6, 2),
-          index = _ref7[0],
-          choice = _ref7[1];
+    this.choices = new Map(Object.entries(choices).map(_ref11 => {
+      var _ref12 = _slicedToArray(_ref11, 2),
+          index = _ref12[0],
+          choice = _ref12[1];
 
       return [parseInt(index), new DreadSubnoncombat(choice)];
     }));
@@ -19595,36 +19640,49 @@ var DreadNoncombat = /*#__PURE__*/function () {
   }, {
     key: "messages",
     value: function messages() {
-      var _ref8;
+      var _ref13;
 
-      return (_ref8 = []).concat.apply(_ref8, _toConsumableArray(_toConsumableArray(this.choices.values()).map(choice => choice.messages())));
+      return (_ref13 = []).concat.apply(_ref13, _toConsumableArray(_toConsumableArray(this.choices.values()).map(choice => choice.messages())));
     }
   }]);
 
   return DreadNoncombat;
 }();
 var dreadZoneTypes = (/* unused pure expression or super */ null && (["forest", "village", "castle"]));
-var DreadZone = function DreadZone(_ref9) {
-  var name = _ref9.name,
-      fullName = _ref9.fullName,
-      monsters = _ref9.monsters,
-      noncombats = _ref9.noncombats;
+var DreadZone = /*#__PURE__*/function () {
+  function DreadZone(_ref14) {
+    var name = _ref14.name,
+        fullName = _ref14.fullName,
+        monsters = _ref14.monsters,
+        noncombats = _ref14.noncombats;
 
-  _classCallCheck(this, DreadZone);
+    _classCallCheck(this, DreadZone);
 
-  _defineProperty(this, "name", void 0);
+    _defineProperty(this, "name", void 0);
 
-  _defineProperty(this, "fullName", void 0);
+    _defineProperty(this, "fullName", void 0);
 
-  _defineProperty(this, "monsters", void 0);
+    _defineProperty(this, "monsters", void 0);
 
-  _defineProperty(this, "noncombats", void 0);
+    _defineProperty(this, "noncombats", void 0);
 
-  this.name = name;
-  this.fullName = fullName;
-  this.monsters = monsters;
-  this.noncombats = noncombats.map(noncombat => new DreadNoncombat(noncombat));
-};
+    this.name = name;
+    this.fullName = fullName;
+    this.monsters = monsters;
+    this.noncombats = noncombats.map(noncombat => new DreadNoncombat(noncombat));
+  }
+
+  _createClass(DreadZone, [{
+    key: "subnoncombats",
+    value: function subnoncombats() {
+      var _ref15;
+
+      return (_ref15 = []).concat.apply(_ref15, _toConsumableArray(this.noncombats.map(nc => _toConsumableArray(nc.choices.values()))));
+    }
+  }]);
+
+  return DreadZone;
+}();
 function monsterPair(monster) {
   switch (monster) {
     case "bugbear":
@@ -19731,10 +19789,10 @@ function dreadBanished() {
   return result;
 }
 function dreadKilled() {
-  return raidlogBlocks().map(_ref10 => {
-    var _ref11 = _slicedToArray(_ref10, 2),
-        zone = _ref11[0],
-        block = _ref11[1];
+  return raidlogBlocks().map(_ref16 => {
+    var _ref17 = _slicedToArray(_ref16, 2),
+        zone = _ref17[0],
+        block = _ref17[1];
 
     var zoneTotal = 0;
 
