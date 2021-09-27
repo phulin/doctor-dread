@@ -26,6 +26,7 @@
             1:
               message: recycled some newspapers
               item: Freddy Kruegerand
+              maximum: 10
             2:
               message: read an old diary
               effect: Bored Stiff
@@ -33,6 +34,7 @@
               message: got a Dreadsylvania auditor's badge
               requirement: replica key
               item: Dreadsylvania auditor's badge
+              maximum: 1
             4:
               message: made an impression of a complicated lock
               requirement: wax banana
@@ -46,6 +48,7 @@
               message: made the forest less spooky
               classes: ["Accordion Thief"]
               item: intricate music box parts
+              maximum: 1
             2:
               message: drove some werewolves out of the forest
               banish: ["forest", "werewolf"]
@@ -74,6 +77,7 @@
             3:
               message: acquired a chunk of moon-amber
               item: moon-amber
+              maximum: 1
         2:
           name: Fire tower
           id: 727
@@ -95,6 +99,7 @@
             1:
               message: got a blood kiwi
               item: blood kiwi
+              maximum: 1
             2:
               message: got a cool seed pod
               item: Dreadsylvanian seed pod
@@ -139,6 +144,7 @@
             2:
               message: found and sold a rare baseball card
               item: Freddy Kruegerand
+              maximum: 10
 
 - name: village
   fullName: The Village
@@ -159,6 +165,7 @@
             2:
               message: collected a ghost pencil
               item: ghost pencil
+              maximum: 10
             3:
               message: read some naughty carvings
               stat: Mysticality
@@ -172,6 +179,7 @@
             2:
               message: looted the blacksmith's till
               item: Freddy Kruegerand
+              maximum: 10
             3:
               messages:
                 - made a cool iron breastplate
@@ -223,6 +231,7 @@
             1:
               message: looted the tinker's shack
               item: Freddy Kruegerand
+              maximum: 10
             2:
               message: made a complicated key
               item: replica key
@@ -251,6 +260,7 @@
             2:
               message: robbed some graves
               item: Freddy Kruegerand
+              maximum: 10
             3:
               message: read some lurid epitaphs
               effect: Fifty Ways to Bereave Your Lover
@@ -278,6 +288,7 @@
             2:
               message: got a bottle of eau de mort
               item: eau de mort
+              maximum: 10
             3:
               message: made a ghost shawl
               item: ghost shawl
@@ -328,6 +339,7 @@
             2:
               message: raided a dresser
               item: Freddy Kruegerand
+              maximum: 10
             3:
               message: got magically fingered
               effect: Magically Fingered
@@ -365,6 +377,7 @@
             1:
               message: got some roast beast
               item: dreadful roast
+              maximum: 1
             2:
               message: made the castle less stinky
               banish: ["castle", "stinky"]
@@ -372,6 +385,7 @@
               message: got a wax banana
               classes: ["Pastamancer", "Sauceror"]
               item: wax banana
+              maximum: 1
     - name: Dungeons
       id: 753
       index: 9
@@ -398,6 +412,7 @@
             2:
               message: sifted through some ashes
               item: Freddy Kruegerand
+              maximum: 10
             3:
               message: relaxed in a furnace
         3:
@@ -407,6 +422,7 @@
             1:
               message: got some stinking agaric
               item: stinking agaricus
+              maximum: 1
             2:
               message: rolled around in some mushrooms
               effect: Spore-Wreathed

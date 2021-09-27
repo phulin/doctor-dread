@@ -1,8 +1,8 @@
 import { cliExecute, create, getRelated, getWorkshed, print, stashAmount } from "kolmafia";
 import { $item, $items, Clan, get, have, set } from "libram";
 
-import { DreadElementId, dreadElements, toDreadElementId, toElement } from "../dungeon/raidlog";
 import { Command } from "../command";
+import { DreadElementId, dreadElements, toDreadElementId, toElement } from "../dungeon/raidlog";
 
 function elementPocket(elementId: DreadElementId): Item {
   return Item.get(`Dreadsylvanian ${elementId} pocket`);

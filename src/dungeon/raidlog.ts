@@ -1,7 +1,7 @@
 import "core-js/modules/es.object.entries";
 
 import { getClanId, myId, myName, totalTurnsPlayed, visitUrl } from "kolmafia";
-import { $element } from "libram";
+import { $element, sum } from "libram";
 
 import dreadLayout from "./layout.yml";
 
@@ -46,15 +46,58 @@ export function toElement(dreadElement: DreadElementId): Element {
   }
 }
 
-export type DreadChoice = {
+type DreadChoiceSchema = {
+  message?: string;
+  messages?: string[];
+  classes?: string[];
+  requirement?: string;
+  item?: string;
+  maximum?: number;
+  banish?: [DreadZoneId, DreadMonsterId | DreadElementId];
+  effect?: string;
+  stat?: string;
+};
+
+export class DreadChoice {
   messages: string[];
   classes?: Class[];
   requirement?: Item;
   item?: Item;
+  maximum?: number;
   banish?: [DreadZoneId, DreadMonsterId | DreadElementId];
   effect?: Effect;
   stat?: Stat;
-};
+
+  constructor({
+    message,
+    messages,
+    classes,
+    requirement,
+    item,
+    maximum,
+    banish,
+    effect,
+    stat,
+  }: DreadChoiceSchema) {
+    this.messages = message ? [message] : (messages as string[]);
+    if (classes) this.classes = classes.map((c) => Class.get(c));
+    if (requirement) this.requirement = Item.get(requirement);
+    if (item) this.item = Item.get(item);
+    if (maximum) this.maximum = maximum;
+    if (banish) this.banish = banish;
+    if (effect) this.effect = Effect.get(effect);
+    if (stat) this.stat = stat;
+  }
+
+  count(): number {
+    const [, block] = raidlogBlocks().find(([zone]) =>
+      zone
+        .subnoncombats()
+        .some((sub) => [...sub.choices.values()].some((choice) => choice === this))
+    ) as [DreadZone, string];
+    return sum(this.messages, (message) => block.match(new RegExp(message, "g"))?.length ?? 0);
+  }
+}
 
 type DreadSubnoncombatSchema = {
   name: string;
@@ -62,16 +105,7 @@ type DreadSubnoncombatSchema = {
   locked?: boolean;
   classes: string[];
   choices: {
-    [index: number]: {
-      message?: string;
-      messages?: string[];
-      classes?: string[];
-      requirement?: string;
-      item?: string;
-      banish?: [DreadZoneId, DreadMonsterId | DreadElementId];
-      effect?: string;
-      stat?: string;
-    };
+    [index: number]: DreadChoiceSchema;
   };
 };
 
@@ -88,18 +122,7 @@ export class DreadSubnoncombat {
     this.needsUnlocked = !!locked;
     if (classes) this.classes = classes.map((c) => Class.get(c));
     this.choices = new Map(
-      Object.entries(choices).map(([index, choice]) => [
-        parseInt(index),
-        {
-          messages: choice.messages ?? [choice.message as string],
-          ...(choice.classes ? { classes: choice.classes.map((c) => Class.get(c)) } : {}),
-          ...(choice.requirement ? { requirement: Item.get(choice.requirement) } : {}),
-          ...(choice.item ? { item: Item.get(choice.item) } : {}),
-          ...(choice.banish ? { banish: choice.banish } : {}),
-          ...(choice.effect ? { effect: Effect.get(choice.effect) } : {}),
-          ...(choice.stat ? { stat: Stat.get(choice.stat) } : {}),
-        },
-      ])
+      Object.entries(choices).map(([index, choice]) => [parseInt(index), new DreadChoice(choice)])
     );
   }
 
@@ -195,6 +218,12 @@ export class DreadZone {
     this.fullName = fullName;
     this.monsters = monsters;
     this.noncombats = noncombats.map((noncombat) => new DreadNoncombat(noncombat));
+  }
+
+  subnoncombats(): DreadSubnoncombat[] {
+    return ([] as DreadSubnoncombat[]).concat(
+      ...this.noncombats.map((nc) => [...nc.choices.values()])
+    );
   }
 }
 
