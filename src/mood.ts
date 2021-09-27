@@ -48,6 +48,8 @@ export function itemMood(): Mood {
   mood.skill($skill`Fat Leon's Phat Loot Lyric`);
   mood.skill($skill`Singer's Faithful Ocelot`);
 
+  mood.potion($item`go-go potion`, 100);
+
   mood.effect($effect`Bubble Vision`, () => {
     if (haveEffect($effect`Bubble Vision`) === 0) use($item`bottle of bubbles`);
   });
