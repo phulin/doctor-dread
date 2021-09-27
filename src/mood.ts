@@ -1,18 +1,11 @@
 import {
-  availableAmount,
   cliExecute,
-  effectModifier,
+  getCampground,
   getClanLounge,
+  getFuel,
   haveEffect,
-  mallPrice,
-  myClass,
   myEffects,
-  myFamiliar,
-  mySign,
-  mySpleenUse,
   numericModifier,
-  spleenLimit,
-  sweetSynthesis,
   toSkill,
   use,
   useSkill,
@@ -20,7 +13,6 @@ import {
 import {
   $class,
   $effect,
-  $familiar,
   $item,
   $items,
   $skill,
@@ -33,7 +25,6 @@ import {
 } from "libram";
 import { questStep, setChoice } from "./lib";
 import { withStash, withVIPClan } from "./clan";
-import { acquire } from "./acquire";
 
 Mood.setDefaultOptions({
   mpSources: [],
@@ -57,77 +48,30 @@ export function itemMood(): Mood {
   mood.skill($skill`Fat Leon's Phat Loot Lyric`);
   mood.skill($skill`Singer's Faithful Ocelot`);
 
+  mood.effect($effect`Bubble Vision`, () => {
+    if (haveEffect($effect`Bubble Vision`) === 0) use($item`bottle of bubbles`);
+  });
+
   if (!get("concertVisited") && get("sidequestArenaCompleted") === "fratboy") {
     cliExecute("concert winklered");
   } else if (!get("concertVisited") && get("sidequestArenaCompleted") === "hippy") {
     cliExecute("concert optimist primal");
   }
 
-  return mood;
-}
-
-export function freeFightMood(): Mood {
-  const mood = new Mood();
-
-  mood.skill($skill`Drescher's Annoying Noise`);
-  mood.skill($skill`Pride of the Puffin`);
-
-  if (!get<boolean>("_dr_defectiveTokenAttempted", false)) {
-    set("_dr_defectiveTokenAttempted", true);
-    withStash($items`defective Game Grid token`, () => {
-      if (!get("_defectiveTokenUsed") && have($item`defective Game Grid token`))
-        use($item`defective Game Grid token`);
-    });
-  }
-
-  const goodSongs = $skills`Chorale of Companionship, The Ballad of Richie Thingfinder, Fat Leon's Phat Loot Lyric`;
-  for (const effectName of Object.keys(myEffects())) {
-    const effect = Effect.get(effectName);
-    const skill = toSkill(effect);
-    if (skill.class === $class`Accordion Thief` && skill.buff && !goodSongs.includes(skill)) {
-      cliExecute(`shrug ${effectName}`);
-    }
-  }
-
-  if ((get("daycareOpen") || get("_daycareToday")) && !get("_daycareSpa")) {
-    cliExecute("daycare mysticality");
-  }
-  if (have($item`redwood rain stick`) && !get("_redwoodRainStickUsed")) {
-    use($item`redwood rain stick`);
-  }
-
-  if (questStep("questL06Friar") === 999 && !get("friarsBlessingReceived")) {
-    cliExecute("friars familiar");
-  }
-
-  return mood;
-}
-
-function fillSpleenSynthesis() {
-  const needed = Math.floor(
-    (haveEffect($effect`Riboflavin'`) - haveEffect($effect`Synthesis: Collection`)) / 30
-  );
-  sweetSynthesis(Math.min(needed, spleenLimit() - mySpleenUse()), $effect`Synthesis: Collection`);
-}
-
-export function boostItemDrop(): void {
-  if (have($familiar`Reagnimated Gnome`) && myFamiliar() !== $familiar`Reagnimated Gnome`) return;
-
-  if (numericModifier("Item Drop") < 1850 && !get("_clanFortuneBuffUsed")) {
+  if (!get("_clanFortuneBuffUsed")) {
     withVIPClan(() => cliExecute("fortune buff item"));
   }
 
-  if (
-    numericModifier("Item Drop") < 1850 &&
-    !have($effect`items.enh`) &&
-    SourceTerminal.have() &&
-    SourceTerminal.getEnhanceUses() < 3
-  ) {
+  if (!have($effect`items.enh`) && SourceTerminal.have() && SourceTerminal.getEnhanceUses() < 3) {
     while (SourceTerminal.getEnhanceUses() < 3) SourceTerminal.enhance($effect`items.enh`);
   }
 
+  if (getCampground()["Asdon Martin keyfob"] !== undefined) {
+    if (getFuel() < 37) cliExecute("asdonmartin fuel 1 pie man was not meant to eat");
+    mood.effect($effect`Driving Observantly`);
+  }
+
   if (
-    numericModifier("Item Drop") < 1850 &&
     !have($effect`Items Are Forever`) &&
     have($item`Kremlin's Greatest Briefcase`) &&
     get("_kgbClicksUsed") < 22
@@ -136,7 +80,7 @@ export function boostItemDrop(): void {
     cliExecute(`Briefcase buff ${new Array<string>(buffTries).fill("item").join(" ")}`);
   }
 
-  if (numericModifier("Item Drop") < 1850 && have($item`Bird-a-Day calendar`)) {
+  if (have($item`Bird-a-Day calendar`)) {
     if (!have($skill`Seek out a Bird`)) {
       use(1, $item`Bird-a-Day calendar`);
     }
@@ -170,26 +114,46 @@ export function boostItemDrop(): void {
     });
   }
 
-  if (numericModifier("Item Drop") < 1850 && mySpleenUse() < spleenLimit()) {
-    fillSpleenSynthesis();
-    const mojoFilterCount = 3 - get("currentMojoFilters");
-    acquire(mojoFilterCount, $item`mojo filter`, 15000, false);
-    if (have($item`mojo filter`)) {
-      use(Math.min(mojoFilterCount, availableAmount($item`mojo filter`)), $item`mojo filter`);
-      fillSpleenSynthesis();
+  return mood;
+}
+
+export function freeFightMood(): Mood {
+  const mood = new Mood();
+
+  mood.skill($skill`Drescher's Annoying Noise`);
+  mood.skill($skill`Pride of the Puffin`);
+
+  if (getCampground()["Witchess Set"] !== undefined && !get("_witchessBuff")) {
+    mood.effect($effect`Puzzle Champ`);
+  }
+
+  if (!get<boolean>("_dr_defectiveTokenAttempted", false)) {
+    set("_dr_defectiveTokenAttempted", true);
+    withStash($items`defective Game Grid token`, () => {
+      if (!get("_defectiveTokenUsed") && have($item`defective Game Grid token`))
+        use($item`defective Game Grid token`);
+    });
+  }
+
+  const goodSongs = $skills`Chorale of Companionship, The Ballad of Richie Thingfinder, Fat Leon's Phat Loot Lyric`;
+  for (const effectName of Object.keys(myEffects())) {
+    const effect = Effect.get(effectName);
+    const skill = toSkill(effect);
+    if (skill.class === $class`Accordion Thief` && skill.buff && !goodSongs.includes(skill)) {
+      cliExecute(`shrug ${effectName}`);
     }
   }
 
-  // TODO: More generic potion support
-  if (
-    myClass() === $class`Sauceror` &&
-    mySign() === "Wallaby" &&
-    numericModifier("Item Drop") < 1850 &&
-    !have($effect`Always be Collecting`) &&
-    effectModifier($item`rubber nubbin`, "Effect") === $effect`Always be Collecting` &&
-    mallPrice($item`rubber nubbin`) <
-      5 * numericModifier($item`rubber nubbin`, "Effect Duration") * 50
-  ) {
-    use($item`rubber nubbin`);
+  if ((get("daycareOpen") || get("_daycareToday")) && !get("_daycareSpa")) {
+    cliExecute("daycare mysticality");
   }
+  if (have($item`redwood rain stick`) && !get("_redwoodRainStickUsed")) {
+    use($item`redwood rain stick`);
+  }
+
+  if (questStep("questL06Friar") === 999 && !get("friarsBlessingReceived")) {
+    cliExecute("friars familiar");
+  }
+
+  return mood;
 }

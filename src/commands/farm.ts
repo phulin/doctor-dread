@@ -58,6 +58,7 @@ import {
 } from "../lib";
 import { itemMood } from "../mood";
 import { dreadOutfit, freeFightOutfit } from "../outfit";
+import { dreadZones } from "../dungeon/raidlog";
 
 function canContinue(): boolean {
   return (
@@ -124,9 +125,11 @@ function dreadTurn() {
     // Dread turn.
     useFamiliar(fairyFamiliar());
     dreadOutfit();
-    adventureMacro(
+    adventureMacroAuto(
       $location`Dreadsylvanian Castle`,
-      Macro.tryFreeKill().skill($skill`Slay the Dead`)
+      Macro.if_("monstername sausage goblin", Macro.kill())
+        .tryFreeKill()
+        .skill($skill`Slay the Dead`)
     );
   }
 
@@ -166,6 +169,14 @@ export default new Command(
     if (myLevel() < 20) {
       print("You need to be level 20 to eat Dread consumables.", "red");
       return;
+    }
+
+    for (const zone of dreadZones) {
+      for (const noncombat of zone.noncombats) {
+        propertyManager.setChoices({
+          [noncombat.id]: 6,
+        });
+      }
     }
 
     const aaBossFlag =

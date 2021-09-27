@@ -190,7 +190,7 @@ function prepFamiliars(): void {
 
 function horse(): void {
   visitUrl("place.php?whichplace=town_right");
-  if (get("horseryAvailable") && get("_horsery") !== "dark horse") {
+  if (get("horseryAvailable") && get("_horsery") !== "crazy horse") {
     cliExecute("horsery crazy");
   }
 }
