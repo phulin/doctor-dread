@@ -6,7 +6,7 @@ import { DreadNoncombat, dreadNoncombatsUsed, dreadZones } from "../dungeon/raid
 import { entries, propertyManager, withWineglass } from "../lib";
 
 export default new Command("collect", "dr collect: Collect useful items from instance.", () => {
-  const items = $items`dreadful roast, stinking agaricus, dread tarragon`;
+  const items = $items`dreadful roast, stinking agaricus, dread tarragon, wax banana`;
   const itemPriority = new Map<Item, number>(
     entries(items).map(([index, item]) => [item, index]) as [Item, number][]
   );
