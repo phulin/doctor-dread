@@ -19246,14 +19246,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _dungeon_raidlog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4151);
 var _templateObject, _templateObject2, _templateObject3;
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -19329,7 +19321,7 @@ var usage = "dr cook [element]: Create a Dreadsylvanian [element] pocket.";
     if (!(0,libram__WEBPACK_IMPORTED_MODULE_3__.have)(cluster)) {
       var _smashables$get;
 
-      var possibleTakes = [cluster].concat(_toConsumableArray((_smashables$get = smashables.get(elementId)) !== null && _smashables$get !== void 0 ? _smashables$get : []));
+      var possibleTakes = (_smashables$get = smashables.get(elementId)) !== null && _smashables$get !== void 0 ? _smashables$get : [];
       var target = possibleTakes.filter(item => (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.stashAmount)(item) > 0)[0];
 
       if (target === undefined) {
@@ -19338,7 +19330,12 @@ var usage = "dr cook [element]: Create a Dreadsylvanian [element] pocket.";
       }
 
       if (target !== cluster) (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.cliExecute)("smash 1 ".concat(target));
-      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.create)(pocket);
+
+      if (!(0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.create)(pocket)) {
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to create ".concat(pocket, "."), "red");
+        return;
+      }
+
       clan.put(new Map([[pocket, 2]]));
       (0,libram__WEBPACK_IMPORTED_MODULE_3__.set)("_dr_warbearInductionOvenUsed", true);
     }

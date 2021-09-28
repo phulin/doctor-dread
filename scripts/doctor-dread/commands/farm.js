@@ -19707,22 +19707,18 @@ var StashManager = /*#__PURE__*/function () {
 
     _defineProperty(this, "clanIdOrName", void 0);
 
+    _defineProperty(this, "enabled", void 0);
+
     _defineProperty(this, "taken", new Map());
 
     if (clanIdOrName === undefined) {
-      clanIdOrName = (0,dist.get)("dr_stashClan", undefined);
+      var _get;
 
-      if (!clanIdOrName) {
-        if ((0,external_kolmafia_.userConfirm)("The preference 'dr_stashClan' is not set. Use the current clan as a stash clan? (Defaults to yes in 15 seconds)", 15000, true)) {
-          clanIdOrName = (0,external_kolmafia_.getClanId)();
-          (0,dist.set)("dr_stashClan", clanIdOrName);
-        } else {
-          throw "No dr_stashClan set.";
-        }
-      }
+      clanIdOrName = (_get = (0,dist.get)("dr_stashClan", undefined)) !== null && _get !== void 0 ? _get : "none";
     }
 
     this.clanIdOrName = clanIdOrName;
+    this.enabled = 0 !== clanIdOrName && "none" !== clanIdOrName;
   }
 
   _createClass(StashManager, [{
@@ -19733,6 +19729,12 @@ var StashManager = /*#__PURE__*/function () {
       }
 
       if (items.every(item => (0,dist.have)(item))) return;
+
+      if (!this.enabled) {
+        (0,external_kolmafia_.print)("Stash access is disabled. Ignoring request to borrow \"".concat(items.map(value => value.name).join(", "), "\" from clan stash."), "yellow");
+        return;
+      }
+
       withClan(this.clanIdOrName, () => {
         var _iterator = _createForOfIteratorHelper(items),
             _step;
@@ -20581,7 +20583,7 @@ function refreshLatte() {
   return (0,dist.have)((0,dist.$item)(outfit_templateObject20 || (outfit_templateObject20 = outfit_taggedTemplateLiteral(["latte lovers member's mug"]))));
 }
 var dreadDefaultRequirement = new lib/* Requirement */.nb(["1 Item Drop", "Sword"], {
-  forceEquip: [].concat(outfit_toConsumableArray([(0,dist.$item)(outfit_templateObject21 || (outfit_templateObject21 = outfit_taggedTemplateLiteral(["dreadful fedora"]))), (0,dist.$item)(outfit_templateObject22 || (outfit_templateObject22 = outfit_taggedTemplateLiteral(["dreadful glove"]))), (0,dist.$item)(outfit_templateObject23 || (outfit_templateObject23 = outfit_taggedTemplateLiteral(["unwrapped knock-off retro superhero cape"]))), (0,dist.$item)(outfit_templateObject24 || (outfit_templateObject24 = outfit_taggedTemplateLiteral(["dreadful sweater"]))), (0,dist.$item)(outfit_templateObject25 || (outfit_templateObject25 = outfit_taggedTemplateLiteral(["Dreadsylvania Auditor's badge"])))].filter(item => (0,dist.have)(item))), [(0,dist.have)((0,dist.$item)(outfit_templateObject26 || (outfit_templateObject26 = outfit_taggedTemplateLiteral(["cursed pirate cutlass"])))) ? (0,dist.$item)(outfit_templateObject27 || (outfit_templateObject27 = outfit_taggedTemplateLiteral(["cursed pirate cutlass"]))) : (0,dist.$item)(outfit_templateObject28 || (outfit_templateObject28 = outfit_taggedTemplateLiteral(["sweet ninja sword"])))])
+  forceEquip: [].concat(outfit_toConsumableArray([(0,dist.$item)(outfit_templateObject21 || (outfit_templateObject21 = outfit_taggedTemplateLiteral(["dreadful fedora"]))), (0,dist.$item)(outfit_templateObject22 || (outfit_templateObject22 = outfit_taggedTemplateLiteral(["unwrapped knock-off retro superhero cape"]))), (0,dist.$item)(outfit_templateObject23 || (outfit_templateObject23 = outfit_taggedTemplateLiteral(["dreadful sweater"]))), (0,dist.$item)(outfit_templateObject24 || (outfit_templateObject24 = outfit_taggedTemplateLiteral(["Dreadsylvania Auditor's badge"])))].filter(item => (0,dist.have)(item))), [(0,dist.have)((0,dist.$item)(outfit_templateObject25 || (outfit_templateObject25 = outfit_taggedTemplateLiteral(["cursed pirate cutlass"])))) ? (0,dist.$item)(outfit_templateObject26 || (outfit_templateObject26 = outfit_taggedTemplateLiteral(["cursed pirate cutlass"]))) : (0,dist.$item)(outfit_templateObject27 || (outfit_templateObject27 = outfit_taggedTemplateLiteral(["sweet ninja sword"])))])
 });
 function dreadOutfit() {
   var requirement = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : dreadDefaultRequirement;
@@ -20591,8 +20593,10 @@ function dreadOutfit() {
   var bjornChoice = pickBjorn(equipMode);
 
   if ((0,external_kolmafia_.myInebriety)() > (0,external_kolmafia_.inebrietyLimit)()) {
-    forceEquip.push((0,dist.$item)(outfit_templateObject29 || (outfit_templateObject29 = outfit_taggedTemplateLiteral(["Drunkula's wineglass"]))));
+    forceEquip.push((0,dist.$item)(outfit_templateObject28 || (outfit_templateObject28 = outfit_taggedTemplateLiteral(["Drunkula's wineglass"]))));
   } else {
+    forceEquip.push((0,dist.$item)(outfit_templateObject29 || (outfit_templateObject29 = outfit_taggedTemplateLiteral(["dreadful glove"]))));
+
     if ((0,dist.getKramcoWandererChance)() > 0.99 && (0,dist.have)((0,dist.$item)(outfit_templateObject30 || (outfit_templateObject30 = outfit_taggedTemplateLiteral(["Kramco Sausage-o-Matic\u2122"]))))) {
       forceEquip.push((0,dist.$item)(outfit_templateObject31 || (outfit_templateObject31 = outfit_taggedTemplateLiteral(["Kramco Sausage-o-Matic\u2122"]))));
     }
