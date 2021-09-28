@@ -30,7 +30,6 @@ import {
   $items,
   $location,
   $skill,
-  adventureMacro,
   adventureMacroAuto,
   get,
   have,
@@ -87,20 +86,9 @@ function dreadTurn() {
   itemMood().execute(estimatedTurns());
 
   safeRestore(); //get enough mp to use summer siesta and enough hp to not get our ass kicked
-  const ghostLocation = get("ghostLocation");
 
   // b. check for wanderers, and do them
   if (
-    myInebriety() <= inebrietyLimit() &&
-    have($item`protonic accelerator pack`) &&
-    get("questPAGhost") !== "unstarted" &&
-    ghostLocation
-  ) {
-    // Bust ghost!
-    useFamiliar(freeFightFamiliar());
-    freeFightOutfit([new Requirement([], { forceEquip: $items`protonic accelerator pack` })]);
-    adventureMacro(ghostLocation, Macro.ghostBustin());
-  } else if (
     myInebriety() <= inebrietyLimit() &&
     have($item`"I Voted!" sticker`) &&
     totalTurnsPlayed() % 11 === 1 &&

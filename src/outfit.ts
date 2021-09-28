@@ -13,7 +13,6 @@ import {
   numericModifier,
   retrieveItem,
   toSlot,
-  totalTurnsPlayed,
   visitUrl,
 } from "kolmafia";
 import {
@@ -133,13 +132,6 @@ export function dreadOutfit(requirement = dreadDefaultRequirement): void {
     forceEquip.push($item`dreadful glove`);
     if (getKramcoWandererChance() > 0.99 && have($item`Kramco Sausage-o-Matic™`)) {
       forceEquip.push($item`Kramco Sausage-o-Matic™`);
-    }
-    if (
-      have($item`protonic accelerator pack`) &&
-      get("questPAGhost") === "unstarted" &&
-      get("nextParanormalActivity") <= totalTurnsPlayed()
-    ) {
-      forceEquip.push($item`protonic accelerator pack`);
     }
   }
   if (myFamiliar() === $familiar`Obtuse Angel`) {
