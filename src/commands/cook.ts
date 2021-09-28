@@ -62,7 +62,7 @@ export default new Command("cook", usage, ([element]) => {
     }
 
     if (!have(cluster)) {
-      const possibleTakes = [cluster, ...(smashables.get(elementId) ?? [])];
+      const possibleTakes = smashables.get(elementId) ?? [];
       const target = possibleTakes.filter((item) => stashAmount(item) > 0)[0];
       if (target === undefined) {
         print(`None of [${possibleTakes.join(", ")}] in stash to cook with.`, "red");
@@ -71,7 +71,10 @@ export default new Command("cook", usage, ([element]) => {
 
       if (target !== cluster) cliExecute(`smash 1 ${target}`);
 
-      create(pocket);
+      if (!create(pocket)) {
+        print(`Failed to create ${pocket}.`, "red");
+        return;
+      }
       clan.put(new Map([[pocket, 2]]));
       set("_dr_warbearInductionOvenUsed", true);
     }

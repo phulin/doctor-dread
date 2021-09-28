@@ -55,31 +55,28 @@ function withClan<T>(clanIdOrName: string | number, action: () => T): T {
 
 export class StashManager {
   clanIdOrName: string | number;
+  enabled: boolean;
   taken = new Map<Item, number>();
 
   constructor(clanIdOrName?: string | number) {
     if (clanIdOrName === undefined) {
-      clanIdOrName = get("dr_stashClan", undefined);
-      if (!clanIdOrName) {
-        if (
-          userConfirm(
-            "The preference 'dr_stashClan' is not set. Use the current clan as a stash clan? (Defaults to yes in 15 seconds)",
-            15000,
-            true
-          )
-        ) {
-          clanIdOrName = getClanId();
-          set("dr_stashClan", clanIdOrName);
-        } else {
-          throw "No dr_stashClan set.";
-        }
-      }
+      clanIdOrName = get("dr_stashClan", undefined) ?? "none";
     }
     this.clanIdOrName = clanIdOrName;
+    this.enabled = 0 !== clanIdOrName && "none" !== clanIdOrName;
   }
 
   take(...items: Item[]): void {
     if (items.every((item) => have(item))) return;
+    if (!this.enabled) {
+      print(
+        `Stash access is disabled. Ignoring request to borrow "${items
+          .map((value) => value.name)
+          .join(", ")}" from clan stash.`,
+        "yellow"
+      );
+      return;
+    }
     withClan(this.clanIdOrName, () => {
       for (const item of items) {
         if (have(item)) continue;

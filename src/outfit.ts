@@ -113,7 +113,6 @@ export const dreadDefaultRequirement = new Requirement(["1 Item Drop", "Sword"],
   forceEquip: [
     ...[
       $item`dreadful fedora`,
-      $item`dreadful glove`,
       $item`unwrapped knock-off retro superhero cape`,
       $item`dreadful sweater`,
       $item`Dreadsylvania Auditor's badge`,
@@ -131,6 +130,7 @@ export function dreadOutfit(requirement = dreadDefaultRequirement): void {
   if (myInebriety() > inebrietyLimit()) {
     forceEquip.push($item`Drunkula's wineglass`);
   } else {
+    forceEquip.push($item`dreadful glove`);
     if (getKramcoWandererChance() > 0.99 && have($item`Kramco Sausage-o-Matic™`)) {
       forceEquip.push($item`Kramco Sausage-o-Matic™`);
     }
