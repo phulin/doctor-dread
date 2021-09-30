@@ -9,7 +9,7 @@ import {
   runChoice,
   visitUrl,
 } from "kolmafia";
-import { $item, $items, $stat, Clan, get, have, set, sum } from "libram";
+import { $class, $item, $items, $stat, Clan, get, have, set, sum } from "libram";
 
 import { Command } from "../command";
 import { DreadNoncombat, dreadNoncombatsUsed, dreadZones } from "../dungeon/raidlog";
@@ -17,12 +17,11 @@ import { clans, entries, propertyManager, withWineglass } from "../lib";
 
 type NoncombatPlan = [DreadNoncombat, number, number, Item];
 
-function planAllNoncombats(available: Map<Item, number>): [string, NoncombatPlan[]][] {
-  const grindFlour = !get("_dr_groundFlour", false) && myPrimestat() === $stat`Muscle`;
-
-  const items = $items`dreadful roast, stinking agaricus, dread tarragon, wax banana, eau de mort`;
-  if (grindFlour) items.splice(0, 0, $item`bone flour`);
-
+function planAllNoncombats(
+  items: Item[],
+  unlock: boolean,
+  available: Map<Item, number>
+): [string, NoncombatPlan[]][] {
   const itemPriority = new Map<Item, number>(
     entries(items).map(([index, item]) => [item, index]) as [Item, number][]
   );
@@ -45,6 +44,7 @@ function planAllNoncombats(available: Map<Item, number>): [string, NoncombatPlan
 
         for (const [subIndex, subnoncombat] of noncombat.choices) {
           if (subnoncombat.classes && !subnoncombat.classes.includes(myClass())) continue;
+          if (!unlock && subnoncombat.isLocked()) continue;
 
           for (const [choiceIndex, choice] of subnoncombat.choices) {
             if (!choice.item) continue;
@@ -88,7 +88,16 @@ function planAllNoncombats(available: Map<Item, number>): [string, NoncombatPlan
 export default new Command(
   "all",
   "dr all: Collect useful items from all instances (and grind flour).",
-  () => {
+  (args: string[]) => {
+    const grindFlour = !get("_dr_groundFlour", false) && myPrimestat() === $stat`Muscle`;
+
+    const items = $items`dreadful roast, stinking agaricus, wax banana, eau de mort`;
+    if (grindFlour) items.splice(0, 0, $item`bone flour`);
+    if (myClass() === $class`Accordion Thief`) items.splice(0, 0, $item`intricate music box parts`);
+    if (args.includes("freddies")) items.push($item`Freddy Kruegerand`);
+
+    const unlock = args.includes("unlock");
+
     printHtml("<b>Doctor Dread: Dailies</b>");
 
     if (clans().length === 0) {
@@ -112,7 +121,7 @@ export default new Command(
     let flourCount = 0;
 
     try {
-      let plan = planAllNoncombats(new Map());
+      let plan = planAllNoncombats(items, unlock, new Map());
 
       flourCount = sum(
         plan,
@@ -131,7 +140,7 @@ export default new Command(
         print(
           `Failed to take ${flourCount} old dry bones from stash! Replanning with ${boneCount}...`
         );
-        plan = planAllNoncombats(new Map([[$item`old dry bone`, boneCount]]));
+        plan = planAllNoncombats(items, unlock, new Map([[$item`old dry bone`, boneCount]]));
       }
 
       withWineglass(() => {
@@ -146,7 +155,10 @@ export default new Command(
               [subnoncombat?.id ?? -1]: choiceIndex,
             });
 
-            if (subnoncombat?.isLocked()) retrieveItem($item`Dreadsylvanian skeleton key`);
+            if (subnoncombat?.isLocked()) {
+              if (!unlock) throw "Shouldn't be trying locked NC!";
+              retrieveItem($item`Dreadsylvanian skeleton key`);
+            }
             visitUrl(`clan_dreadsylvania.php?action=forceloc&loc=${noncombat.index}`);
             runChoice(-1);
             if (handlingChoice()) throw "Stuck in choice adventure!";
@@ -157,6 +169,7 @@ export default new Command(
       });
     } finally {
       if (acquired.size > 0) {
+        acquired.delete($item`Freddy Kruegerand`);
         const stashClan = Clan.join(clans()[0]);
         stashClan.put(acquired);
       }
