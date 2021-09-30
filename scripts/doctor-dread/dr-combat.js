@@ -18363,7 +18363,7 @@ __webpack_require__.d(__webpack_exports__, {
   "nf": () => (/* binding */ monsterManuelAvailable)
 });
 
-// UNUSED EXPORTS: BonusEquipMode, Requirement, argmax, baseMeat, cheaper, clamp, coinmasterPrice, determineDraggableZoneAndEnsureAccess, draggableFight, ensureEffect, entries, fairyMultiplier, fromEntries, gnomeWeightValue, kramcoGuaranteed, leprechaunMultiplier, mapMonster, propertyManager, questStep, safeInterrupt, saleValue, setChoice, setDefaultChoiceHandling, sum, tryFeast, withWineglass
+// UNUSED EXPORTS: BonusEquipMode, Requirement, argmax, baseMeat, cheaper, clamp, clans, coinmasterPrice, determineDraggableZoneAndEnsureAccess, draggableFight, ensureEffect, entries, fairyMultiplier, fromEntries, gnomeWeightValue, kramcoGuaranteed, leprechaunMultiplier, mapMonster, propertyManager, questStep, safeInterrupt, saleValue, setChoice, setDefaultChoiceHandling, sum, tryFeast, withWineglass
 
 ;// CONCATENATED MODULE: external "canadv.ash"
 const external_canadv_ash_namespaceObject = require("canadv.ash");
@@ -18865,6 +18865,10 @@ function withWineglass(action) {
   } finally {
     cliExecute("outfit checkpoint");
   }
+}
+function clans() {
+  var clans = get("dr_clans", "").split("|");
+  return clans.length === 1 && clans[0] === "" ? [] : clans;
 }
 
 /***/ }),
