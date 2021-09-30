@@ -19617,6 +19617,295 @@ var Command = function Command(name, help, run) {
 
 /***/ }),
 
+/***/ 4555:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var kolmafia__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7530);
+/* harmony import */ var kolmafia__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(kolmafia__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var libram__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9803);
+/* harmony import */ var libram__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(libram__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _command__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(463);
+/* harmony import */ var _dungeon_raidlog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4151);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(644);
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10, _templateObject11;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+
+
+function planAllNoncombats(available) {
+  var grindFlour = !(0,libram__WEBPACK_IMPORTED_MODULE_1__.get)("_dr_groundFlour", false) && (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myPrimestat)() === (0,libram__WEBPACK_IMPORTED_MODULE_1__.$stat)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Muscle"])));
+  var items = (0,libram__WEBPACK_IMPORTED_MODULE_1__.$items)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["dreadful roast, stinking agaricus, dread tarragon, wax banana, eau de mort"])));
+  if (grindFlour) items.splice(0, 0, (0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["bone flour"]))));
+  var itemPriority = new Map((0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .entries */ .qh)(items).map(_ref => {
+    var _ref2 = _slicedToArray(_ref, 2),
+        index = _ref2[0],
+        item = _ref2[1];
+
+    return [item, index];
+  }));
+  var plan = [];
+
+  var _iterator = _createForOfIteratorHelper((0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .clans */ .NF)()),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var clanName = _step.value;
+      libram__WEBPACK_IMPORTED_MODULE_1__.Clan.join(clanName); // noncombat, sub, choice, item
+
+      var result = [];
+      var used = (0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_3__/* .dreadNoncombatsUsed */ .Sq)();
+
+      var _iterator2 = _createForOfIteratorHelper(_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_3__/* .dreadZones */ .e5),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var zone = _step2.value;
+
+          var _iterator3 = _createForOfIteratorHelper(zone.noncombats),
+              _step3;
+
+          try {
+            for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+              var noncombat = _step3.value;
+              if (used.includes(noncombat.name)) continue;
+              var currentPriority = 999;
+              var currentResult = undefined;
+
+              var _iterator4 = _createForOfIteratorHelper(noncombat.choices),
+                  _step4;
+
+              try {
+                for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+                  var _step4$value = _slicedToArray(_step4.value, 2),
+                      _subIndex = _step4$value[0],
+                      subnoncombat = _step4$value[1];
+
+                  if (subnoncombat.classes && !subnoncombat.classes.includes((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myClass)())) continue;
+
+                  var _iterator5 = _createForOfIteratorHelper(subnoncombat.choices),
+                      _step5;
+
+                  try {
+                    for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+                      var _itemPriority$get;
+
+                      var _step5$value = _slicedToArray(_step5.value, 2),
+                          _choiceIndex = _step5$value[0],
+                          _choice = _step5$value[1];
+
+                      if (_choice.maximum && _choice.count() >= _choice.maximum) continue;
+                      if (!_choice.item) continue;
+
+                      if (_choice.requirement) {
+                        var _available$get2;
+
+                        var requirementsAvailable = (_available$get2 = available.get(_choice.requirement)) !== null && _available$get2 !== void 0 ? _available$get2 : (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)(_choice.requirement);
+                        if (requirementsAvailable <= 0) continue;
+                      }
+
+                      var priority = (_itemPriority$get = itemPriority.get(_choice.item)) !== null && _itemPriority$get !== void 0 ? _itemPriority$get : 999;
+
+                      if (priority < currentPriority) {
+                        currentPriority = priority;
+                        currentResult = [noncombat, _subIndex, _choiceIndex, _choice.item];
+                      }
+                    }
+                  } catch (err) {
+                    _iterator5.e(err);
+                  } finally {
+                    _iterator5.f();
+                  }
+                }
+              } catch (err) {
+                _iterator4.e(err);
+              } finally {
+                _iterator4.f();
+              }
+
+              if (currentResult) {
+                var _noncombat$choices$ge;
+
+                result.push(currentResult);
+
+                var _currentResult = currentResult,
+                    _currentResult2 = _slicedToArray(_currentResult, 3),
+                    _noncombat = _currentResult2[0],
+                    subIndex = _currentResult2[1],
+                    choiceIndex = _currentResult2[2];
+
+                var choice = (_noncombat$choices$ge = _noncombat.choices.get(subIndex)) === null || _noncombat$choices$ge === void 0 ? void 0 : _noncombat$choices$ge.choices.get(choiceIndex);
+
+                if (choice !== null && choice !== void 0 && choice.requirement) {
+                  var _available$get;
+
+                  available.set(choice.requirement, ((_available$get = available.get(choice.requirement)) !== null && _available$get !== void 0 ? _available$get : (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)(choice.requirement)) - 1);
+                }
+              }
+            }
+          } catch (err) {
+            _iterator3.e(err);
+          } finally {
+            _iterator3.f();
+          }
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+
+      plan.push([clanName, result]);
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  return plan;
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new _command__WEBPACK_IMPORTED_MODULE_4__/* .Command */ .m("all", "dr all: Collect useful items from all instances (and grind flour).", () => {
+  (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.printHtml)("<b>Doctor Dread: Dailies</b>");
+
+  if ((0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .clans */ .NF)().length === 0) {
+    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Need to set property dr_clans to a |-separated list of clan names first.", "red");
+    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Dr. Dread will check the first clan for stash items.");
+    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("For example: set dr_clans = Flour Garden 1|Flour Garden 2|Flour Garden 3|Flour Garden 4|Flour Garden 5");
+    return;
+  }
+
+  if (!(0,libram__WEBPACK_IMPORTED_MODULE_1__.have)((0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"])))) && (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)((0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["Freddy Kruegerand"])))) < 100) {
+    throw "You don't have skeleton keys and you're almost out of Freddies. Fix that.";
+  }
+
+  (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Checking clans ".concat((0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .clans */ .NF)().join(", ")));
+  var originalClan = libram__WEBPACK_IMPORTED_MODULE_1__.Clan.get();
+  var acquired = new Map();
+  var flourCount = 0;
+
+  try {
+    var plan = planAllNoncombats(new Map());
+    flourCount = (0,libram__WEBPACK_IMPORTED_MODULE_1__.sum)(plan, _ref3 => {
+      var _ref4 = _slicedToArray(_ref3, 2),
+          noncombatPlans = _ref4[1];
+
+      return noncombatPlans.filter(_ref5 => {
+        var _ref6 = _slicedToArray(_ref5, 4),
+            item = _ref6[3];
+
+        return item === (0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["bone flour"])));
+      }).length;
+    });
+    var boneCount = 0;
+
+    if (flourCount > 0) {
+      var _taken$get;
+
+      var stashClan = libram__WEBPACK_IMPORTED_MODULE_1__.Clan.join((0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .clans */ .NF)()[0]);
+      var taken = stashClan.take(new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["old dry bone"]))), flourCount]]));
+      boneCount = (_taken$get = taken.get((0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["old dry bone"]))))) !== null && _taken$get !== void 0 ? _taken$get : 0;
+    }
+
+    if (boneCount < flourCount) {
+      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to take ".concat(flourCount, " old dry bones from stash! Replanning with ").concat(boneCount, "..."));
+      plan = planAllNoncombats(new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["old dry bone"]))), boneCount]]));
+    }
+
+    (0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .withWineglass */ .RQ)(() => {
+      var _iterator6 = _createForOfIteratorHelper(plan),
+          _step6;
+
+      try {
+        for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+          var _step6$value = _slicedToArray(_step6.value, 2),
+              clanName = _step6$value[0],
+              noncombatPlans = _step6$value[1];
+
+          libram__WEBPACK_IMPORTED_MODULE_1__.Clan.join(clanName);
+
+          var _iterator7 = _createForOfIteratorHelper(noncombatPlans),
+              _step7;
+
+          try {
+            for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+              var _subnoncombat$id, _propertyManager$setC, _acquired$get;
+
+              var _step7$value = _slicedToArray(_step7.value, 4),
+                  noncombat = _step7$value[0],
+                  subIndex = _step7$value[1],
+                  choiceIndex = _step7$value[2],
+                  item = _step7$value[3];
+
+              (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Getting ".concat(item, "."));
+              var subnoncombat = noncombat.choices.get(subIndex);
+              _lib__WEBPACK_IMPORTED_MODULE_2__/* .propertyManager.setChoices */ .kr.setChoices((_propertyManager$setC = {}, _defineProperty(_propertyManager$setC, noncombat.id, subIndex), _defineProperty(_propertyManager$setC, (_subnoncombat$id = subnoncombat === null || subnoncombat === void 0 ? void 0 : subnoncombat.id) !== null && _subnoncombat$id !== void 0 ? _subnoncombat$id : -1, choiceIndex), _propertyManager$setC));
+              if (subnoncombat !== null && subnoncombat !== void 0 && subnoncombat.isLocked()) (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.retrieveItem)((0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"]))));
+              (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.visitUrl)("clan_dreadsylvania.php?action=forceloc&loc=".concat(noncombat.index));
+              (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.runChoice)(-1);
+              if ((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.handlingChoice)()) throw "Stuck in choice adventure!";
+              acquired.set(item, ((_acquired$get = acquired.get(item)) !== null && _acquired$get !== void 0 ? _acquired$get : 0) + 1);
+              (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)();
+            }
+          } catch (err) {
+            _iterator7.e(err);
+          } finally {
+            _iterator7.f();
+          }
+        }
+      } catch (err) {
+        _iterator6.e(err);
+      } finally {
+        _iterator6.f();
+      }
+    });
+  } finally {
+    var _acquired$get2;
+
+    if (acquired.size > 0) {
+      var _stashClan = libram__WEBPACK_IMPORTED_MODULE_1__.Clan.join((0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .clans */ .NF)()[0]);
+
+      _stashClan.put(acquired);
+    }
+
+    if ((_acquired$get2 = acquired.get((0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["bone flour"]))))) !== null && _acquired$get2 !== void 0 ? _acquired$get2 : 0 > 0) {
+      (0,libram__WEBPACK_IMPORTED_MODULE_1__.set)("_dr_groundFlour", true);
+    }
+
+    originalClan.join();
+  }
+}));
+
+/***/ }),
+
 /***/ 1503:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -19890,241 +20179,6 @@ var usage = "dr cook [element]: Create a Dreadsylvanian [element] pocket.";
     }
   } finally {
     libram__WEBPACK_IMPORTED_MODULE_3__.Clan.join(originalClan.name);
-  }
-}));
-
-/***/ }),
-
-/***/ 5097:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var kolmafia__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7530);
-/* harmony import */ var kolmafia__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(kolmafia__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var libram__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9803);
-/* harmony import */ var libram__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(libram__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _command__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(463);
-/* harmony import */ var _dungeon_raidlog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4151);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(644);
-var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-
-
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new _command__WEBPACK_IMPORTED_MODULE_1__/* .Command */ .m("daily", "dr daily: Collect useful items from all instances.", () => {
-  var grindFlour = !(0,libram__WEBPACK_IMPORTED_MODULE_2__.get)("_dr_groundFlour", false) && (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myPrimestat)() === (0,libram__WEBPACK_IMPORTED_MODULE_2__.$stat)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Muscle"])));
-  var items = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["dreadful roast, stinking agaricus, dread tarragon, wax banana, eau de mort"])));
-  if (grindFlour) items.splice(0, 0, (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["bone flour"]))));
-  var itemPriority = new Map((0,_lib__WEBPACK_IMPORTED_MODULE_3__/* .entries */ .qh)(items).map(_ref => {
-    var _ref2 = _slicedToArray(_ref, 2),
-        index = _ref2[0],
-        item = _ref2[1];
-
-    return [item, index];
-  }));
-  (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.printHtml)("<b>Doctor Dread: Dailies</b>");
-
-  if ((0,_lib__WEBPACK_IMPORTED_MODULE_3__/* .clans */ .NF)().length === 0) {
-    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Need to set property dr_clans to a |-separated list of clan names first.", "red");
-    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Dr. Dread will check the first clan for stash items.");
-    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("For example: set dr_clans = Flour Garden 1|Flour Garden 2|Flour Garden 3|Flour Garden 4|Flour Garden 5");
-    return;
-  }
-
-  if (!(0,libram__WEBPACK_IMPORTED_MODULE_2__.have)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"])))) && (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["Freddy Kruegerand"])))) < 100) {
-    throw "You don't have skeleton keys and you're almost out of Freddies. Fix that.";
-  }
-
-  (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Checking clans ".concat((0,_lib__WEBPACK_IMPORTED_MODULE_3__/* .clans */ .NF)().join(", ")));
-  var plan = [];
-  var originalClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.get();
-
-  try {
-    var _iterator = _createForOfIteratorHelper((0,_lib__WEBPACK_IMPORTED_MODULE_3__/* .clans */ .NF)()),
-        _step;
-
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var clanName = _step.value;
-        libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(clanName); // noncombat, sub, choice, item
-
-        var result = [];
-        var used = (0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_4__/* .dreadNoncombatsUsed */ .Sq)();
-
-        var _iterator4 = _createForOfIteratorHelper(_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_4__/* .dreadZones */ .e5),
-            _step4;
-
-        try {
-          for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-            var zone = _step4.value;
-
-            var _iterator5 = _createForOfIteratorHelper(zone.noncombats),
-                _step5;
-
-            try {
-              for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-                var noncombat = _step5.value;
-                if (used.includes(noncombat.name)) continue;
-                var currentPriority = 999;
-                var currentResult = undefined;
-
-                var _iterator6 = _createForOfIteratorHelper(noncombat.choices),
-                    _step6;
-
-                try {
-                  for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
-                    var _step6$value = _slicedToArray(_step6.value, 2),
-                        subIndex = _step6$value[0],
-                        subnoncombat = _step6$value[1];
-
-                    if (subnoncombat.classes && !subnoncombat.classes.includes((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myClass)())) continue;
-
-                    var _iterator7 = _createForOfIteratorHelper(subnoncombat.choices),
-                        _step7;
-
-                    try {
-                      for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
-                        var _itemPriority$get;
-
-                        var _step7$value = _slicedToArray(_step7.value, 2),
-                            choiceIndex = _step7$value[0],
-                            choice = _step7$value[1];
-
-                        if (choice.maximum && choice.count() >= choice.maximum) continue;
-                        if (!choice.item) continue;
-                        var priority = (_itemPriority$get = itemPriority.get(choice.item)) !== null && _itemPriority$get !== void 0 ? _itemPriority$get : 999;
-
-                        if (priority < currentPriority) {
-                          currentPriority = priority;
-                          currentResult = [noncombat, subIndex, choiceIndex, choice.item];
-                        }
-                      }
-                    } catch (err) {
-                      _iterator7.e(err);
-                    } finally {
-                      _iterator7.f();
-                    }
-                  }
-                } catch (err) {
-                  _iterator6.e(err);
-                } finally {
-                  _iterator6.f();
-                }
-
-                if (currentResult) {
-                  result.push(currentResult);
-                }
-              }
-            } catch (err) {
-              _iterator5.e(err);
-            } finally {
-              _iterator5.f();
-            }
-          }
-        } catch (err) {
-          _iterator4.e(err);
-        } finally {
-          _iterator4.f();
-        }
-
-        plan.push([clanName, result]);
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
-
-    var flourCount = (0,libram__WEBPACK_IMPORTED_MODULE_2__.sum)(plan, _ref3 => {
-      var _ref4 = _slicedToArray(_ref3, 2),
-          noncombatPlans = _ref4[1];
-
-      return noncombatPlans.filter(_ref5 => {
-        var _ref6 = _slicedToArray(_ref5, 4),
-            item = _ref6[3];
-
-        return item === (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["bone flour"])));
-      }).length;
-    });
-
-    if (flourCount > 0) {
-      var stashClanName = (0,_lib__WEBPACK_IMPORTED_MODULE_3__/* .clans */ .NF)()[0];
-      var stashClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(stashClanName);
-      stashClan.take(new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["old dry bone"]))), flourCount]]));
-    }
-
-    (0,_lib__WEBPACK_IMPORTED_MODULE_3__/* .withWineglass */ .RQ)(() => {
-      var _iterator2 = _createForOfIteratorHelper(plan),
-          _step2;
-
-      try {
-        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var _step2$value = _slicedToArray(_step2.value, 2),
-              clanName = _step2$value[0],
-              noncombatPlans = _step2$value[1];
-
-          libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(clanName);
-
-          var _iterator3 = _createForOfIteratorHelper(noncombatPlans),
-              _step3;
-
-          try {
-            for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-              var _subnoncombat$id, _propertyManager$setC;
-
-              var _step3$value = _slicedToArray(_step3.value, 4),
-                  noncombat = _step3$value[0],
-                  subIndex = _step3$value[1],
-                  choiceIndex = _step3$value[2],
-                  item = _step3$value[3];
-
-              (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Getting ".concat(item, "."));
-              var subnoncombat = noncombat.choices.get(subIndex);
-              _lib__WEBPACK_IMPORTED_MODULE_3__/* .propertyManager.setChoices */ .kr.setChoices((_propertyManager$setC = {}, _defineProperty(_propertyManager$setC, noncombat.id, subIndex), _defineProperty(_propertyManager$setC, (_subnoncombat$id = subnoncombat === null || subnoncombat === void 0 ? void 0 : subnoncombat.id) !== null && _subnoncombat$id !== void 0 ? _subnoncombat$id : -1, choiceIndex), _propertyManager$setC));
-              if (subnoncombat !== null && subnoncombat !== void 0 && subnoncombat.isLocked()) (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.retrieveItem)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"]))));
-              (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.visitUrl)("clan_dreadsylvania.php?action=forceloc&loc=".concat(noncombat.index));
-              (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.runChoice)(-1);
-              if ((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.handlingChoice)()) throw "Stuck in choice adventure!";
-              (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)();
-            }
-          } catch (err) {
-            _iterator3.e(err);
-          } finally {
-            _iterator3.f();
-          }
-        }
-      } catch (err) {
-        _iterator2.e(err);
-      } finally {
-        _iterator2.f();
-      }
-    });
-  } finally {
-    originalClan.join();
   }
 }));
 
@@ -25062,9 +25116,9 @@ function clans() {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
+	"./all.ts": 4555,
 	"./collect.ts": 1503,
 	"./cook.ts": 2522,
-	"./daily.ts": 5097,
 	"./farm.ts": 7282,
 	"./freddies.ts": 2711,
 	"./help.ts": 702,
