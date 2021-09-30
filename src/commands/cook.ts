@@ -12,11 +12,14 @@ function elementCluster(elementId: DreadElementId): Item {
   return Item.get(`${toElement(elementId)} cluster`);
 }
 
+const blacklist = $items`old dry bone`;
 const smashables = new Map<DreadElementId, Item[]>(
   dreadElements.map((element) => [
     element,
     Item.all().filter(
-      (item) => getRelated(item, "pulverize")[elementCluster(element).name] !== undefined
+      (item) =>
+        getRelated(item, "pulverize")[elementCluster(element).name] !== undefined &&
+        !blacklist.includes(item)
     ),
   ])
 );
