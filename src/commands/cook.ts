@@ -69,6 +69,11 @@ export default new Command("cook", usage, ([element]) => {
         return;
       }
 
+      if (clan.take([target]).length === 0) {
+        print(`Failed to take ${target.name} from stash.`, "red");
+        return;
+      }
+
       if (target !== cluster) cliExecute(`smash 1 ${target}`);
 
       if (!create(pocket)) {
