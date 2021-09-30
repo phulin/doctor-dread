@@ -19236,6 +19236,7 @@ var Command = function Command(name, help, run) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "cook": () => (/* binding */ cook),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var kolmafia__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7530);
@@ -19275,6 +19276,66 @@ function elementCluster(elementId) {
 
 var blacklist = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject || (_templateObject = _taggedTemplateLiteral(["old dry bone"])));
 var smashables = new Map(_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_1__/* .dreadElements.map */ .rh.map(element => [element, Item.all().filter(item => (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.getRelated)(item, "pulverize")[elementCluster(element).name] !== undefined && !blacklist.includes(item))]));
+function cook(elementId) {
+  var pocket = elementPocket(elementId);
+  var cluster = elementCluster(elementId);
+
+  if ((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.getWorkshed)() !== (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["warbear induction oven"])))) {
+    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Install a warbear induction oven before cooking!", "red");
+    return false;
+  }
+
+  if ((0,libram__WEBPACK_IMPORTED_MODULE_2__.get)("_dr_warbearInductionOvenUsed", false)) {
+    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Already used induction oven for the day.");
+    return false;
+  }
+
+  var originalClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.get();
+  var clan = originalClan;
+
+  if ((0,libram__WEBPACK_IMPORTED_MODULE_2__.get)("dr_clans", "") !== "") {
+    var clans = (0,libram__WEBPACK_IMPORTED_MODULE_2__.get)("dr_clans", "").split("|");
+    clan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(clans[0]);
+  }
+
+  try {
+    if (!(0,libram__WEBPACK_IMPORTED_MODULE_2__.have)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["bone flour"])))) && !clan.take((0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["bone flour"])))).length) {
+      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to get bone flour from stash.", "red");
+      return false;
+    }
+
+    if (!(0,libram__WEBPACK_IMPORTED_MODULE_2__.have)(cluster)) {
+      var _smashables$get;
+
+      var possibleTakes = (_smashables$get = smashables.get(elementId)) !== null && _smashables$get !== void 0 ? _smashables$get : [];
+      var target = possibleTakes.filter(item => (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.stashAmount)(item) > 0)[0];
+
+      if (target === undefined) {
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("None of [".concat(possibleTakes.join(", "), "] in stash to cook with."), "red");
+        return false;
+      }
+
+      if (clan.take([target]).length === 0) {
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to take ".concat(target.name, " from stash."), "red");
+        return false;
+      }
+
+      if (target !== cluster) (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.cliExecute)("smash 1 ".concat(target));
+    }
+
+    if (!(0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.create)(pocket)) {
+      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to create ".concat(pocket, "."), "red");
+      return false;
+    }
+
+    clan.put(new Map([[pocket, 2]]));
+    (0,libram__WEBPACK_IMPORTED_MODULE_2__.set)("_dr_warbearInductionOvenUsed", true);
+  } finally {
+    libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(originalClan.name);
+  }
+
+  return true;
+}
 var usage = "dr cook [element]: Create a Dreadsylvanian [element] pocket.";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new _command__WEBPACK_IMPORTED_MODULE_3__/* .Command */ .m("cook", usage, _ref => {
   var _ref2 = _slicedToArray(_ref, 1),
@@ -19292,62 +19353,7 @@ var usage = "dr cook [element]: Create a Dreadsylvanian [element] pocket.";
     return;
   }
 
-  var pocket = elementPocket(elementId);
-  var cluster = elementCluster(elementId);
-
-  if ((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.getWorkshed)() !== (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["warbear induction oven"])))) {
-    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Install a warbear induction oven before cooking!", "red");
-    return;
-  }
-
-  if ((0,libram__WEBPACK_IMPORTED_MODULE_2__.get)("_dr_warbearInductionOvenUsed", false)) {
-    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Already used induction oven for the day.");
-    return;
-  }
-
-  var originalClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.get();
-  var clan = originalClan;
-
-  if ((0,libram__WEBPACK_IMPORTED_MODULE_2__.get)("dr_clans", "") !== "") {
-    var clans = (0,libram__WEBPACK_IMPORTED_MODULE_2__.get)("dr_clans", "").split("|");
-    clan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(clans[0]);
-  }
-
-  try {
-    if (!(0,libram__WEBPACK_IMPORTED_MODULE_2__.have)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["bone flour"])))) && !clan.take((0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["bone flour"])))).length) {
-      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to get bone flour from stash.", "red");
-      return;
-    }
-
-    if (!(0,libram__WEBPACK_IMPORTED_MODULE_2__.have)(cluster)) {
-      var _smashables$get;
-
-      var possibleTakes = (_smashables$get = smashables.get(elementId)) !== null && _smashables$get !== void 0 ? _smashables$get : [];
-      var target = possibleTakes.filter(item => (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.stashAmount)(item) > 0)[0];
-
-      if (target === undefined) {
-        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("None of [".concat(possibleTakes.join(", "), "] in stash to cook with."), "red");
-        return;
-      }
-
-      if (clan.take([target]).length === 0) {
-        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to take ".concat(target.name, " from stash."), "red");
-        return;
-      }
-
-      if (target !== cluster) (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.cliExecute)("smash 1 ".concat(target));
-
-      if (!(0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.create)(pocket)) {
-        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to create ".concat(pocket, "."), "red");
-        return;
-      }
-
-      clan.put(new Map([[pocket, 2]]));
-      (0,libram__WEBPACK_IMPORTED_MODULE_2__.set)("_dr_warbearInductionOvenUsed", true);
-    }
-  } finally {
-    libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(originalClan.name);
-  }
+  cook(elementId);
 }));
 
 /***/ }),

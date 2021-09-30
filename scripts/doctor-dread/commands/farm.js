@@ -22345,7 +22345,7 @@ function dreadTurn() {
     // Dread turn.
     (0,external_kolmafia_.useFamiliar)(fairyFamiliar());
     dreadOutfit();
-    (0,dist.adventureMacroAuto)((0,dist.$location)(farm_templateObject9 || (farm_templateObject9 = farm_taggedTemplateLiteral(["Dreadsylvanian Castle"]))), combat.Macro.if_("monstername sausage goblin", combat.Macro.kill()).tryFreeKill().skill((0,dist.$skill)(farm_templateObject10 || (farm_templateObject10 = farm_taggedTemplateLiteral(["Slay the Dead"])))));
+    (0,dist.adventureMacroAuto)((0,dist.$location)(farm_templateObject9 || (farm_templateObject9 = farm_taggedTemplateLiteral(["Dreadsylvanian Castle"]))), combat.Macro.if_("monstername sausage goblin || monstername witchess knight", combat.Macro.kill()).tryFreeKill().skill((0,dist.$skill)(farm_templateObject10 || (farm_templateObject10 = farm_taggedTemplateLiteral(["Slay the Dead"])))));
   }
 
   if (Object.keys((0,external_kolmafia_.reverseNumberology)()).includes("69") && (0,dist.get)("_universeCalculated") < (0,dist.get)("skillLevel144")) {
