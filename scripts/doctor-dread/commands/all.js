@@ -19334,8 +19334,9 @@ function planAllNoncombats(available) {
                           _choiceIndex = _step5$value[0],
                           _choice = _step5$value[1];
 
-                      if (_choice.maximum && _choice.count() >= _choice.maximum) continue;
                       if (!_choice.item) continue;
+                      if (_choice.maximum && _choice.count() >= _choice.maximum) continue;
+                      if (_choice.classes && !_choice.classes.includes((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myClass)())) continue;
 
                       if (_choice.requirement) {
                         var _available$get2;
