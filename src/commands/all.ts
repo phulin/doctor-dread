@@ -87,7 +87,7 @@ function planAllNoncombats(
 
 export default new Command(
   "all",
-  "dr all: Collect useful items from all instances (and grind flour).",
+  "dr all [unlock] [freddies]: Collect useful items from all instances (and grind flour). With freddies, get freddies. With unlock, unlock all useful NCs.",
   (args: string[]) => {
     const grindFlour = !get("_dr_groundFlour", false) && myPrimestat() === $stat`Muscle`;
 
