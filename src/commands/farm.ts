@@ -115,7 +115,7 @@ function dreadTurn() {
     dreadOutfit();
     adventureMacroAuto(
       $location`Dreadsylvanian Castle`,
-      Macro.if_("monstername sausage goblin", Macro.kill())
+      Macro.if_("monstername sausage goblin || monstername witchess knight", Macro.kill())
         .tryFreeKill()
         .skill($skill`Slay the Dead`)
     );

@@ -24,6 +24,62 @@ const smashables = new Map<DreadElementId, Item[]>(
   ])
 );
 
+export function cook(elementId: DreadElementId): boolean {
+  const pocket = elementPocket(elementId);
+  const cluster = elementCluster(elementId);
+
+  if (getWorkshed() !== $item`warbear induction oven`) {
+    print("Install a warbear induction oven before cooking!", "red");
+    return false;
+  }
+
+  if (get("_dr_warbearInductionOvenUsed", false)) {
+    print("Already used induction oven for the day.");
+    return false;
+  }
+
+  const originalClan = Clan.get();
+  let clan = originalClan;
+  if (get("dr_clans", "") !== "") {
+    const clans = get("dr_clans", "").split("|");
+    clan = Clan.join(clans[0]);
+  }
+
+  try {
+    if (!have($item`bone flour`) && !clan.take($items`bone flour`).length) {
+      print("Failed to get bone flour from stash.", "red");
+      return false;
+    }
+
+    if (!have(cluster)) {
+      const possibleTakes = smashables.get(elementId) ?? [];
+      const target = possibleTakes.filter((item) => stashAmount(item) > 0)[0];
+      if (target === undefined) {
+        print(`None of [${possibleTakes.join(", ")}] in stash to cook with.`, "red");
+        return false;
+      }
+
+      if (clan.take([target]).length === 0) {
+        print(`Failed to take ${target.name} from stash.`, "red");
+        return false;
+      }
+
+      if (target !== cluster) cliExecute(`smash 1 ${target}`);
+    }
+
+    if (!create(pocket)) {
+      print(`Failed to create ${pocket}.`, "red");
+      return false;
+    }
+    clan.put(new Map([[pocket, 2]]));
+    set("_dr_warbearInductionOvenUsed", true);
+  } finally {
+    Clan.join(originalClan.name);
+  }
+
+  return true;
+}
+
 const usage = "dr cook [element]: Create a Dreadsylvanian [element] pocket.";
 
 export default new Command("cook", usage, ([element]) => {
@@ -38,55 +94,5 @@ export default new Command("cook", usage, ([element]) => {
     return;
   }
 
-  const pocket = elementPocket(elementId);
-  const cluster = elementCluster(elementId);
-
-  if (getWorkshed() !== $item`warbear induction oven`) {
-    print("Install a warbear induction oven before cooking!", "red");
-    return;
-  }
-
-  if (get("_dr_warbearInductionOvenUsed", false)) {
-    print("Already used induction oven for the day.");
-    return;
-  }
-
-  const originalClan = Clan.get();
-  let clan = originalClan;
-  if (get("dr_clans", "") !== "") {
-    const clans = get("dr_clans", "").split("|");
-    clan = Clan.join(clans[0]);
-  }
-
-  try {
-    if (!have($item`bone flour`) && !clan.take($items`bone flour`).length) {
-      print("Failed to get bone flour from stash.", "red");
-      return;
-    }
-
-    if (!have(cluster)) {
-      const possibleTakes = smashables.get(elementId) ?? [];
-      const target = possibleTakes.filter((item) => stashAmount(item) > 0)[0];
-      if (target === undefined) {
-        print(`None of [${possibleTakes.join(", ")}] in stash to cook with.`, "red");
-        return;
-      }
-
-      if (clan.take([target]).length === 0) {
-        print(`Failed to take ${target.name} from stash.`, "red");
-        return;
-      }
-
-      if (target !== cluster) cliExecute(`smash 1 ${target}`);
-
-      if (!create(pocket)) {
-        print(`Failed to create ${pocket}.`, "red");
-        return;
-      }
-      clan.put(new Map([[pocket, 2]]));
-      set("_dr_warbearInductionOvenUsed", true);
-    }
-  } finally {
-    Clan.join(originalClan.name);
-  }
+  cook(elementId);
 });
