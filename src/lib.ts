@@ -549,3 +549,8 @@ export function withWineglass<T>(action: () => T): T {
     cliExecute("outfit checkpoint");
   }
 }
+
+export function clans(): string[] {
+  const clans = get("dr_clans", "").split("|");
+  return clans.length === 1 && clans[0] === "" ? [] : clans;
+}
