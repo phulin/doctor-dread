@@ -19627,14 +19627,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var kolmafia__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7530);
 /* harmony import */ var kolmafia__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(kolmafia__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var libram__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9803);
-/* harmony import */ var libram__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(libram__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var libram__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9803);
+/* harmony import */ var libram__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(libram__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _command__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(463);
 /* harmony import */ var _dungeon_raidlog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4151);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(644);
-var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10, _templateObject11;
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(644);
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14, _templateObject15;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
@@ -19650,19 +19652,14 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 
 
 
 
 
-
-function planAllNoncombats(available) {
-  var grindFlour = !(0,libram__WEBPACK_IMPORTED_MODULE_1__.get)("_dr_groundFlour", false) && (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myPrimestat)() === (0,libram__WEBPACK_IMPORTED_MODULE_1__.$stat)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Muscle"])));
-  var items = (0,libram__WEBPACK_IMPORTED_MODULE_1__.$items)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["dreadful roast, stinking agaricus, dread tarragon, wax banana, eau de mort"])));
-  if (grindFlour) items.splice(0, 0, (0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["bone flour"]))));
-  var itemPriority = new Map((0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .entries */ .qh)(items).map(_ref => {
+function planAllNoncombats(items, unlock, available) {
+  var itemPriority = new Map((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .entries */ .qh)(items).map(_ref => {
     var _ref2 = _slicedToArray(_ref, 2),
         index = _ref2[0],
         item = _ref2[1];
@@ -19671,13 +19668,13 @@ function planAllNoncombats(available) {
   }));
   var plan = [];
 
-  var _iterator = _createForOfIteratorHelper((0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .clans */ .NF)()),
+  var _iterator = _createForOfIteratorHelper((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)()),
       _step;
 
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
       var clanName = _step.value;
-      libram__WEBPACK_IMPORTED_MODULE_1__.Clan.join(clanName); // noncombat, sub, choice, item
+      libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(clanName); // noncombat, sub, choice, item
 
       var result = [];
       var used = (0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_3__/* .dreadNoncombatsUsed */ .Sq)();
@@ -19709,6 +19706,7 @@ function planAllNoncombats(available) {
                       subnoncombat = _step4$value[1];
 
                   if (subnoncombat.classes && !subnoncombat.classes.includes((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myClass)())) continue;
+                  if (!unlock && subnoncombat.isLocked()) continue;
 
                   var _iterator5 = _createForOfIteratorHelper(subnoncombat.choices),
                       _step5;
@@ -19794,28 +19792,34 @@ function planAllNoncombats(available) {
   return plan;
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new _command__WEBPACK_IMPORTED_MODULE_4__/* .Command */ .m("all", "dr all: Collect useful items from all instances (and grind flour).", () => {
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new _command__WEBPACK_IMPORTED_MODULE_4__/* .Command */ .m("all", "dr all [unlock] [freddies]: Collect useful items from all instances (and grind flour). With freddies, get freddies. With unlock, unlock all useful NCs.", args => {
+  var grindFlour = !(0,libram__WEBPACK_IMPORTED_MODULE_2__.get)("_dr_groundFlour", false) && (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myPrimestat)() === (0,libram__WEBPACK_IMPORTED_MODULE_2__.$stat)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Muscle"])));
+  var items = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["dreadful roast, stinking agaricus, wax banana, eau de mort"])));
+  if (grindFlour) items.splice(0, 0, (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["bone flour"]))));
+  if ((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myClass)() === (0,libram__WEBPACK_IMPORTED_MODULE_2__.$class)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["Accordion Thief"])))) items.splice(0, 0, (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["intricate music box parts"]))));
+  if (args.includes("freddies")) items.push((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["Freddy Kruegerand"]))));
+  var unlock = args.includes("unlock");
   (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.printHtml)("<b>Doctor Dread: Dailies</b>");
 
-  if ((0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .clans */ .NF)().length === 0) {
+  if ((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)().length === 0) {
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Need to set property dr_clans to a |-separated list of clan names first.", "red");
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Dr. Dread will check the first clan for stash items.");
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("For example: set dr_clans = Flour Garden 1|Flour Garden 2|Flour Garden 3|Flour Garden 4|Flour Garden 5");
     return;
   }
 
-  if (!(0,libram__WEBPACK_IMPORTED_MODULE_1__.have)((0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"])))) && (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)((0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["Freddy Kruegerand"])))) < 100) {
+  if (!(0,libram__WEBPACK_IMPORTED_MODULE_2__.have)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"])))) && (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["Freddy Kruegerand"])))) < 100) {
     throw "You don't have skeleton keys and you're almost out of Freddies. Fix that.";
   }
 
-  (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Checking clans ".concat((0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .clans */ .NF)().join(", ")));
-  var originalClan = libram__WEBPACK_IMPORTED_MODULE_1__.Clan.get();
+  (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Checking clans ".concat((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)().join(", ")));
+  var originalClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.get();
   var acquired = new Map();
   var flourCount = 0;
 
   try {
-    var plan = planAllNoncombats(new Map());
-    flourCount = (0,libram__WEBPACK_IMPORTED_MODULE_1__.sum)(plan, _ref3 => {
+    var plan = planAllNoncombats(items, unlock, new Map());
+    flourCount = (0,libram__WEBPACK_IMPORTED_MODULE_2__.sum)(plan, _ref3 => {
       var _ref4 = _slicedToArray(_ref3, 2),
           noncombatPlans = _ref4[1];
 
@@ -19823,7 +19827,7 @@ function planAllNoncombats(available) {
         var _ref6 = _slicedToArray(_ref5, 4),
             item = _ref6[3];
 
-        return item === (0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["bone flour"])));
+        return item === (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["bone flour"])));
       }).length;
     });
     var boneCount = 0;
@@ -19831,17 +19835,17 @@ function planAllNoncombats(available) {
     if (flourCount > 0) {
       var _taken$get;
 
-      var stashClan = libram__WEBPACK_IMPORTED_MODULE_1__.Clan.join((0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .clans */ .NF)()[0]);
-      var taken = stashClan.take(new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["old dry bone"]))), flourCount]]));
-      boneCount = (_taken$get = taken.get((0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["old dry bone"]))))) !== null && _taken$get !== void 0 ? _taken$get : 0;
+      var stashClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)()[0]);
+      var taken = stashClan.take(new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["old dry bone"]))), flourCount]]));
+      boneCount = (_taken$get = taken.get((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["old dry bone"]))))) !== null && _taken$get !== void 0 ? _taken$get : 0;
     }
 
     if (boneCount < flourCount) {
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to take ".concat(flourCount, " old dry bones from stash! Replanning with ").concat(boneCount, "..."));
-      plan = planAllNoncombats(new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["old dry bone"]))), boneCount]]));
+      plan = planAllNoncombats(items, unlock, new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["old dry bone"]))), boneCount]]));
     }
 
-    (0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .withWineglass */ .RQ)(() => {
+    (0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .withWineglass */ .RQ)(() => {
       var _iterator6 = _createForOfIteratorHelper(plan),
           _step6;
 
@@ -19851,7 +19855,7 @@ function planAllNoncombats(available) {
               clanName = _step6$value[0],
               noncombatPlans = _step6$value[1];
 
-          libram__WEBPACK_IMPORTED_MODULE_1__.Clan.join(clanName);
+          libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(clanName);
 
           var _iterator7 = _createForOfIteratorHelper(noncombatPlans),
               _step7;
@@ -19868,8 +19872,13 @@ function planAllNoncombats(available) {
 
               (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Getting ".concat(item, "."));
               var subnoncombat = noncombat.choices.get(subIndex);
-              _lib__WEBPACK_IMPORTED_MODULE_2__/* .propertyManager.setChoices */ .kr.setChoices((_propertyManager$setC = {}, _defineProperty(_propertyManager$setC, noncombat.id, subIndex), _defineProperty(_propertyManager$setC, (_subnoncombat$id = subnoncombat === null || subnoncombat === void 0 ? void 0 : subnoncombat.id) !== null && _subnoncombat$id !== void 0 ? _subnoncombat$id : -1, choiceIndex), _propertyManager$setC));
-              if (subnoncombat !== null && subnoncombat !== void 0 && subnoncombat.isLocked()) (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.retrieveItem)((0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"]))));
+              _lib__WEBPACK_IMPORTED_MODULE_1__/* .propertyManager.setChoices */ .kr.setChoices((_propertyManager$setC = {}, _defineProperty(_propertyManager$setC, noncombat.id, subIndex), _defineProperty(_propertyManager$setC, (_subnoncombat$id = subnoncombat === null || subnoncombat === void 0 ? void 0 : subnoncombat.id) !== null && _subnoncombat$id !== void 0 ? _subnoncombat$id : -1, choiceIndex), _propertyManager$setC));
+
+              if (subnoncombat !== null && subnoncombat !== void 0 && subnoncombat.isLocked()) {
+                if (!unlock) throw "Shouldn't be trying locked NC!";
+                (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.retrieveItem)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject13 || (_templateObject13 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"]))));
+              }
+
               (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.visitUrl)("clan_dreadsylvania.php?action=forceloc&loc=".concat(noncombat.index));
               (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.runChoice)(-1);
               if ((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.handlingChoice)()) throw "Stuck in choice adventure!";
@@ -19892,13 +19901,15 @@ function planAllNoncombats(available) {
     var _acquired$get2;
 
     if (acquired.size > 0) {
-      var _stashClan = libram__WEBPACK_IMPORTED_MODULE_1__.Clan.join((0,_lib__WEBPACK_IMPORTED_MODULE_2__/* .clans */ .NF)()[0]);
+      acquired.delete((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject14 || (_templateObject14 = _taggedTemplateLiteral(["Freddy Kruegerand"]))));
+
+      var _stashClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)()[0]);
 
       _stashClan.put(acquired);
     }
 
-    if ((_acquired$get2 = acquired.get((0,libram__WEBPACK_IMPORTED_MODULE_1__.$item)(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["bone flour"]))))) !== null && _acquired$get2 !== void 0 ? _acquired$get2 : 0 > 0) {
-      (0,libram__WEBPACK_IMPORTED_MODULE_1__.set)("_dr_groundFlour", true);
+    if ((_acquired$get2 = acquired.get((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject15 || (_templateObject15 = _taggedTemplateLiteral(["bone flour"]))))) !== null && _acquired$get2 !== void 0 ? _acquired$get2 : 0 > 0) {
+      (0,libram__WEBPACK_IMPORTED_MODULE_2__.set)("_dr_groundFlour", true);
     }
 
     originalClan.join();
