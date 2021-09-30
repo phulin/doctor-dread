@@ -19329,6 +19329,11 @@ var usage = "dr cook [element]: Create a Dreadsylvanian [element] pocket.";
         return;
       }
 
+      if (clan.take([target]).length === 0) {
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to take ".concat(target.name, " from stash."), "red");
+        return;
+      }
+
       if (target !== cluster) (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.cliExecute)("smash 1 ".concat(target));
 
       if (!(0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.create)(pocket)) {
