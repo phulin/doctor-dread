@@ -29,6 +29,8 @@ export default new Command("collect", "dr collect: Collect useful items from ins
         for (const [choiceIndex, choice] of subnoncombat.choices) {
           if (!choice.item) continue;
           if (choice.maximum && choice.count() >= choice.maximum) continue;
+          if (choice.classes && !choice.classes.includes(myClass())) continue;
+
           const priority = itemPriority.get(choice.item) ?? 999;
           if (priority < currentPriority) {
             currentPriority = priority;

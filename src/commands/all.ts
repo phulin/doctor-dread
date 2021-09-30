@@ -47,8 +47,9 @@ function planAllNoncombats(available: Map<Item, number>): [string, NoncombatPlan
           if (subnoncombat.classes && !subnoncombat.classes.includes(myClass())) continue;
 
           for (const [choiceIndex, choice] of subnoncombat.choices) {
-            if (choice.maximum && choice.count() >= choice.maximum) continue;
             if (!choice.item) continue;
+            if (choice.maximum && choice.count() >= choice.maximum) continue;
+            if (choice.classes && !choice.classes.includes(myClass())) continue;
 
             if (choice.requirement) {
               const requirementsAvailable =
