@@ -115,7 +115,7 @@ export default new Command(
 
     print(`Checking clans ${clans().join(", ")}`);
 
-    const originalClan = Clan.get();
+    const originalClan = Clan.get().name;
     const acquired = new Map<Item, number>();
 
     let flourCount = 0;
@@ -169,6 +169,7 @@ export default new Command(
       });
     } finally {
       if (acquired.size > 0) {
+        print(`Placing items in the stash in ${clans()[0]}.`);
         acquired.delete($item`Freddy Kruegerand`);
         const stashClan = Clan.join(clans()[0]);
         stashClan.put(acquired);
@@ -176,7 +177,7 @@ export default new Command(
       if (acquired.get($item`bone flour`) ?? 0 > 0) {
         set("_dr_groundFlour", true);
       }
-      originalClan.join();
+      Clan.join(originalClan);
     }
   }
 );
