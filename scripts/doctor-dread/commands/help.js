@@ -19855,6 +19855,7 @@ function planAllNoncombats(items, unlock, available) {
               clanName = _step6$value[0],
               noncombatPlans = _step6$value[1];
 
+          if (noncombatPlans.length === 0) continue;
           libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(clanName);
 
           var _iterator7 = _createForOfIteratorHelper(noncombatPlans),
