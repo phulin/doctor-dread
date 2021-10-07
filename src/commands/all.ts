@@ -168,9 +168,9 @@ export default new Command(
         }
       });
     } finally {
+      acquired.delete($item`Freddy Kruegerand`);
       if (acquired.size > 0) {
         print(`Placing items in the stash in ${clans()[0]}.`);
-        acquired.delete($item`Freddy Kruegerand`);
         const stashClan = Clan.join(clans()[0]);
         stashClan.put(acquired);
       }
