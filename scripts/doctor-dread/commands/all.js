@@ -19426,7 +19426,7 @@ function planAllNoncombats(items, unlock, available) {
   }
 
   (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Checking clans ".concat((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)().join(", ")));
-  var originalClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.get();
+  var originalClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.get().name;
   var acquired = new Map();
   var flourCount = 0;
 
@@ -19514,6 +19514,7 @@ function planAllNoncombats(items, unlock, available) {
     var _acquired$get2;
 
     if (acquired.size > 0) {
+      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Placing items in the stash in ".concat((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)()[0], "."));
       acquired.delete((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject14 || (_templateObject14 = _taggedTemplateLiteral(["Freddy Kruegerand"]))));
 
       var _stashClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)()[0]);
@@ -19525,7 +19526,7 @@ function planAllNoncombats(items, unlock, available) {
       (0,libram__WEBPACK_IMPORTED_MODULE_2__.set)("_dr_groundFlour", true);
     }
 
-    originalClan.join();
+    libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(originalClan);
   }
 }));
 
