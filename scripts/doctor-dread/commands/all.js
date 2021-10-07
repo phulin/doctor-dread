@@ -19513,9 +19513,10 @@ function planAllNoncombats(items, unlock, available) {
   } finally {
     var _acquired$get2;
 
+    acquired.delete((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject14 || (_templateObject14 = _taggedTemplateLiteral(["Freddy Kruegerand"]))));
+
     if (acquired.size > 0) {
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Placing items in the stash in ".concat((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)()[0], "."));
-      acquired.delete((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject14 || (_templateObject14 = _taggedTemplateLiteral(["Freddy Kruegerand"]))));
 
       var _stashClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)()[0]);
 
