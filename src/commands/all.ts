@@ -145,6 +145,8 @@ export default new Command(
 
       withWineglass(() => {
         for (const [clanName, noncombatPlans] of plan) {
+          if (noncombatPlans.length === 0) continue;
+
           Clan.join(clanName);
 
           for (const [noncombat, subIndex, choiceIndex, item] of noncombatPlans) {
