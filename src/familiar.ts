@@ -161,7 +161,7 @@ export function freeFightFamiliar(): Familiar {
   if (have($familiar`Reagnimated Gnome`)) {
     familiarValue.push([
       $familiar`Reagnimated Gnome`,
-      MPA * myFamiliarWeight($familiar`Reagnimated Gnome`) * 0.001,
+      MPA / (1 - myFamiliarWeight($familiar`Reagnimated Gnome`) * 0.001),
     ]);
   }
 

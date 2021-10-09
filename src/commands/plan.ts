@@ -25,7 +25,7 @@ export default new Command("plan", usage, ([element, monster]) => {
 
   printHtml(`<b>Dr. Dread Banish Planner</b>`);
   print(`Noncombats used: ${dreadNoncombatsUsed().join(", ")}`);
-  print(`Trying to banish ${element} ${monster}`);
+  print(`Trying to banish all but ${element} ${monster}`);
   print();
 
   const remaining = neededBanishes(monsterZone(monster), monster, element);

@@ -7,6 +7,7 @@ import {
   printHtml,
   retrieveItem,
   runChoice,
+  stashAmount,
   visitUrl,
 } from "kolmafia";
 import { $class, $item, $items, $stat, Clan, get, have, set, sum } from "libram";
@@ -115,13 +116,20 @@ export default new Command(
 
     print(`Checking clans ${clans().join(", ")}`);
 
-    const originalClan = Clan.get().name;
+    const originalClanName = Clan.get().name;
+    const stashClanName = clans()[0];
     const acquired = new Map<Item, number>();
 
     let flourCount = 0;
+    const bone = $item`old dry bone`;
 
     try {
-      let plan = planAllNoncombats(items, unlock, new Map());
+      Clan.join(stashClanName);
+      let plan = planAllNoncombats(
+        items,
+        unlock,
+        new Map([[bone, stashAmount(bone) + itemAmount(bone)]])
+      );
 
       flourCount = sum(
         plan,
@@ -179,7 +187,7 @@ export default new Command(
       if (acquired.get($item`bone flour`) ?? 0 > 0) {
         set("_dr_groundFlour", true);
       }
-      Clan.join(originalClan);
+      Clan.join(originalClanName);
     }
   }
 );

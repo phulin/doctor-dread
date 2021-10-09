@@ -52,8 +52,8 @@ export function cook(elementId: DreadElementId): boolean {
     }
 
     if (!have(cluster)) {
-      const possibleTakes = smashables.get(elementId) ?? [];
-      const target = possibleTakes.filter((item) => stashAmount(item) > 0)[0];
+      const possibleTakes = [...(smashables.get(elementId) ?? []), cluster];
+      const target = possibleTakes.find((item) => stashAmount(item) > 0);
       if (target === undefined) {
         print(`None of [${possibleTakes.join(", ")}] in stash to cook with.`, "red");
         return false;
