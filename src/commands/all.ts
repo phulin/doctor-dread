@@ -125,11 +125,7 @@ export default new Command(
 
     try {
       Clan.join(stashClanName);
-      let plan = planAllNoncombats(
-        items,
-        unlock,
-        new Map([[bone, stashAmount(bone) + itemAmount(bone)]])
-      );
+      let plan = planAllNoncombats(items, unlock, new Map([[bone, stashAmount(bone)]]));
 
       flourCount = sum(
         plan,
