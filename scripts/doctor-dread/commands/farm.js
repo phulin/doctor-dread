@@ -20042,7 +20042,7 @@ function freeFightFamiliar() {
   }
 
   if ((0,dist.have)((0,dist.$familiar)(_templateObject35 || (_templateObject35 = familiar_taggedTemplateLiteral(["Reagnimated Gnome"]))))) {
-    familiarValue.push([(0,dist.$familiar)(_templateObject36 || (_templateObject36 = familiar_taggedTemplateLiteral(["Reagnimated Gnome"]))), MPA * myFamiliarWeight((0,dist.$familiar)(_templateObject37 || (_templateObject37 = familiar_taggedTemplateLiteral(["Reagnimated Gnome"])))) * 0.001]);
+    familiarValue.push([(0,dist.$familiar)(_templateObject36 || (_templateObject36 = familiar_taggedTemplateLiteral(["Reagnimated Gnome"]))), MPA / (1 - myFamiliarWeight((0,dist.$familiar)(_templateObject37 || (_templateObject37 = familiar_taggedTemplateLiteral(["Reagnimated Gnome"])))) * 0.001)]);
   }
 
   var _iterator = familiar_createForOfIteratorHelper((0,dist.$familiars)(_templateObject39 || (_templateObject39 = familiar_taggedTemplateLiteral(["Hobo Monkey, Urchin Urchin, Leprechaun"])))),

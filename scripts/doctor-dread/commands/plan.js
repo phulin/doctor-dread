@@ -19279,7 +19279,7 @@ var usage = "dr plan [element] [monster]: Print plan for banishing all [element]
 
   (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.printHtml)("<b>Dr. Dread Banish Planner</b>");
   (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Noncombats used: ".concat((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .dreadNoncombatsUsed */ .Sq)().join(", ")));
-  (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Trying to banish ".concat(element, " ").concat(monster));
+  (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Trying to banish all but ".concat(element, " ").concat(monster));
   (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)();
   var remaining = (0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .neededBanishes */ .M7)((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .monsterZone */ .ON)(monster), monster, element);
 
