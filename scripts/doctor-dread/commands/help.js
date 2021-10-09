@@ -19821,7 +19821,7 @@ function planAllNoncombats(items, unlock, available) {
 
   try {
     libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(stashClanName);
-    var plan = planAllNoncombats(items, unlock, new Map([[bone, (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.stashAmount)(bone) + (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)(bone)]]));
+    var plan = planAllNoncombats(items, unlock, new Map([[bone, (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.stashAmount)(bone)]]));
     flourCount = (0,libram__WEBPACK_IMPORTED_MODULE_2__.sum)(plan, _ref3 => {
       var _ref4 = _slicedToArray(_ref3, 2),
           noncombatPlans = _ref4[1];
