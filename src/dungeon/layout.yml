@@ -33,7 +33,7 @@
               message: read an old diary
               effect: Bored Stiff
             3:
-              message: got a Dreadsylvania auditor's badge
+              message: got a Dreadsylvanian auditor's badge
               requirement: replica key
               item: Dreadsylvania auditor's badge
               maximum: 1

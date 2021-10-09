@@ -135,7 +135,7 @@ export default new Command(
 
       let boneCount = 0;
       if (flourCount > 0) {
-        const stashClan = Clan.join(clans()[0]);
+        const stashClan = Clan.join(stashClanName);
         const taken = stashClan.take(new Map([[$item`old dry bone`, flourCount]]));
         boneCount = taken.get($item`old dry bone`) ?? 0;
       }
@@ -177,7 +177,7 @@ export default new Command(
       acquired.delete($item`Freddy Kruegerand`);
       if (acquired.size > 0) {
         print(`Placing items in the stash in ${clans()[0]}.`);
-        const stashClan = Clan.join(clans()[0]);
+        const stashClan = Clan.join(stashClanName);
         stashClan.put(acquired);
       }
       if (acquired.get($item`bone flour`) ?? 0 > 0) {
