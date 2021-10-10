@@ -23167,8 +23167,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _step;
 
     try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var _loop = function _loop() {
+        var _dreadKilled$find;
+
         var zone = _step.value;
+
+        var _ref = (_dreadKilled$find = (0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_3__/* .dreadKilled */ .SJ)().find(_ref3 => {
+          var _ref4 = _slicedToArray(_ref3, 1),
+              killedZone = _ref4[0];
+
+          return killedZone === zone;
+        })) !== null && _dreadKilled$find !== void 0 ? _dreadKilled$find : [zone, 0],
+            _ref2 = _slicedToArray(_ref, 2),
+            killed = _ref2[1];
+
+        if (killed >= 1000) return "continue";
 
         var _iterator2 = _createForOfIteratorHelper(zone.noncombats),
             _step2;
@@ -23227,6 +23240,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         } finally {
           _iterator2.f();
         }
+      };
+
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var _ret = _loop();
+
+        if (_ret === "continue") continue;
       }
     } catch (err) {
       _iterator.e(err);
