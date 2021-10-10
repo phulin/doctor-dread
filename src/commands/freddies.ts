@@ -1,7 +1,7 @@
 import { handlingChoice, myClass, print, runChoice, visitUrl } from "kolmafia";
 
 import { Command } from "../command";
-import { dreadNoncombatsUsed, dreadZones } from "../dungeon/raidlog";
+import { dreadKilled, dreadNoncombatsUsed, dreadZones } from "../dungeon/raidlog";
 import { propertyManager, withWineglass } from "../lib";
 import { $item } from "libram";
 
@@ -12,6 +12,8 @@ export default new Command(
     withWineglass(() => {
       const used = dreadNoncombatsUsed();
       for (const zone of dreadZones) {
+        const [, killed] = dreadKilled().find(([killedZone]) => killedZone === zone) ?? [zone, 0];
+        if (killed >= 1000) continue;
         for (const noncombat of zone.noncombats) {
           if (used.includes(noncombat.name)) continue;
 
