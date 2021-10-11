@@ -91,6 +91,7 @@
             2:
               message: rifled through a footlocker
               item: Freddy Kruegerand
+              maximum: 10
             3:
               message: lifted some weights
               stat: Muscle
