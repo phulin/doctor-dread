@@ -20156,15 +20156,14 @@ function cook(elementId) {
   }
 
   var originalClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.get();
-  var clan = originalClan;
 
   if ((0,libram__WEBPACK_IMPORTED_MODULE_2__.get)("dr_clans", "") !== "") {
     var clans = (0,libram__WEBPACK_IMPORTED_MODULE_2__.get)("dr_clans", "").split("|");
-    clan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(clans[0]);
+    libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(clans[0]);
   }
 
   try {
-    if (!(0,libram__WEBPACK_IMPORTED_MODULE_2__.have)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["bone flour"])))) && !clan.take((0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["bone flour"])))).length) {
+    if (!(0,libram__WEBPACK_IMPORTED_MODULE_2__.have)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["bone flour"])))) && !(0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.takeStash)(1, (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["bone flour"]))))) {
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to get bone flour from stash.", "red");
       return false;
     }
@@ -20180,7 +20179,7 @@ function cook(elementId) {
         return false;
       }
 
-      if (clan.take([target]).length === 0) {
+      if (!(0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.takeStash)(1, target)) {
         (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to take ".concat(target.name, " from stash."), "red");
         return false;
       }
@@ -20193,7 +20192,11 @@ function cook(elementId) {
       return false;
     }
 
-    clan.put(new Map([[pocket, 2]]));
+    if (!(0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.putStash)(2, pocket)) {
+      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to put pockets back in stash.", "red");
+      return false;
+    }
+
     (0,libram__WEBPACK_IMPORTED_MODULE_2__.set)("_dr_warbearInductionOvenUsed", true);
   } finally {
     libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(originalClan.name);
