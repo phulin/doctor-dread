@@ -1,4 +1,13 @@
-import { cliExecute, create, getRelated, getWorkshed, print, stashAmount } from "kolmafia";
+import {
+  cliExecute,
+  create,
+  getRelated,
+  getWorkshed,
+  print,
+  putStash,
+  stashAmount,
+  takeStash,
+} from "kolmafia";
 import { $item, $items, Clan, get, have, set } from "libram";
 
 import { Command } from "../command";
@@ -39,14 +48,13 @@ export function cook(elementId: DreadElementId): boolean {
   }
 
   const originalClan = Clan.get();
-  let clan = originalClan;
   if (get("dr_clans", "") !== "") {
     const clans = get("dr_clans", "").split("|");
-    clan = Clan.join(clans[0]);
+    Clan.join(clans[0]);
   }
 
   try {
-    if (!have($item`bone flour`) && !clan.take($items`bone flour`).length) {
+    if (!have($item`bone flour`) && !takeStash(1, $item`bone flour`)) {
       print("Failed to get bone flour from stash.", "red");
       return false;
     }
@@ -59,7 +67,7 @@ export function cook(elementId: DreadElementId): boolean {
         return false;
       }
 
-      if (clan.take([target]).length === 0) {
+      if (!takeStash(1, target)) {
         print(`Failed to take ${target.name} from stash.`, "red");
         return false;
       }
@@ -71,7 +79,10 @@ export function cook(elementId: DreadElementId): boolean {
       print(`Failed to create ${pocket}.`, "red");
       return false;
     }
-    clan.put(new Map([[pocket, 2]]));
+    if (!putStash(2, pocket)) {
+      print("Failed to put pockets back in stash.", "red");
+      return false;
+    }
     set("_dr_warbearInductionOvenUsed", true);
   } finally {
     Clan.join(originalClan.name);
