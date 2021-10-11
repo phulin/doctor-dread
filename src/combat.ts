@@ -316,7 +316,7 @@ export class Macro extends LibramMacro {
         )
         .externalIf(get("_shatteringPunchUsed") < 3, Macro.skill($skill`Shattering Punch`))
         .externalIf(
-          !get("_gingerbreadMobHitUsed"),
+          !get("_gingerbreadMobHitUsed") && haveSkill($skill`Gingerbread Mob Hit`),
           Macro.trySkill($skill`Duplicate`).skill($skill`Gingerbread Mob Hit`)
         )
         .externalIf(
