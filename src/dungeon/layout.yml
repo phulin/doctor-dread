@@ -291,7 +291,6 @@
             2:
               message: got a bottle of eau de mort
               item: eau de mort
-              maximum: 10
             3:
               message: made a ghost shawl
               item: ghost shawl
