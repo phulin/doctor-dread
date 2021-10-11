@@ -1,4 +1,4 @@
-import { handlingChoice, myClass, print, runChoice, visitUrl } from "kolmafia";
+import { handlingChoice, itemAmount, myClass, print, runChoice, visitUrl } from "kolmafia";
 import { $items } from "libram";
 
 import { Command } from "../command";
@@ -6,7 +6,7 @@ import { DreadNoncombat, dreadNoncombatsUsed, dreadZones } from "../dungeon/raid
 import { entries, propertyManager, withWineglass } from "../lib";
 
 export default new Command("collect", "dr collect: Collect useful items from instance.", () => {
-  const items = $items`dreadful roast, stinking agaricus, dread tarragon, wax banana, eau de mort`;
+  const items = $items`bone flour, dreadful roast, stinking agaricus, dread tarragon, wax banana, moon-amber, eau de mort`;
   const itemPriority = new Map<Item, number>(
     entries(items).map(([index, item]) => [item, index]) as [Item, number][]
   );
@@ -30,6 +30,7 @@ export default new Command("collect", "dr collect: Collect useful items from ins
           if (!choice.item) continue;
           if (choice.maximum && choice.count() >= choice.maximum) continue;
           if (choice.classes && !choice.classes.includes(myClass())) continue;
+          if (choice.requirement && itemAmount(choice.requirement) <= 0) continue;
 
           const priority = itemPriority.get(choice.item) ?? 999;
           if (priority < currentPriority) {

@@ -10,7 +10,7 @@ import {
   stashAmount,
   visitUrl,
 } from "kolmafia";
-import { $class, $item, $items, $stat, Clan, get, have, set, sum } from "libram";
+import { $item, $items, $stat, Clan, get, have, set, sum } from "libram";
 
 import { Command } from "../command";
 import { DreadNoncombat, dreadNoncombatsUsed, dreadZones } from "../dungeon/raidlog";
@@ -94,7 +94,7 @@ export default new Command(
 
     const items = $items`dreadful roast, stinking agaricus, wax banana, eau de mort`;
     if (grindFlour) items.splice(0, 0, $item`bone flour`);
-    if (myClass() === $class`Accordion Thief`) items.splice(0, 0, $item`intricate music box parts`);
+    // if (myClass() === $class`Accordion Thief`) items.splice(0, 0, $item`intricate music box parts`);
     if (args.includes("freddies")) items.push($item`Freddy Kruegerand`);
 
     const unlock = args.includes("unlock");
