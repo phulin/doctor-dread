@@ -19271,7 +19271,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new _command__WEBPACK_IMPORTED_MODULE_1__/* .Command */ .m("collect", "dr collect: Collect useful items from instance.", () => {
-  var items = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject || (_templateObject = _taggedTemplateLiteral(["dreadful roast, stinking agaricus, dread tarragon, wax banana, eau de mort"])));
+  var items = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject || (_templateObject = _taggedTemplateLiteral(["bone flour, dreadful roast, stinking agaricus, dread tarragon, wax banana, moon-amber, eau de mort"])));
   var itemPriority = new Map((0,_lib__WEBPACK_IMPORTED_MODULE_3__/* .entries */ .qh)(items).map(_ref => {
     var _ref2 = _slicedToArray(_ref, 2),
         index = _ref2[0],
@@ -19326,6 +19326,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
                   if (!choice.item) continue;
                   if (choice.maximum && choice.count() >= choice.maximum) continue;
                   if (choice.classes && !choice.classes.includes((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myClass)())) continue;
+                  if (choice.requirement && (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)(choice.requirement) <= 0) continue;
                   var priority = (_itemPriority$get = itemPriority.get(choice.item)) !== null && _itemPriority$get !== void 0 ? _itemPriority$get : 999;
 
                   if (priority < currentPriority) {
