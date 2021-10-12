@@ -217,8 +217,11 @@ export function fillStomach(finish: boolean): void {
     eatSafe(glassCount, $item`glass of raw eggs`);
 
     availableStomach = Math.max(0, fullnessLimit() - myFullness());
+    mindMayo(Mayo.flex, Math.floor(availableStomach / 2));
+    eatSafe(Math.floor(availableStomach / 2), $item`tin cup of mulligan stew`);
+
+    availableStomach = Math.max(0, fullnessLimit() - myFullness());
     mindMayo(Mayo.flex, availableStomach);
-    // eslint-disable-next-line libram/verify-constants
     eatSafe(availableStomach, cheaper(...$items`meteoreo, ice rice`, $item`Tea, Earl Grey, Hot`));
   }
 }
