@@ -66,7 +66,7 @@ function canContinue(): boolean {
   );
 }
 
-function dreadTurn() {
+function dreadTurn(location: Location) {
   if (have($effect`Beaten Up`))
     throw "Hey, you're beaten up, and that's a bad thing. Lick your wounds, handle your problems, and run me again when you feel ready.";
 
@@ -114,7 +114,7 @@ function dreadTurn() {
     useFamiliar(fairyFamiliar());
     dreadOutfit();
     adventureMacroAuto(
-      $location`Dreadsylvanian Castle`,
+      location,
       Macro.if_("monstername sausage goblin || monstername witchess knight", Macro.kill())
         .tryFreeKill()
         .skill($skill`Slay the Dead`)
@@ -135,14 +135,25 @@ function dreadTurn() {
 
 export default new Command(
   "farm",
-  "dr farm [ascend] [turncount]: Burn turns dreadfarming the Castle, up to turncount turns.",
+  "dr farm [zone] [ascend?] [turncount?]: Burn turns dreadfarming zone, up to turncount turns.",
   (args: string[]) => {
+    let possibleLocation: Location | null = null;
     for (const arg of args) {
       if (arg.match(/\d+/)) {
         globalOptions.stopTurncount = myTurncount() + parseInt(arg, 10);
+      } else if (arg === "ascend") {
+        globalOptions.ascending = true;
+      } else if (["village", "castle"].includes(arg)) {
+        possibleLocation =
+          arg === "village" ? $location`Dreadsylvanian Village` : $location`Dreadsylvanian Castle`;
       }
-      if (arg === "ascend") globalOptions.ascending = true;
     }
+
+    if (possibleLocation === null) {
+      print(`Invalid location ${possibleLocation}. Valid are village or castle.`, "red");
+      return;
+    }
+    const location = possibleLocation;
 
     if (get("valueOfAdventure") >= 10000) {
       print(
@@ -265,7 +276,7 @@ export default new Command(
         // 5. burn turns at barf
         try {
           while (canContinue()) {
-            dreadTurn();
+            dreadTurn(location);
             safeInterrupt();
           }
         } finally {
