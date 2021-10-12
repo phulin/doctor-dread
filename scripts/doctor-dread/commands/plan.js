@@ -19264,24 +19264,42 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var usage = "dr plan [element] [monster]: Print plan for banishing all [element] [monster]s.";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new _command__WEBPACK_IMPORTED_MODULE_1__/* .Command */ .m("plan", usage, _ref => {
   var _ref2 = _slicedToArray(_ref, 2),
-      element = _ref2[0],
+      allElementString = _ref2[0],
       monster = _ref2[1];
+
+  (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.printHtml)("<b>Dr. Dread Banish Planner</b>");
+  var elementStrings = allElementString.split("|");
 
   if (!(0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .isDreadMonsterId */ .ww)(monster)) {
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Unrecognized monster ".concat(monster, "."), "red");
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Usage: ".concat(usage, "."));
     return;
-  } else if (!(0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .isDreadElementId */ .pd)(element)) {
-    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Unrecognized element ".concat(element, "."), "red");
-    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Usage: ".concat(usage, "."));
-    return;
   }
 
-  (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.printHtml)("<b>Dr. Dread Banish Planner</b>");
+  var _iterator = _createForOfIteratorHelper(elementStrings),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var element = _step.value;
+
+      if (!(0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .isDreadElementId */ .pd)(element)) {
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Unrecognized element [".concat(element, "]."), "red");
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Usage: ".concat(usage, "."));
+        return;
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  var elements = elementStrings;
   (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Noncombats used: ".concat((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .dreadNoncombatsUsed */ .Sq)().join(", ")));
-  (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Trying to banish all but ".concat(element, " ").concat(monster));
+  (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Trying to banish all but ".concat(elements.join("|"), " ").concat(monster));
   (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)();
-  var remaining = (0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .neededBanishes */ .M7)((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .monsterZone */ .ON)(monster), monster, element);
+  var remaining = (0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .neededBanishes */ .M7)((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .monsterZone */ .ON)(monster), monster, elements);
 
   if (remaining.length === 0) {
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("All banishes complete!", "blue");
@@ -19289,18 +19307,18 @@ var usage = "dr plan [element] [monster]: Print plan for banishing all [element]
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Outstanding banishes: ".concat(remaining.join(", ")));
   }
 
-  var plan = (0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .planLimitTo */ .NK)((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .monsterZone */ .ON)(monster), monster, element);
+  var plan = (0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .planLimitTo */ .NK)((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .monsterZone */ .ON)(monster), monster, elements);
 
   if (plan.length === 0) {
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("No banishes available and needed.");
   }
 
-  var _iterator = _createForOfIteratorHelper((0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .planLimitTo */ .NK)((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .monsterZone */ .ON)(monster), monster, element)),
-      _step;
+  var _iterator2 = _createForOfIteratorHelper((0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .planLimitTo */ .NK)((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .monsterZone */ .ON)(monster), monster, elements)),
+      _step2;
 
   try {
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var banish = _step.value;
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var banish = _step2.value;
 
       var _banish = _slicedToArray(banish, 5),
           noncombat = _banish[0],
@@ -19314,9 +19332,9 @@ var usage = "dr plan [element] [monster]: Print plan for banishing all [element]
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Banish ".concat(thing, " in ").concat(targetZone, " @ ").concat(noncombat.name, " using ").concat(choiceSequence.map(x => x.join(", ")).join(" => ")));
     }
   } catch (err) {
-    _iterator.e(err);
+    _iterator2.e(err);
   } finally {
-    _iterator.f();
+    _iterator2.f();
   }
 }));
 
@@ -19358,9 +19376,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
-function banishesToLimit(targetZone, monster, element) {
+function banishesToLimit(targetZone, monster, elements) {
   var monstersNeededBanished = monster === "banish no monster" ? [] : [(0,_raidlog__WEBPACK_IMPORTED_MODULE_1__/* .monsterPair */ .RN)(monster)];
-  var elementsNeededBanished = element === "banish all elements" ? _toConsumableArray(_raidlog__WEBPACK_IMPORTED_MODULE_1__/* .dreadElements */ .rh) : element === "banish no element" ? [] : _raidlog__WEBPACK_IMPORTED_MODULE_1__/* .dreadElements.filter */ .rh.filter(e => e !== element);
+  var elementsNeededBanished = _raidlog__WEBPACK_IMPORTED_MODULE_1__/* .dreadElements.filter */ .rh.filter(e => !elements.includes(e));
   var thingsNeededBanished = [].concat(monstersNeededBanished, _toConsumableArray(elementsNeededBanished));
   var result = [];
 
@@ -19436,11 +19454,11 @@ function banishesToLimit(targetZone, monster, element) {
 
   return result;
 }
-function categorizeBanishes(targetZone, monster, element) {
+function categorizeBanishes(targetZone, monster, elements) {
   var banished = (0,_raidlog__WEBPACK_IMPORTED_MODULE_1__/* .dreadBanished */ .tB)();
   var banishedInZone = banished.filter(info => info.targetZone === targetZone);
   var noncombatsUsed = new Set((0,_raidlog__WEBPACK_IMPORTED_MODULE_1__/* .dreadNoncombatsUsed */ .Sq)());
-  var desiredBanishes = banishesToLimit(targetZone, monster, element);
+  var desiredBanishes = banishesToLimit(targetZone, monster, elements);
   var completedBanishes = [];
   var usedBanishes = [];
   var cantBanishes = [];
@@ -19494,8 +19512,8 @@ function categorizeBanishes(targetZone, monster, element) {
     goodBanishes: goodBanishes
   };
 }
-function planLimitTo(targetZone, monster, element) {
-  var _categorizeBanishes = categorizeBanishes(targetZone, monster, element),
+function planLimitTo(targetZone, monster, elements) {
+  var _categorizeBanishes = categorizeBanishes(targetZone, monster, elements),
       cantBanishes = _categorizeBanishes.cantBanishes,
       goodBanishes = _categorizeBanishes.goodBanishes;
 
@@ -19511,7 +19529,7 @@ function planLimitTo(targetZone, monster, element) {
           banish = _step6$value$[3];
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Can't banish ".concat(banish, " @ ").concat(noncombat, " because we aren't ").concat(classes.join(", "), "."));
+      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Can't banish ".concat(banish, " @ ").concat(noncombat.name, " because we aren't any of ").concat(classes.join(", "), "."));
     }
   } catch (err) {
     _iterator6.e(err);
@@ -19555,8 +19573,8 @@ function planLimitTo(targetZone, monster, element) {
   });
 } // For informational purposes only - not enough info to plan out banishes.
 
-function neededBanishes(targetZone, monster, element) {
-  var _categorizeBanishes2 = categorizeBanishes(targetZone, monster, element),
+function neededBanishes(targetZone, monster, elements) {
+  var _categorizeBanishes2 = categorizeBanishes(targetZone, monster, elements),
       completedBanishes = _categorizeBanishes2.completedBanishes;
 
   var paired = (0,_raidlog__WEBPACK_IMPORTED_MODULE_1__/* .monsterPair */ .RN)(monster);
@@ -19572,7 +19590,7 @@ function neededBanishes(targetZone, monster, element) {
 
     return thing;
   }).filter(x => (0,_raidlog__WEBPACK_IMPORTED_MODULE_1__/* .isDreadElementId */ .pd)(x));
-  return [].concat(_toConsumableArray(_raidlog__WEBPACK_IMPORTED_MODULE_1__/* .dreadElements.filter */ .rh.filter(e => element !== e && !banishedElements.includes(e))), _toConsumableArray(new Array(2 - monsterCount).fill(paired)));
+  return [].concat(_toConsumableArray(_raidlog__WEBPACK_IMPORTED_MODULE_1__/* .dreadElements.filter */ .rh.filter(e => !elements.includes(e) && !banishedElements.includes(e))), _toConsumableArray(new Array(2 - monsterCount).fill(paired)));
 }
 
 /***/ }),
