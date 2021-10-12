@@ -35,6 +35,8 @@ const priceCaps: { [index: string]: number } = {
   "Sacramento wine": 10000,
   meteoreo: 10000,
   "Tea, Early Grey, Hot": 10000,
+  "tin cup of mulligan stew": 20000,
+  "Hodgman's blanket": 20000,
 };
 
 const npcItems = $items`white Dreadsylvanian, Dreadsylvanian stew, glass of raw eggs`;
