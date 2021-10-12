@@ -6,49 +6,55 @@ import {
   DreadElementId,
   dreadNoncombatsUsed,
   DreadSubnoncombat,
-  isDreadElementId,
   isDreadMonsterId,
+  isDreadZoneId,
   monsterZone,
+  toDreadElementId,
 } from "../dungeon/raidlog";
 
-const usage = "dr plan [element] [monster]: Print plan for banishing all [element] [monster]s.";
+const usage =
+  "dr plan [elements] [monster | zone]: Print plan for banishing all but [elements] [monster | zone]s. " +
+  "Elements is a | separated list, e.g. hot|spooky. " +
+  "Designating a monster will banish the other monster; designating a zone will banish in that zone.";
 
-export default new Command("plan", usage, ([allElementString, monster]) => {
+export default new Command("plan", usage, ([allElementString, monsterOrZone]) => {
   printHtml(`<b>Dr. Dread Banish Planner</b>`);
 
   const elementStrings = allElementString.split("|");
-  if (!isDreadMonsterId(monster)) {
-    print(`Unrecognized monster ${monster}.`, "red");
+  if (!isDreadMonsterId(monsterOrZone) && !isDreadZoneId(monsterOrZone)) {
+    print(`Unrecognized monster ${monsterOrZone}.`, "red");
     print(`Usage: ${usage}.`);
     return;
   }
   for (const element of elementStrings) {
-    if (!isDreadElementId(element)) {
+    if (toDreadElementId(element) === undefined) {
       print(`Unrecognized element [${element}].`, "red");
       print(`Usage: ${usage}.`);
       return;
     }
   }
 
-  const elements = elementStrings as DreadElementId[];
+  const zone = isDreadZoneId(monsterOrZone) ? monsterOrZone : monsterZone(monsterOrZone);
+  const monster = isDreadMonsterId(monsterOrZone) ? monsterOrZone : "banish no monster";
+  const elements = elementStrings.map(toDreadElementId) as DreadElementId[];
 
   print(`Noncombats used: ${dreadNoncombatsUsed().join(", ")}`);
   print(`Trying to banish all but ${elements.join("|")} ${monster}`);
   print();
 
-  const remaining = neededBanishes(monsterZone(monster), monster, elements);
+  const remaining = neededBanishes(zone, monster, elements);
   if (remaining.length === 0) {
     print("All banishes complete!", "blue");
   } else {
     print(`Outstanding banishes: ${remaining.join(", ")}`);
   }
 
-  const plan = planLimitTo(monsterZone(monster), monster, elements);
+  const plan = planLimitTo(zone, monster, elements);
   if (plan.length === 0) {
     print("No banishes available and needed.");
   }
 
-  for (const banish of planLimitTo(monsterZone(monster), monster, elements)) {
+  for (const banish of planLimitTo(zone, monster, elements)) {
     const [noncombat, subIndex, choiceIndex, targetZone, thing] = banish;
     const subnoncombat = noncombat.choices.get(subIndex) as DreadSubnoncombat;
     const choiceSequence: [number, number][] = [

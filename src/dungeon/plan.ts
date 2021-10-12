@@ -128,11 +128,11 @@ export function planLimitTo(
 // For informational purposes only - not enough info to plan out banishes.
 export function neededBanishes(
   targetZone: DreadZoneId,
-  monster: DreadMonsterId,
+  monster: DreadMonsterId | "banish no monster",
   elements: DreadElementId[]
 ): (DreadElementId | DreadMonsterId)[] {
   const { completedBanishes } = categorizeBanishes(targetZone, monster, elements);
-  const paired = monsterPair(monster);
+  const paired = monster === "banish no monster" ? null : monsterPair(monster);
   const monsterCount = completedBanishes.filter(([, , , , thing]) => thing === paired).length;
   const banishedElements = completedBanishes
     .map(([, , , , thing]) => thing)

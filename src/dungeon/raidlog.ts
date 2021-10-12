@@ -200,6 +200,10 @@ export class DreadNoncombat {
 export const dreadZoneTypes = ["forest", "village", "castle"] as const;
 export type DreadZoneId = typeof dreadZoneTypes[number];
 
+export function isDreadZoneId(x: string): x is DreadZoneId {
+  return (dreadZoneTypes as readonly string[]).includes(x);
+}
+
 type DreadZoneSchema = {
   name: DreadZoneId;
   fullName: string;
