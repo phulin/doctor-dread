@@ -12,6 +12,7 @@ import { $item, have } from "libram";
 import { Command } from "../command";
 import { neededBanishes, planLimitTo } from "../dungeon/plan";
 import {
+  DreadElementId,
   DreadSubnoncombat,
   isDreadElementId,
   isDreadMonsterId,
@@ -20,24 +21,30 @@ import {
 import { fromEntries, propertyManager, withWineglass } from "../lib";
 
 const usage = "dr limit [element] [monster]: Try to banish all monsters but [element] [monster]s.";
-export default new Command("limit", usage, ([element, monster]: string[]) => {
+export default new Command("limit", usage, ([allElementString, monster]: string[]) => {
+  const elementStrings = allElementString.split("|");
   printHtml("<b>Dr. Dread Auto-Banisher</b>");
   if (!isDreadMonsterId(monster)) {
     print(`Unrecognized monster ${monster}.`, "red");
     print(`Usage: ${usage}.`);
     return;
-  } else if (!isDreadElementId(element)) {
-    print(`Unrecognized element ${element}.`, "red");
-    print(`Usage: ${usage}.`);
-    return;
   }
+  for (const element of elementStrings) {
+    if (!isDreadElementId(element)) {
+      print(`Unrecognized element [${element}].`, "red");
+      print(`Usage: ${usage}.`);
+      return;
+    }
+  }
+
+  const elements = elementStrings as DreadElementId[];
 
   if (!have($item`Dreadsylvanian skeleton key`) && itemAmount($item`Freddy Kruegerand`) < 100) {
     throw "You don't have skeleton keys and you're almost out of Freddies. Fix that.";
   }
 
   withWineglass(() => {
-    for (const banish of planLimitTo(monsterZone(monster), monster, element)) {
+    for (const banish of planLimitTo(monsterZone(monster), monster, elements)) {
       const [noncombat, subIndex, choiceIndex, targetZone, thing] = banish;
       const subnoncombat = noncombat.choices.get(subIndex) as DreadSubnoncombat;
       const choiceSequence: [number, number][] = [
@@ -58,7 +65,7 @@ export default new Command("limit", usage, ([element, monster]: string[]) => {
     }
   });
 
-  const remaining = neededBanishes(monsterZone(monster), monster, element);
+  const remaining = neededBanishes(monsterZone(monster), monster, elements);
   if (remaining.length === 0) {
     print("All banishes complete!", "blue");
   } else {

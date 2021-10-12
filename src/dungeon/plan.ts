@@ -19,15 +19,10 @@ import {
 export function banishesToLimit(
   targetZone: DreadZoneId,
   monster: DreadMonsterId | "banish no monster",
-  element: DreadElementId | "banish all elements" | "banish no element"
+  elements: DreadElementId[]
 ): DreadBanish[] {
   const monstersNeededBanished = monster === "banish no monster" ? [] : [monsterPair(monster)];
-  const elementsNeededBanished =
-    element === "banish all elements"
-      ? [...dreadElements]
-      : element === "banish no element"
-      ? []
-      : dreadElements.filter((e) => e !== element);
+  const elementsNeededBanished = dreadElements.filter((e) => !elements.includes(e));
   const thingsNeededBanished = [...monstersNeededBanished, ...elementsNeededBanished];
 
   const result: DreadBanish[] = [];
@@ -55,7 +50,7 @@ export function banishesToLimit(
 export function categorizeBanishes(
   targetZone: DreadZoneId,
   monster: DreadMonsterId | "banish no monster",
-  element: DreadElementId | "banish all elements" | "banish no element"
+  elements: DreadElementId[]
 ): {
   completedBanishes: DreadBanish[];
   usedBanishes: DreadBanish[];
@@ -66,7 +61,7 @@ export function categorizeBanishes(
   const banishedInZone = banished.filter((info) => info.targetZone === targetZone);
 
   const noncombatsUsed = new Set(dreadNoncombatsUsed());
-  const desiredBanishes = banishesToLimit(targetZone, monster, element);
+  const desiredBanishes = banishesToLimit(targetZone, monster, elements);
 
   const completedBanishes: DreadBanish[] = [];
   const usedBanishes: DreadBanish[] = [];
@@ -104,13 +99,15 @@ export function categorizeBanishes(
 export function planLimitTo(
   targetZone: DreadZoneId,
   monster: DreadMonsterId | "banish no monster",
-  element: DreadElementId | "banish all elements" | "banish no element"
+  elements: DreadElementId[]
 ): DreadBanish[] {
-  const { cantBanishes, goodBanishes } = categorizeBanishes(targetZone, monster, element);
+  const { cantBanishes, goodBanishes } = categorizeBanishes(targetZone, monster, elements);
 
   for (const [classes, [noncombat, , , banish]] of cantBanishes) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    print(`Can't banish ${banish} @ ${noncombat} because we aren't ${classes.join(", ")}.`);
+    print(
+      `Can't banish ${banish} @ ${noncombat.name} because we aren't any of ${classes.join(", ")}.`
+    );
   }
 
   const banishLocations = new Map<DreadNoncombat, DreadBanish[]>();
@@ -132,16 +129,16 @@ export function planLimitTo(
 export function neededBanishes(
   targetZone: DreadZoneId,
   monster: DreadMonsterId,
-  element: DreadElementId
+  elements: DreadElementId[]
 ): (DreadElementId | DreadMonsterId)[] {
-  const { completedBanishes } = categorizeBanishes(targetZone, monster, element);
+  const { completedBanishes } = categorizeBanishes(targetZone, monster, elements);
   const paired = monsterPair(monster);
   const monsterCount = completedBanishes.filter(([, , , , thing]) => thing === paired).length;
   const banishedElements = completedBanishes
     .map(([, , , , thing]) => thing)
     .filter((x) => isDreadElementId(x)) as DreadElementId[];
   return [
-    ...dreadElements.filter((e) => element !== e && !banishedElements.includes(e)),
+    ...dreadElements.filter((e) => !elements.includes(e) && !banishedElements.includes(e)),
     ...new Array(2 - monsterCount).fill(paired),
   ];
 }
