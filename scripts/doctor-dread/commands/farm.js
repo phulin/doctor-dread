@@ -21041,7 +21041,9 @@ var priceCaps = {
   "peppermint parasol": 25000,
   "Sacramento wine": 10000,
   meteoreo: 10000,
-  "Tea, Early Grey, Hot": 10000
+  "Tea, Early Grey, Hot": 10000,
+  "tin cup of mulligan stew": 20000,
+  "Hodgman's blanket": 20000
 };
 var npcItems = (0,dist.$items)(acquire_templateObject || (acquire_templateObject = acquire_taggedTemplateLiteral(["white Dreadsylvanian, Dreadsylvanian stew, glass of raw eggs"])));
 function acquire_acquire(qty, item, maxPrice) {
