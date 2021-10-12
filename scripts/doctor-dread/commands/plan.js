@@ -19261,17 +19261,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var usage = "dr plan [element] [monster]: Print plan for banishing all [element] [monster]s.";
+var usage = "dr plan [elements] [monster | zone]: Print plan for banishing all but [elements] [monster | zone]s. " + "Elements is a | separated list, e.g. hot|spooky. " + "Designating a monster will banish the other monster; designating a zone will banish in that zone.";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new _command__WEBPACK_IMPORTED_MODULE_1__/* .Command */ .m("plan", usage, _ref => {
   var _ref2 = _slicedToArray(_ref, 2),
       allElementString = _ref2[0],
-      monster = _ref2[1];
+      monsterOrZone = _ref2[1];
 
   (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.printHtml)("<b>Dr. Dread Banish Planner</b>");
   var elementStrings = allElementString.split("|");
 
-  if (!(0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .isDreadMonsterId */ .ww)(monster)) {
-    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Unrecognized monster ".concat(monster, "."), "red");
+  if (!(0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .isDreadMonsterId */ .ww)(monsterOrZone) && !(0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .isDreadZoneId */ .m0)(monsterOrZone)) {
+    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Unrecognized monster ".concat(monsterOrZone, "."), "red");
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Usage: ".concat(usage, "."));
     return;
   }
@@ -19283,7 +19283,7 @@ var usage = "dr plan [element] [monster]: Print plan for banishing all [element]
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
       var element = _step.value;
 
-      if (!(0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .isDreadElementId */ .pd)(element)) {
+      if ((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .toDreadElementId */ .Ai)(element) === undefined) {
         (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Unrecognized element [".concat(element, "]."), "red");
         (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Usage: ".concat(usage, "."));
         return;
@@ -19295,11 +19295,13 @@ var usage = "dr plan [element] [monster]: Print plan for banishing all [element]
     _iterator.f();
   }
 
-  var elements = elementStrings;
+  var zone = (0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .isDreadZoneId */ .m0)(monsterOrZone) ? monsterOrZone : (0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .monsterZone */ .ON)(monsterOrZone);
+  var monster = (0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .isDreadMonsterId */ .ww)(monsterOrZone) ? monsterOrZone : "banish no monster";
+  var elements = elementStrings.map(_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .toDreadElementId */ .Ai);
   (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Noncombats used: ".concat((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .dreadNoncombatsUsed */ .Sq)().join(", ")));
   (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Trying to banish all but ".concat(elements.join("|"), " ").concat(monster));
   (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)();
-  var remaining = (0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .neededBanishes */ .M7)((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .monsterZone */ .ON)(monster), monster, elements);
+  var remaining = (0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .neededBanishes */ .M7)(zone, monster, elements);
 
   if (remaining.length === 0) {
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("All banishes complete!", "blue");
@@ -19307,13 +19309,13 @@ var usage = "dr plan [element] [monster]: Print plan for banishing all [element]
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Outstanding banishes: ".concat(remaining.join(", ")));
   }
 
-  var plan = (0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .planLimitTo */ .NK)((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .monsterZone */ .ON)(monster), monster, elements);
+  var plan = (0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .planLimitTo */ .NK)(zone, monster, elements);
 
   if (plan.length === 0) {
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("No banishes available and needed.");
   }
 
-  var _iterator2 = _createForOfIteratorHelper((0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .planLimitTo */ .NK)((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_2__/* .monsterZone */ .ON)(monster), monster, elements)),
+  var _iterator2 = _createForOfIteratorHelper((0,_dungeon_plan__WEBPACK_IMPORTED_MODULE_3__/* .planLimitTo */ .NK)(zone, monster, elements)),
       _step2;
 
   try {
@@ -19577,7 +19579,7 @@ function neededBanishes(targetZone, monster, elements) {
   var _categorizeBanishes2 = categorizeBanishes(targetZone, monster, elements),
       completedBanishes = _categorizeBanishes2.completedBanishes;
 
-  var paired = (0,_raidlog__WEBPACK_IMPORTED_MODULE_1__/* .monsterPair */ .RN)(monster);
+  var paired = monster === "banish no monster" ? null : (0,_raidlog__WEBPACK_IMPORTED_MODULE_1__/* .monsterPair */ .RN)(monster);
   var monsterCount = completedBanishes.filter(_ref3 => {
     var _ref4 = _slicedToArray(_ref3, 5),
         thing = _ref4[4];
@@ -19609,11 +19611,13 @@ __webpack_require__.d(__webpack_exports__, {
   "e5": () => (/* binding */ dreadZones),
   "pd": () => (/* binding */ isDreadElementId),
   "ww": () => (/* binding */ isDreadMonsterId),
+  "m0": () => (/* binding */ isDreadZoneId),
   "RN": () => (/* binding */ monsterPair),
-  "ON": () => (/* binding */ monsterZone)
+  "ON": () => (/* binding */ monsterZone),
+  "Ai": () => (/* binding */ toDreadElementId)
 });
 
-// UNUSED EXPORTS: DreadChoice, DreadNoncombat, DreadSubnoncombat, DreadZone, dreadKilled, dreadMonsters, dreadZoneTypes, memoizedRaidlog, monsterSingular, raidlogBlocks, toDreadElementId, toElement
+// UNUSED EXPORTS: DreadChoice, DreadNoncombat, DreadSubnoncombat, DreadZone, dreadKilled, dreadMonsters, dreadZoneTypes, memoizedRaidlog, monsterSingular, raidlogBlocks, toElement
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.entries.js
 var es_object_entries = __webpack_require__(6737);
@@ -19858,7 +19862,10 @@ var DreadNoncombat = /*#__PURE__*/function () {
 
   return DreadNoncombat;
 }();
-var dreadZoneTypes = (/* unused pure expression or super */ null && (["forest", "village", "castle"]));
+var dreadZoneTypes = ["forest", "village", "castle"];
+function isDreadZoneId(x) {
+  return dreadZoneTypes.includes(x);
+}
 var DreadZone = /*#__PURE__*/function () {
   function DreadZone(_ref14) {
     var name = _ref14.name,

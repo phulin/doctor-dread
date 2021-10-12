@@ -19334,7 +19334,7 @@ __webpack_require__.d(__webpack_exports__, {
   "ww": () => (/* binding */ isDreadMonsterId)
 });
 
-// UNUSED EXPORTS: DreadChoice, DreadNoncombat, DreadSubnoncombat, DreadZone, dreadElements, dreadMonsters, dreadNoncombatsUsed, dreadZone, dreadZoneTypes, memoizedRaidlog, monsterPair, monsterSingular, monsterZone, raidlogBlocks, toDreadElementId, toElement
+// UNUSED EXPORTS: DreadChoice, DreadNoncombat, DreadSubnoncombat, DreadZone, dreadElements, dreadMonsters, dreadNoncombatsUsed, dreadZone, dreadZoneTypes, isDreadZoneId, memoizedRaidlog, monsterPair, monsterSingular, monsterZone, raidlogBlocks, toDreadElementId, toElement
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.entries.js
 var es_object_entries = __webpack_require__(6737);
@@ -19580,6 +19580,9 @@ var DreadNoncombat = /*#__PURE__*/function () {
   return DreadNoncombat;
 }();
 var dreadZoneTypes = (/* unused pure expression or super */ null && (["forest", "village", "castle"]));
+function isDreadZoneId(x) {
+  return dreadZoneTypes.includes(x);
+}
 var DreadZone = /*#__PURE__*/function () {
   function DreadZone(_ref14) {
     var name = _ref14.name,
