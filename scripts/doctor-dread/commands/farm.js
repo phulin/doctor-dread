@@ -20581,8 +20581,9 @@ function refreshLatte() {
   }
 
   return (0,dist.have)((0,dist.$item)(outfit_templateObject20 || (outfit_templateObject20 = outfit_taggedTemplateLiteral(["latte lovers member's mug"]))));
-}
-var dreadDefaultRequirement = new lib/* Requirement */.nb(["1 Item Drop", "Sword"], {
+} // Implicitly value items at 300,000 meat - this makes MPA roughly on par with garbo.
+
+var dreadDefaultRequirement = new lib/* Requirement */.nb(["3 Item Drop", "Sword"], {
   forceEquip: [].concat(outfit_toConsumableArray([(0,dist.$item)(outfit_templateObject21 || (outfit_templateObject21 = outfit_taggedTemplateLiteral(["dreadful fedora"]))), (0,dist.$item)(outfit_templateObject22 || (outfit_templateObject22 = outfit_taggedTemplateLiteral(["unwrapped knock-off retro superhero cape"]))), (0,dist.$item)(outfit_templateObject23 || (outfit_templateObject23 = outfit_taggedTemplateLiteral(["dreadful sweater"]))), (0,dist.$item)(outfit_templateObject24 || (outfit_templateObject24 = outfit_taggedTemplateLiteral(["Dreadsylvania Auditor's badge"])))].filter(item => (0,dist.have)(item))), [(0,dist.have)((0,dist.$item)(outfit_templateObject25 || (outfit_templateObject25 = outfit_taggedTemplateLiteral(["cursed pirate cutlass"])))) ? (0,dist.$item)(outfit_templateObject26 || (outfit_templateObject26 = outfit_taggedTemplateLiteral(["cursed pirate cutlass"]))) : (0,dist.$item)(outfit_templateObject27 || (outfit_templateObject27 = outfit_taggedTemplateLiteral(["sweet ninja sword"])))])
 });
 function dreadOutfit() {
@@ -21314,7 +21315,7 @@ function fillStomach(finish) {
 
   if (finish) {
     availableStomach = Math.max(0, (0,external_kolmafia_.fullnessLimit)() - (0,external_kolmafia_.myFullness)());
-    var glassCount = Math.max(availableStomach, (0,external_kolmafia_.availableAmount)((0,dist.$item)(diet_templateObject21 || (diet_templateObject21 = diet_taggedTemplateLiteral(["glass of raw eggs"])))));
+    var glassCount = Math.min(availableStomach, (0,external_kolmafia_.availableAmount)((0,dist.$item)(diet_templateObject21 || (diet_templateObject21 = diet_taggedTemplateLiteral(["glass of raw eggs"])))));
     mindMayo(Mayo.zapine, glassCount);
     eatSafe(glassCount, (0,dist.$item)(diet_templateObject22 || (diet_templateObject22 = diet_taggedTemplateLiteral(["glass of raw eggs"]))));
     availableStomach = Math.max(0, (0,external_kolmafia_.fullnessLimit)() - (0,external_kolmafia_.myFullness)());
@@ -21470,7 +21471,9 @@ var Mayo = {
 };
 
 function mindMayo(mayo, quantity) {
+  if (quantity === 0) return;
   if ((0,external_kolmafia_.getWorkshed)() !== (0,dist.$item)(diet_templateObject76 || (diet_templateObject76 = diet_taggedTemplateLiteral(["portable Mayo Clinic"])))) return;
+  (0,external_kolmafia_.print)("minding ".concat(quantity, " ").concat(mayo));
   if ((0,dist.get)("mayoInMouth") && (0,dist.get)("mayoInMouth") !== mayo.name) throw "You used a bad mayo, my friend!"; //Is this what we want?
 
   (0,external_kolmafia_.retrieveItem)(quantity, mayo);
@@ -22438,7 +22441,7 @@ function dreadTurn(location) {
   }
 
   try {
-    (0,external_kolmafia_.print)("Collecting old dry bones!", "blue");
+    (0,external_kolmafia_.print)("Collecting items from Dreadsylvania!", "blue");
 
     if (globalvars/* globalOptions.stopTurncount */.X.stopTurncount !== null) {
       (0,external_kolmafia_.print)("Stopping in ".concat(globalvars/* globalOptions.stopTurncount */.X.stopTurncount - (0,external_kolmafia_.myTurncount)()), "blue");

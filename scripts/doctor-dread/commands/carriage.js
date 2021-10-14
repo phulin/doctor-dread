@@ -18072,7 +18072,7 @@ function feedCarriageman() {
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Carriageman currently ".concat(sheets, " sheets to the wind."));
     var item = carriagemanBooze.find(item => (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)(item) > 0);
     if (!item) break;
-    var count = Math.ceil((target - sheets) / (0,libram__WEBPACK_IMPORTED_MODULE_1__.getAverageAdventures)(item));
+    var count = Math.min((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)(item), Math.ceil((target - sheets) / (0,libram__WEBPACK_IMPORTED_MODULE_1__.getAverageAdventures)(item)));
     var responseText = (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.visitUrl)("clan_dreadsylvania.php?action=feedbooze&whichbooze=".concat((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.toInt)(item), "&boozequantity=").concat(count));
 
     if (!responseText.includes("The Carriageman gladly accepts your booze")) {

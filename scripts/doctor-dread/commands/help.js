@@ -19632,7 +19632,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _command__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(463);
 /* harmony import */ var _dungeon_raidlog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4151);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(644);
-var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14;
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10, _templateObject11, _templateObject12;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -19793,11 +19793,11 @@ function planAllNoncombats(items, unlock, available) {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new _command__WEBPACK_IMPORTED_MODULE_4__/* .Command */ .m("all", "dr all [unlock] [freddies]: Collect useful items from all instances (and grind flour). With freddies, get freddies. With unlock, unlock all useful NCs.", args => {
-  var grindFlour = !(0,libram__WEBPACK_IMPORTED_MODULE_2__.get)("_dr_groundFlour", false) && (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myPrimestat)() === (0,libram__WEBPACK_IMPORTED_MODULE_2__.$stat)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Muscle"])));
-  var items = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["dreadful roast, stinking agaricus, wax banana, eau de mort"])));
-  if (grindFlour) items.splice(0, 0, (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["bone flour"])))); // if (myClass() === $class`Accordion Thief`) items.splice(0, 0, $item`intricate music box parts`);
+  // const grindFlour = !get("_dr_groundFlour", false) && myPrimestat() === $stat`Muscle`;
+  var items = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject || (_templateObject = _taggedTemplateLiteral(["dreadful roast, stinking agaricus, wax banana, eau de mort"]))); // if (grindFlour) items.splice(0, 0, $item`bone flour`);
+  // if (myClass() === $class`Accordion Thief`) items.splice(0, 0, $item`intricate music box parts`);
 
-  if (args.includes("freddies")) items.push((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["Freddy Kruegerand"]))));
+  if (args.includes("freddies")) items.push((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["Freddy Kruegerand"]))));
   var unlock = args.includes("unlock");
   (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.printHtml)("<b>Doctor Dread: Dailies</b>");
 
@@ -19808,7 +19808,7 @@ function planAllNoncombats(items, unlock, available) {
     return;
   }
 
-  if (!(0,libram__WEBPACK_IMPORTED_MODULE_2__.have)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"])))) && (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["Freddy Kruegerand"])))) < 100) {
+  if (!(0,libram__WEBPACK_IMPORTED_MODULE_2__.have)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"])))) && (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["Freddy Kruegerand"])))) < 100) {
     throw "You don't have skeleton keys and you're almost out of Freddies. Fix that.";
   }
 
@@ -19817,7 +19817,7 @@ function planAllNoncombats(items, unlock, available) {
   var stashClanName = (0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)()[0];
   var acquired = new Map();
   var flourCount = 0;
-  var bone = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["old dry bone"])));
+  var bone = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["old dry bone"])));
 
   try {
     libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(stashClanName);
@@ -19830,7 +19830,7 @@ function planAllNoncombats(items, unlock, available) {
         var _ref6 = _slicedToArray(_ref5, 4),
             item = _ref6[3];
 
-        return item === (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["bone flour"])));
+        return item === (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["bone flour"])));
       }).length;
     });
     var boneCount = 0;
@@ -19839,13 +19839,13 @@ function planAllNoncombats(items, unlock, available) {
       var _taken$get;
 
       var stashClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(stashClanName);
-      var taken = stashClan.take(new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["old dry bone"]))), flourCount]]));
-      boneCount = (_taken$get = taken.get((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["old dry bone"]))))) !== null && _taken$get !== void 0 ? _taken$get : 0;
+      var taken = stashClan.take(new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["old dry bone"]))), flourCount]]));
+      boneCount = (_taken$get = taken.get((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["old dry bone"]))))) !== null && _taken$get !== void 0 ? _taken$get : 0;
     }
 
     if (boneCount < flourCount) {
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to take ".concat(flourCount, " old dry bones from stash! Replanning with ").concat(boneCount, "..."));
-      plan = planAllNoncombats(items, unlock, new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["old dry bone"]))), boneCount]]));
+      plan = planAllNoncombats(items, unlock, new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["old dry bone"]))), boneCount]]));
     }
 
     (0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .withWineglass */ .RQ)(() => {
@@ -19880,7 +19880,7 @@ function planAllNoncombats(items, unlock, available) {
 
               if (subnoncombat !== null && subnoncombat !== void 0 && subnoncombat.isLocked()) {
                 if (!unlock) throw "Shouldn't be trying locked NC!";
-                (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.retrieveItem)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"]))));
+                (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.retrieveItem)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"]))));
               }
 
               (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.visitUrl)("clan_dreadsylvania.php?action=forceloc&loc=".concat(noncombat.index));
@@ -19904,7 +19904,7 @@ function planAllNoncombats(items, unlock, available) {
   } finally {
     var _acquired$get2;
 
-    acquired.delete((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject13 || (_templateObject13 = _taggedTemplateLiteral(["Freddy Kruegerand"]))));
+    acquired.delete((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["Freddy Kruegerand"]))));
 
     if (acquired.size > 0) {
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Placing items in the stash in ".concat((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)()[0], "."));
@@ -19914,7 +19914,7 @@ function planAllNoncombats(items, unlock, available) {
       _stashClan.put(acquired);
     }
 
-    if ((_acquired$get2 = acquired.get((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject14 || (_templateObject14 = _taggedTemplateLiteral(["bone flour"]))))) !== null && _acquired$get2 !== void 0 ? _acquired$get2 : 0 > 0) {
+    if ((_acquired$get2 = acquired.get((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["bone flour"]))))) !== null && _acquired$get2 !== void 0 ? _acquired$get2 : 0 > 0) {
       (0,libram__WEBPACK_IMPORTED_MODULE_2__.set)("_dr_groundFlour", true);
     }
 
@@ -21218,8 +21218,9 @@ function refreshLatte() {
   }
 
   return (0,dist.have)((0,dist.$item)(outfit_templateObject20 || (outfit_templateObject20 = outfit_taggedTemplateLiteral(["latte lovers member's mug"]))));
-}
-var dreadDefaultRequirement = new lib/* Requirement */.nb(["1 Item Drop", "Sword"], {
+} // Implicitly value items at 300,000 meat - this makes MPA roughly on par with garbo.
+
+var dreadDefaultRequirement = new lib/* Requirement */.nb(["3 Item Drop", "Sword"], {
   forceEquip: [].concat(outfit_toConsumableArray([(0,dist.$item)(outfit_templateObject21 || (outfit_templateObject21 = outfit_taggedTemplateLiteral(["dreadful fedora"]))), (0,dist.$item)(outfit_templateObject22 || (outfit_templateObject22 = outfit_taggedTemplateLiteral(["unwrapped knock-off retro superhero cape"]))), (0,dist.$item)(outfit_templateObject23 || (outfit_templateObject23 = outfit_taggedTemplateLiteral(["dreadful sweater"]))), (0,dist.$item)(outfit_templateObject24 || (outfit_templateObject24 = outfit_taggedTemplateLiteral(["Dreadsylvania Auditor's badge"])))].filter(item => (0,dist.have)(item))), [(0,dist.have)((0,dist.$item)(outfit_templateObject25 || (outfit_templateObject25 = outfit_taggedTemplateLiteral(["cursed pirate cutlass"])))) ? (0,dist.$item)(outfit_templateObject26 || (outfit_templateObject26 = outfit_taggedTemplateLiteral(["cursed pirate cutlass"]))) : (0,dist.$item)(outfit_templateObject27 || (outfit_templateObject27 = outfit_taggedTemplateLiteral(["sweet ninja sword"])))])
 });
 function dreadOutfit() {
@@ -21951,7 +21952,7 @@ function fillStomach(finish) {
 
   if (finish) {
     availableStomach = Math.max(0, (0,external_kolmafia_.fullnessLimit)() - (0,external_kolmafia_.myFullness)());
-    var glassCount = Math.max(availableStomach, (0,external_kolmafia_.availableAmount)((0,dist.$item)(diet_templateObject21 || (diet_templateObject21 = diet_taggedTemplateLiteral(["glass of raw eggs"])))));
+    var glassCount = Math.min(availableStomach, (0,external_kolmafia_.availableAmount)((0,dist.$item)(diet_templateObject21 || (diet_templateObject21 = diet_taggedTemplateLiteral(["glass of raw eggs"])))));
     mindMayo(Mayo.zapine, glassCount);
     eatSafe(glassCount, (0,dist.$item)(diet_templateObject22 || (diet_templateObject22 = diet_taggedTemplateLiteral(["glass of raw eggs"]))));
     availableStomach = Math.max(0, (0,external_kolmafia_.fullnessLimit)() - (0,external_kolmafia_.myFullness)());
@@ -22107,7 +22108,9 @@ var Mayo = {
 };
 
 function mindMayo(mayo, quantity) {
+  if (quantity === 0) return;
   if ((0,external_kolmafia_.getWorkshed)() !== (0,dist.$item)(diet_templateObject76 || (diet_templateObject76 = diet_taggedTemplateLiteral(["portable Mayo Clinic"])))) return;
+  (0,external_kolmafia_.print)("minding ".concat(quantity, " ").concat(mayo));
   if ((0,dist.get)("mayoInMouth") && (0,dist.get)("mayoInMouth") !== mayo.name) throw "You used a bad mayo, my friend!"; //Is this what we want?
 
   (0,external_kolmafia_.retrieveItem)(quantity, mayo);
@@ -23075,7 +23078,7 @@ function dreadTurn(location) {
   }
 
   try {
-    (0,external_kolmafia_.print)("Collecting old dry bones!", "blue");
+    (0,external_kolmafia_.print)("Collecting items from Dreadsylvania!", "blue");
 
     if (globalvars/* globalOptions.stopTurncount */.X.stopTurncount !== null) {
       (0,external_kolmafia_.print)("Stopping in ".concat(globalvars/* globalOptions.stopTurncount */.X.stopTurncount - (0,external_kolmafia_.myTurncount)()), "blue");
@@ -23644,7 +23647,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     return;
   }
 
-  var clanMeat = parseInt(match[1].replace(",", ""));
+  var clanMeat = parseInt(match[1].replace(/,/g, ""));
 
   if (clanMeat < 1000000) {
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("".concat(clanMeat, " is not enough meat to reset dungeon."), "red");
@@ -24104,7 +24107,7 @@ function feedCarriageman() {
     (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Carriageman currently ".concat(sheets, " sheets to the wind."));
     var item = carriagemanBooze.find(item => (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)(item) > 0);
     if (!item) break;
-    var count = Math.ceil((target - sheets) / (0,libram__WEBPACK_IMPORTED_MODULE_1__.getAverageAdventures)(item));
+    var count = Math.min((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)(item), Math.ceil((target - sheets) / (0,libram__WEBPACK_IMPORTED_MODULE_1__.getAverageAdventures)(item)));
     var responseText = (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.visitUrl)("clan_dreadsylvania.php?action=feedbooze&whichbooze=".concat((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.toInt)(item), "&boozequantity=").concat(count));
 
     if (!responseText.includes("The Carriageman gladly accepts your booze")) {
