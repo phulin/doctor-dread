@@ -22,7 +22,7 @@ export default new Command("reset", "dr reset: Reset current clan.", () => {
     return;
   }
 
-  const clanMeat = parseInt(match[1].replace(",", ""));
+  const clanMeat = parseInt(match[1].replace(/,/g, ""));
   if (clanMeat < 1000000) {
     print(`${clanMeat} is not enough meat to reset dungeon.`, "red");
     return;

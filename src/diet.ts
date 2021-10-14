@@ -212,7 +212,7 @@ export function fillStomach(finish: boolean): void {
 
   if (finish) {
     availableStomach = Math.max(0, fullnessLimit() - myFullness());
-    const glassCount = Math.max(availableStomach, availableAmount($item`glass of raw eggs`));
+    const glassCount = Math.min(availableStomach, availableAmount($item`glass of raw eggs`));
     mindMayo(Mayo.zapine, glassCount);
     eatSafe(glassCount, $item`glass of raw eggs`);
 
@@ -401,7 +401,9 @@ const Mayo = {
 };
 
 function mindMayo(mayo: Item, quantity: number) {
+  if (quantity === 0) return;
   if (getWorkshed() !== $item`portable Mayo Clinic`) return;
+  print(`minding ${quantity} ${mayo}`);
   if (get("mayoInMouth") && get("mayoInMouth") !== mayo.name)
     throw `You used a bad mayo, my friend!`; //Is this what we want?
   retrieveItem(quantity, mayo);

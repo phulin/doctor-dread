@@ -108,7 +108,8 @@ export function refreshLatte(): boolean {
   return have($item`latte lovers member's mug`);
 }
 
-export const dreadDefaultRequirement = new Requirement(["1 Item Drop", "Sword"], {
+// Implicitly value items at 300,000 meat - this makes MPA roughly on par with garbo.
+export const dreadDefaultRequirement = new Requirement(["3 Item Drop", "Sword"], {
   forceEquip: [
     ...[
       $item`dreadful fedora`,

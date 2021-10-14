@@ -31,7 +31,10 @@ export function feedCarriageman(target = 2000): number {
     const item = carriagemanBooze.find((item) => itemAmount(item) > 0);
     if (!item) break;
 
-    const count = Math.ceil((target - sheets) / getAverageAdventures(item));
+    const count = Math.min(
+      itemAmount(item),
+      Math.ceil((target - sheets) / getAverageAdventures(item))
+    );
 
     const responseText = visitUrl(
       `clan_dreadsylvania.php?action=feedbooze&whichbooze=${toInt(item)}&boozequantity=${count}`

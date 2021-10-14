@@ -2,7 +2,6 @@ import {
   handlingChoice,
   itemAmount,
   myClass,
-  myPrimestat,
   print,
   printHtml,
   retrieveItem,
@@ -10,7 +9,7 @@ import {
   stashAmount,
   visitUrl,
 } from "kolmafia";
-import { $item, $items, $stat, Clan, get, have, set, sum } from "libram";
+import { $item, $items, Clan, have, set, sum } from "libram";
 
 import { Command } from "../command";
 import { DreadNoncombat, dreadNoncombatsUsed, dreadZones } from "../dungeon/raidlog";
@@ -90,10 +89,10 @@ export default new Command(
   "all",
   "dr all [unlock] [freddies]: Collect useful items from all instances (and grind flour). With freddies, get freddies. With unlock, unlock all useful NCs.",
   (args: string[]) => {
-    const grindFlour = !get("_dr_groundFlour", false) && myPrimestat() === $stat`Muscle`;
+    // const grindFlour = !get("_dr_groundFlour", false) && myPrimestat() === $stat`Muscle`;
 
     const items = $items`dreadful roast, stinking agaricus, wax banana, eau de mort`;
-    if (grindFlour) items.splice(0, 0, $item`bone flour`);
+    // if (grindFlour) items.splice(0, 0, $item`bone flour`);
     // if (myClass() === $class`Accordion Thief`) items.splice(0, 0, $item`intricate music box parts`);
     if (args.includes("freddies")) items.push($item`Freddy Kruegerand`);
 

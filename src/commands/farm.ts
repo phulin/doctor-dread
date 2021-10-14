@@ -202,7 +202,7 @@ export default new Command(
     }
 
     try {
-      print("Collecting old dry bones!", "blue");
+      print("Collecting items from Dreadsylvania!", "blue");
       if (globalOptions.stopTurncount !== null) {
         print(`Stopping in ${globalOptions.stopTurncount - myTurncount()}`, "blue");
       }
