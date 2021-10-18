@@ -20901,6 +20901,7 @@ var priceCaps = {
   "Sacramento wine": 10000,
   meteoreo: 10000,
   "Tea, Early Grey, Hot": 10000,
+  "ice rice": 10000,
   "tin cup of mulligan stew": 20000,
   "Hodgman's blanket": 20000
 };
