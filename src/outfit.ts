@@ -111,14 +111,15 @@ export function refreshLatte(): boolean {
 // Implicitly value items at 300,000 meat - this makes MPA roughly on par with garbo.
 export const dreadDefaultRequirement = new Requirement(["3 Item Drop", "Sword"], {
   forceEquip: [
-    ...[
-      $item`dreadful fedora`,
-      $item`unwrapped knock-off retro superhero cape`,
-      $item`dreadful sweater`,
-      $item`Dreadsylvania Auditor's badge`,
-    ].filter((item) => have(item)),
+    ...[$item`unwrapped knock-off retro superhero cape`].filter((item) => have(item)),
     have($item`cursed pirate cutlass`) ? $item`cursed pirate cutlass` : $item`sweet ninja sword`,
   ],
+  bonusEquip: new Map([
+    [$item`dreadful fedora`, 500],
+    [$item`dreadful sweater`, 500],
+    [$item`dreadful glove`, 500],
+    [$item`Dreadsylvania Auditor's badge`, 500],
+  ]),
 });
 export function dreadOutfit(requirement = dreadDefaultRequirement): void {
   const extraObjectives = [];
