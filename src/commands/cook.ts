@@ -14,7 +14,7 @@ import { Command } from "../command";
 import { DreadElementId, dreadElements, toDreadElementId, toElement } from "../dungeon/raidlog";
 
 function elementPocket(elementId: DreadElementId): Item {
-  return Item.get(`Dreadsylvanian ${elementId} pocket`);
+  return Item.get(`Dreadsylvanian ${elementId === "stinky" ? "stink" : elementId} pocket`);
 }
 
 function elementCluster(elementId: DreadElementId): Item {

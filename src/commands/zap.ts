@@ -34,7 +34,7 @@ import { banderRun, findRun, FreeRun, tryConfigureBanderRuns, tryFillLatte } fro
 const wands = $items`aluminum wand, ebony wand, hexagonal wand, marble wand, pine wand`;
 
 function elementPocket(elementId: DreadElementId): Item {
-  return Item.get(`Dreadsylvanian ${elementId} pocket`);
+  return Item.get(`Dreadsylvanian ${elementId === "stinky" ? "stink" : elementId} pocket`);
 }
 
 /**
