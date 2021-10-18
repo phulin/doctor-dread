@@ -22,6 +22,7 @@ import {
   have,
   Requirement,
 } from "libram";
+import { withStash } from "../clan";
 import { adventureMacro, Macro } from "../combat";
 import { Command } from "../command";
 import { DreadElementId, toDreadElementId } from "../dungeon/raidlog";
@@ -35,12 +36,18 @@ function elementPocket(elementId: DreadElementId): Item {
   return Item.get(`Dreadsylvanian ${elementId} pocket`);
 }
 
-function zap(item: Item): Item | null {
+/**
+ * Zap an item and return results.
+ * @param item Item to zap.
+ * @returns A tuple of [result, whether the wand blew up].
+ */
+function zap(item: Item): [Item | null, boolean] {
   const output = cliExecuteOutput(`zap ${item}`);
+  const blewUp = !!output.match(/You lose [0-9,]+ hit points/);
   const match = output.match(/You acquire an item: (.*)$/);
-  if (!match) return null;
+  if (!match) return [null, blewUp];
 
-  return item;
+  return [Item.get(match[1]), blewUp];
 }
 
 function zapQuestOutfit() {
@@ -136,29 +143,40 @@ export default new Command(
       return;
     }
 
-    let clan = Clan.get();
-    const originalClanName = clan.name;
-    if (get("dr_clans", "") !== "") {
-      const clans = get("dr_clans", "").split("|");
-      clan = Clan.join(clans[0]);
-    }
-
-    try {
-      const pocket = elementPocket(element);
-      if (!clan.take([pocket])) {
-        print("Failed to withdraw from stash.", "red");
-        return;
+    const pyec = $item`Platinum Yendorian Express Card`;
+    withStash([pyec], () => {
+      let clan = Clan.get();
+      const originalClanName = clan.name;
+      if (get("dr_clans", "") !== "") {
+        const clans = get("dr_clans", "").split("|");
+        clan = Clan.join(clans[0]);
       }
 
-      const result = zap(pocket);
-      if (result === null) {
-        print("Something went wrong with zapping.", "red");
-        return;
-      }
+      try {
+        while (get("_zapCount") < 2 || (have(pyec) && !get("expressCardUsed"))) {
+          if (get("_zapCount") === 2 && have(pyec)) use(pyec);
+          const pocket = elementPocket(element);
+          if (!clan.take([pocket])) {
+            print("Failed to withdraw from stash.", "red");
+            return;
+          }
 
-      clan.put([result]);
-    } finally {
-      Clan.join(originalClanName);
-    }
+          const [result, blewUp] = zap(pocket);
+          if (result === null) {
+            print("Something went wrong with zapping.", "red");
+            return;
+          }
+
+          if (blewUp) {
+            print("Wand blew up.", "red");
+            return;
+          }
+
+          clan.put([result]);
+        }
+      } finally {
+        Clan.join(originalClanName);
+      }
+    });
   }
 );
