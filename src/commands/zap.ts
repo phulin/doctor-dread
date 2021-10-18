@@ -2,6 +2,7 @@ import {
   cliExecute,
   cliExecuteOutput,
   myAscensions,
+  myDaycount,
   myFamiliar,
   myMeat,
   print,
@@ -84,6 +85,11 @@ export default new Command(
     if (!wands.some((item) => have(item)) && !have($item`dead mimic`)) {
       if (myMeat() < 6000) {
         print("Need 6000 meat for zap wand quest.", "red");
+        return;
+      }
+
+      if (get("lastZapperWandExplosionDay", -3) + 3 <= myDaycount()) {
+        print("Zap wand exploded too recently.", "red");
         return;
       }
 
