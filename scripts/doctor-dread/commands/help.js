@@ -22818,6 +22818,11 @@ function zapQuestOutfit() {
     if ((0,external_kolmafia_.myMeat)() < 6000) {
       (0,external_kolmafia_.print)("Need 6000 meat for zap wand quest.", "red");
       return;
+    }
+
+    if ((0,dist.get)("lastZapperWandExplosionDay", -3) + 3 <= (0,external_kolmafia_.myDaycount)()) {
+      (0,external_kolmafia_.print)("Zap wand exploded too recently.", "red");
+      return;
     } // Do the zap wand quest...
 
 
