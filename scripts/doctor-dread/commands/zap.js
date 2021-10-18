@@ -20108,7 +20108,7 @@ function zap_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.sli
 var wands = (0,dist.$items)(zap_templateObject || (zap_templateObject = zap_taggedTemplateLiteral(["aluminum wand, ebony wand, hexagonal wand, marble wand, pine wand"])));
 
 function elementPocket(elementId) {
-  return Item.get("Dreadsylvanian ".concat(elementId, " pocket"));
+  return Item.get("Dreadsylvanian ".concat(elementId === "stinky" ? "stink" : elementId, " pocket"));
 }
 /**
  * Zap an item and return results.

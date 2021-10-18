@@ -19275,7 +19275,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 function elementPocket(elementId) {
-  return Item.get("Dreadsylvanian ".concat(elementId, " pocket"));
+  return Item.get("Dreadsylvanian ".concat(elementId === "stinky" ? "stink" : elementId, " pocket"));
 }
 
 function elementCluster(elementId) {
