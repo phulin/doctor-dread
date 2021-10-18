@@ -19874,6 +19874,8 @@ __webpack_require__.d(__webpack_exports__, {
 var external_kolmafia_ = __webpack_require__(7530);
 // EXTERNAL MODULE: ./node_modules/libram/dist/index.js
 var dist = __webpack_require__(9803);
+// EXTERNAL MODULE: ./src/clan.ts
+var clan = __webpack_require__(2061);
 // EXTERNAL MODULE: ./src/combat.ts
 var combat = __webpack_require__(4223);
 // EXTERNAL MODULE: ./src/command.ts
@@ -20076,7 +20078,7 @@ function findRun() {
   return (_freeRuns$find = freeRuns.find(run => run.available())) !== null && _freeRuns$find !== void 0 ? _freeRuns$find : null;
 }
 ;// CONCATENATED MODULE: ./src/commands/zap.ts
-var zap_templateObject, zap_templateObject2, zap_templateObject3, zap_templateObject4, zap_templateObject5, zap_templateObject6, zap_templateObject7, zap_templateObject8, zap_templateObject9, zap_templateObject10, zap_templateObject11, zap_templateObject12, zap_templateObject13, zap_templateObject14, zap_templateObject15, zap_templateObject16, zap_templateObject17, zap_templateObject18;
+var zap_templateObject, zap_templateObject2, zap_templateObject3, zap_templateObject4, zap_templateObject5, zap_templateObject6, zap_templateObject7, zap_templateObject8, zap_templateObject9, zap_templateObject10, zap_templateObject11, zap_templateObject12, zap_templateObject13, zap_templateObject14, zap_templateObject15, zap_templateObject16, zap_templateObject17, zap_templateObject18, zap_templateObject19;
 
 function zap_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -20102,17 +20104,25 @@ function zap_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.sli
 
 
 
+
 var wands = (0,dist.$items)(zap_templateObject || (zap_templateObject = zap_taggedTemplateLiteral(["aluminum wand, ebony wand, hexagonal wand, marble wand, pine wand"])));
 
 function elementPocket(elementId) {
   return Item.get("Dreadsylvanian ".concat(elementId, " pocket"));
 }
+/**
+ * Zap an item and return results.
+ * @param item Item to zap.
+ * @returns A tuple of [result, whether the wand blew up].
+ */
+
 
 function zap(item) {
   var output = (0,external_kolmafia_.cliExecuteOutput)("zap ".concat(item));
+  var blewUp = !!output.match(/You lose [0-9,]+ hit points/);
   var match = output.match(/You acquire an item: (.*)$/);
-  if (!match) return null;
-  return item;
+  if (!match) return [null, blewUp];
+  return [Item.get(match[1]), blewUp];
 }
 
 function zapQuestOutfit() {
@@ -20207,33 +20217,47 @@ function zapQuestOutfit() {
     return;
   }
 
-  var clan = dist.Clan.get();
-  var originalClanName = clan.name;
+  var pyec = (0,dist.$item)(zap_templateObject19 || (zap_templateObject19 = zap_taggedTemplateLiteral(["Platinum Yendorian Express Card"])));
+  (0,clan/* withStash */.HG)([pyec], () => {
+    var clan = dist.Clan.get();
+    var originalClanName = clan.name;
 
-  if ((0,dist.get)("dr_clans", "") !== "") {
-    var clans = (0,dist.get)("dr_clans", "").split("|");
-    clan = dist.Clan.join(clans[0]);
-  }
-
-  try {
-    var pocket = elementPocket(element);
-
-    if (!clan.take([pocket])) {
-      (0,external_kolmafia_.print)("Failed to withdraw from stash.", "red");
-      return;
+    if ((0,dist.get)("dr_clans", "") !== "") {
+      var clans = (0,dist.get)("dr_clans", "").split("|");
+      clan = dist.Clan.join(clans[0]);
     }
 
-    var result = zap(pocket);
+    try {
+      while ((0,dist.get)("_zapCount") < 2 || (0,dist.have)(pyec) && !(0,dist.get)("expressCardUsed")) {
+        if ((0,dist.get)("_zapCount") === 2 && (0,dist.have)(pyec)) (0,external_kolmafia_.use)(pyec);
+        var pocket = elementPocket(element);
 
-    if (result === null) {
-      (0,external_kolmafia_.print)("Something went wrong with zapping.", "red");
-      return;
+        if (!clan.take([pocket])) {
+          (0,external_kolmafia_.print)("Failed to withdraw from stash.", "red");
+          return;
+        }
+
+        var _zap = zap(pocket),
+            _zap2 = _slicedToArray(_zap, 2),
+            result = _zap2[0],
+            blewUp = _zap2[1];
+
+        if (result === null) {
+          (0,external_kolmafia_.print)("Something went wrong with zapping.", "red");
+          return;
+        }
+
+        if (blewUp) {
+          (0,external_kolmafia_.print)("Wand blew up.", "red");
+          return;
+        }
+
+        clan.put([result]);
+      }
+    } finally {
+      dist.Clan.join(originalClanName);
     }
-
-    clan.put([result]);
-  } finally {
-    dist.Clan.join(originalClanName);
-  }
+  });
 }));
 
 /***/ }),
