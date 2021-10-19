@@ -22821,7 +22821,7 @@ function zapQuestOutfit() {
       return;
     }
 
-    if ((0,external_kolmafia_.myDaycount)() > (0,dist.get)("lastZapperWandExplosionDay", -3) + 3) {
+    if ((0,external_kolmafia_.myDaycount)() > parseInt((0,external_kolmafia_.getProperty)("lastZapperWandExplosionDay")) + 3) {
       (0,external_kolmafia_.print)("Zap wand exploded too recently.", "red");
       return;
     } // Do the zap wand quest...
