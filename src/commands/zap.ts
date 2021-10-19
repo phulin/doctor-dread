@@ -88,7 +88,7 @@ export default new Command(
         return;
       }
 
-      if (myDaycount() > get("lastZapperWandExplosionDay", -3) + 3) {
+      if (myDaycount() > toInt(getProperty("lastZapperWandExplosionDay")) + 3) {
         print("Zap wand exploded too recently.", "red");
         return;
       }
