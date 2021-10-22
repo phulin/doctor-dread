@@ -91,7 +91,9 @@ export default new Command(
   (args: string[]) => {
     // const grindFlour = !get("_dr_groundFlour", false) && myPrimestat() === $stat`Muscle`;
 
-    const items = $items`dreadful roast, stinking agaricus, wax banana, complicated lock impression, eau de mort`;
+    const items = args.includes("eau")
+      ? $items`eau de mort`
+      : $items`dreadful roast, stinking agaricus, wax banana, complicated lock impression, eau de mort`;
     // if (grindFlour) items.splice(0, 0, $item`bone flour`);
     // if (myClass() === $class`Accordion Thief`) items.splice(0, 0, $item`intricate music box parts`);
     if (args.includes("freddies")) items.push($item`Freddy Kruegerand`);
