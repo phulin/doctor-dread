@@ -19873,9 +19873,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _command__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(463);
 /* harmony import */ var _dungeon_raidlog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4151);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(644);
-var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10, _templateObject11, _templateObject12;
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -20035,7 +20043,7 @@ function planAllNoncombats(items, unlock, available) {
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new _command__WEBPACK_IMPORTED_MODULE_4__/* .Command */ .m("all", "dr all [unlock] [freddies]: Collect useful items from all instances (and grind flour). With freddies, get freddies. With unlock, unlock all useful NCs.", args => {
   // const grindFlour = !get("_dr_groundFlour", false) && myPrimestat() === $stat`Muscle`;
-  var items = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject || (_templateObject = _taggedTemplateLiteral(["dreadful roast, stinking agaricus, wax banana, eau de mort"]))); // if (grindFlour) items.splice(0, 0, $item`bone flour`);
+  var items = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject || (_templateObject = _taggedTemplateLiteral(["dreadful roast, stinking agaricus, wax banana, complicated lock impression, eau de mort"]))); // if (grindFlour) items.splice(0, 0, $item`bone flour`);
   // if (myClass() === $class`Accordion Thief`) items.splice(0, 0, $item`intricate music box parts`);
 
   if (args.includes("freddies")) items.push((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["Freddy Kruegerand"]))));
@@ -20057,36 +20065,67 @@ function planAllNoncombats(items, unlock, available) {
   var originalClanName = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.get().name;
   var stashClanName = (0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)()[0];
   var acquired = new Map();
-  var flourCount = 0;
-  var bone = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["old dry bone"])));
+  var requirementItems = (0,libram__WEBPACK_IMPORTED_MODULE_2__.$items)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["old dry bone, wax banana"])));
 
   try {
     libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(stashClanName);
-    var plan = planAllNoncombats(items, unlock, new Map([[bone, (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.stashAmount)(bone)]]));
-    flourCount = (0,libram__WEBPACK_IMPORTED_MODULE_2__.sum)(plan, _ref3 => {
+    var plan = planAllNoncombats(items, unlock, new Map(requirementItems.map(item => [item, (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.stashAmount)(item)])));
+    var requirementCounts = requirementItems.map(requirement => [requirement, (0,libram__WEBPACK_IMPORTED_MODULE_2__.sum)(plan, _ref3 => {
       var _ref4 = _slicedToArray(_ref3, 2),
           noncombatPlans = _ref4[1];
 
       return noncombatPlans.filter(_ref5 => {
-        var _ref6 = _slicedToArray(_ref5, 4),
-            item = _ref6[3];
+        var _ref6 = _slicedToArray(_ref5, 3),
+            zone = _ref6[0],
+            choiceIndex = _ref6[1],
+            subIndex = _ref6[2];
 
-        return item === (0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["bone flour"])));
+        var choice = zone.choices.get(choiceIndex);
+        if (!choice) return false;
+        var subNoncombat = choice.choices.get(subIndex);
+        if (!subNoncombat) return false;
+        return subNoncombat && subNoncombat.requirement === requirement;
       }).length;
+    })]).filter(_ref7 => {
+      var _ref8 = _slicedToArray(_ref7, 2),
+          count = _ref8[1];
+
+      return count > 0;
     });
-    var boneCount = 0;
+    var taken = new Map();
 
-    if (flourCount > 0) {
-      var _taken$get;
-
+    if (requirementCounts.length > 0) {
       var stashClan = libram__WEBPACK_IMPORTED_MODULE_2__.Clan.join(stashClanName);
-      var taken = stashClan.take(new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["old dry bone"]))), flourCount]]));
-      boneCount = (_taken$get = taken.get((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["old dry bone"]))))) !== null && _taken$get !== void 0 ? _taken$get : 0;
+      taken = stashClan.take(new Map(requirementCounts));
     }
 
-    if (boneCount < flourCount) {
-      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to take ".concat(flourCount, " old dry bones from stash! Replanning with ").concat(boneCount, "..."));
-      plan = planAllNoncombats(items, unlock, new Map([[(0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["old dry bone"]))), boneCount]]));
+    if (requirementCounts.some(_ref9 => {
+      var _taken$get;
+
+      var _ref10 = _slicedToArray(_ref9, 2),
+          item = _ref10[0],
+          requiredCount = _ref10[1];
+
+      return ((_taken$get = taken.get(item)) !== null && _taken$get !== void 0 ? _taken$get : 0) < requiredCount;
+    })) {
+      var requiredString = requirementCounts.map(_ref11 => {
+        var _ref12 = _slicedToArray(_ref11, 2),
+            item = _ref12[0],
+            count = _ref12[1];
+
+        return "".concat(count, " ").concat(item.plural);
+      }).join(", ");
+
+      var takenString = _toConsumableArray(taken).map(_ref13 => {
+        var _ref14 = _slicedToArray(_ref13, 2),
+            item = _ref14[0],
+            count = _ref14[1];
+
+        return "".concat(count, " ").concat(item.plural);
+      }).join(", ");
+
+      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Failed to take ".concat(requiredString, " from stash! Replanning with ").concat(takenString, "..."));
+      plan = planAllNoncombats(items, unlock, taken);
     }
 
     (0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .withWineglass */ .RQ)(() => {
@@ -20121,7 +20160,7 @@ function planAllNoncombats(items, unlock, available) {
 
               if (subnoncombat !== null && subnoncombat !== void 0 && subnoncombat.isLocked()) {
                 if (!unlock) throw "Shouldn't be trying locked NC!";
-                (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.retrieveItem)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"]))));
+                (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.retrieveItem)((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["Dreadsylvanian skeleton key"]))));
               }
 
               (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.visitUrl)("clan_dreadsylvania.php?action=forceloc&loc=".concat(noncombat.index));
@@ -20145,7 +20184,7 @@ function planAllNoncombats(items, unlock, available) {
   } finally {
     var _acquired$get2;
 
-    acquired.delete((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["Freddy Kruegerand"]))));
+    acquired.delete((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["Freddy Kruegerand"]))));
 
     if (acquired.size > 0) {
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Placing items in the stash in ".concat((0,_lib__WEBPACK_IMPORTED_MODULE_1__/* .clans */ .NF)()[0], "."));
@@ -20155,7 +20194,7 @@ function planAllNoncombats(items, unlock, available) {
       _stashClan.put(acquired);
     }
 
-    if ((_acquired$get2 = acquired.get((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["bone flour"]))))) !== null && _acquired$get2 !== void 0 ? _acquired$get2 : 0 > 0) {
+    if ((_acquired$get2 = acquired.get((0,libram__WEBPACK_IMPORTED_MODULE_2__.$item)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["bone flour"]))))) !== null && _acquired$get2 !== void 0 ? _acquired$get2 : 0 > 0) {
       (0,libram__WEBPACK_IMPORTED_MODULE_2__.set)("_dr_groundFlour", true);
     }
 
@@ -20401,7 +20440,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 function elementPocket(elementId) {
-  return Item.get("Dreadsylvanian ".concat(elementId === "stinky" ? "stink" : elementId, " pocket"));
+  return Item.get("Dreadsylvanian ".concat((0,_dungeon_raidlog__WEBPACK_IMPORTED_MODULE_1__/* .toElement */ .Nj)(elementId), " pocket"));
 }
 
 function elementCluster(elementId) {
@@ -22778,7 +22817,7 @@ function elementPocket(elementId) {
 function zap(item) {
   var output = (0,external_kolmafia_.cliExecuteOutput)("zap ".concat(item));
   var blewUp = !!output.match(/You lose [0-9,]+ hit points/);
-  var match = output.match(/You acquire an item: (.*)$/);
+  var match = output.match(/You acquire an item: (.*?)\n/);
   if (!match) return [null, blewUp];
   return [Item.get(match[1]), blewUp];
 }
@@ -22828,7 +22867,7 @@ function zapQuestOutfit() {
 
 
     try {
-      while ((0,dist.get)("lastPlusSignUnlock") !== (0,external_kolmafia_.myAscensions)()) {
+      while ((0,dist.get)("lastPlusSignUnlock") < (0,external_kolmafia_.myAscensions)()) {
         var freeRun = zapQuestOutfit();
 
         if (!(0,dist.have)((0,dist.$item)(zap_templateObject5 || (zap_templateObject5 = zap_taggedTemplateLiteral(["plus sign"]))))) {
@@ -22857,12 +22896,15 @@ function zapQuestOutfit() {
           (0,combat.adventureMacro)((0,dist.$location)(zap_templateObject12 || (zap_templateObject12 = zap_taggedTemplateLiteral(["Noob Cave"]))), (_freeRun$macro3 = freeRun === null || freeRun === void 0 ? void 0 : freeRun.macro) !== null && _freeRun$macro3 !== void 0 ? _freeRun$macro3 : combat.Macro.kill());
         }
       }
-    } finally {
-      if ((0,dist.have)((0,dist.$effect)(zap_templateObject13 || (zap_templateObject13 = zap_taggedTemplateLiteral(["Feeling Lost"]))))) (0,external_kolmafia_.cliExecute)("shrug Feeling Lost");
-      if ((0,dist.have)((0,dist.$effect)(zap_templateObject14 || (zap_templateObject14 = zap_taggedTemplateLiteral(["Teleportitis"]))))) (0,external_kolmafia_.cliExecute)("shrug Teleportitis");
-    }
 
-    (0,external_kolmafia_.use)((0,dist.$item)(zap_templateObject15 || (zap_templateObject15 = zap_taggedTemplateLiteral(["plus sign"]))));
+      if ((0,dist.get)("lastPlusSignUnlock") < (0,external_kolmafia_.myAscensions)() && !(0,external_kolmafia_.use)((0,dist.$item)(zap_templateObject13 || (zap_templateObject13 = zap_taggedTemplateLiteral(["plus sign"]))))) {
+        (0,external_kolmafia_.print)("Failed to use plus sign.", "red");
+        return;
+      }
+    } finally {
+      if ((0,dist.have)((0,dist.$effect)(zap_templateObject14 || (zap_templateObject14 = zap_taggedTemplateLiteral(["Feeling Lost"]))))) (0,external_kolmafia_.cliExecute)("shrug Feeling Lost");
+      if ((0,dist.have)((0,dist.$effect)(zap_templateObject15 || (zap_templateObject15 = zap_taggedTemplateLiteral(["Teleportitis"]))))) (0,external_kolmafia_.cliExecute)("shrug Teleportitis");
+    }
 
     while (!(0,dist.have)((0,dist.$item)(zap_templateObject16 || (zap_templateObject16 = zap_taggedTemplateLiteral(["dead mimic"]))))) {
       var _freeRun3 = zapQuestOutfit();
@@ -22891,8 +22933,8 @@ function zapQuestOutfit() {
     }
 
     try {
-      while ((0,dist.get)("_zapCount") < 2 || (0,dist.have)(pyec) && !(0,dist.get)("expressCardUsed")) {
-        if ((0,dist.get)("_zapCount") === 2 && (0,dist.have)(pyec)) (0,external_kolmafia_.use)(pyec);
+      while ((0,dist.get)("_zapCount") < 1 || (0,dist.have)(pyec) && !(0,dist.get)("expressCardUsed")) {
+        if ((0,dist.get)("_zapCount") === 1 && (0,dist.have)(pyec)) (0,external_kolmafia_.use)(pyec);
         var pocket = elementPocket(element);
 
         if (!clan.take([pocket])) {

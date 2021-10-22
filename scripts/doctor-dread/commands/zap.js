@@ -20120,7 +20120,7 @@ function elementPocket(elementId) {
 function zap(item) {
   var output = (0,external_kolmafia_.cliExecuteOutput)("zap ".concat(item));
   var blewUp = !!output.match(/You lose [0-9,]+ hit points/);
-  var match = output.match(/You acquire an item: (.*)$/);
+  var match = output.match(/You acquire an item: (.*?)\n/);
   if (!match) return [null, blewUp];
   return [Item.get(match[1]), blewUp];
 }
@@ -20170,7 +20170,7 @@ function zapQuestOutfit() {
 
 
     try {
-      while ((0,dist.get)("lastPlusSignUnlock") !== (0,external_kolmafia_.myAscensions)()) {
+      while ((0,dist.get)("lastPlusSignUnlock") < (0,external_kolmafia_.myAscensions)()) {
         var freeRun = zapQuestOutfit();
 
         if (!(0,dist.have)((0,dist.$item)(zap_templateObject5 || (zap_templateObject5 = zap_taggedTemplateLiteral(["plus sign"]))))) {
@@ -20199,12 +20199,15 @@ function zapQuestOutfit() {
           (0,combat.adventureMacro)((0,dist.$location)(zap_templateObject12 || (zap_templateObject12 = zap_taggedTemplateLiteral(["Noob Cave"]))), (_freeRun$macro3 = freeRun === null || freeRun === void 0 ? void 0 : freeRun.macro) !== null && _freeRun$macro3 !== void 0 ? _freeRun$macro3 : combat.Macro.kill());
         }
       }
-    } finally {
-      if ((0,dist.have)((0,dist.$effect)(zap_templateObject13 || (zap_templateObject13 = zap_taggedTemplateLiteral(["Feeling Lost"]))))) (0,external_kolmafia_.cliExecute)("shrug Feeling Lost");
-      if ((0,dist.have)((0,dist.$effect)(zap_templateObject14 || (zap_templateObject14 = zap_taggedTemplateLiteral(["Teleportitis"]))))) (0,external_kolmafia_.cliExecute)("shrug Teleportitis");
-    }
 
-    (0,external_kolmafia_.use)((0,dist.$item)(zap_templateObject15 || (zap_templateObject15 = zap_taggedTemplateLiteral(["plus sign"]))));
+      if ((0,dist.get)("lastPlusSignUnlock") < (0,external_kolmafia_.myAscensions)() && !(0,external_kolmafia_.use)((0,dist.$item)(zap_templateObject13 || (zap_templateObject13 = zap_taggedTemplateLiteral(["plus sign"]))))) {
+        (0,external_kolmafia_.print)("Failed to use plus sign.", "red");
+        return;
+      }
+    } finally {
+      if ((0,dist.have)((0,dist.$effect)(zap_templateObject14 || (zap_templateObject14 = zap_taggedTemplateLiteral(["Feeling Lost"]))))) (0,external_kolmafia_.cliExecute)("shrug Feeling Lost");
+      if ((0,dist.have)((0,dist.$effect)(zap_templateObject15 || (zap_templateObject15 = zap_taggedTemplateLiteral(["Teleportitis"]))))) (0,external_kolmafia_.cliExecute)("shrug Teleportitis");
+    }
 
     while (!(0,dist.have)((0,dist.$item)(zap_templateObject16 || (zap_templateObject16 = zap_taggedTemplateLiteral(["dead mimic"]))))) {
       var _freeRun3 = zapQuestOutfit();
@@ -20233,8 +20236,8 @@ function zapQuestOutfit() {
     }
 
     try {
-      while ((0,dist.get)("_zapCount") < 2 || (0,dist.have)(pyec) && !(0,dist.get)("expressCardUsed")) {
-        if ((0,dist.get)("_zapCount") === 2 && (0,dist.have)(pyec)) (0,external_kolmafia_.use)(pyec);
+      while ((0,dist.get)("_zapCount") < 1 || (0,dist.have)(pyec) && !(0,dist.get)("expressCardUsed")) {
+        if ((0,dist.get)("_zapCount") === 1 && (0,dist.have)(pyec)) (0,external_kolmafia_.use)(pyec);
         var pocket = elementPocket(element);
 
         if (!clan.take([pocket])) {
