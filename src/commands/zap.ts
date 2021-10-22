@@ -46,7 +46,7 @@ function elementPocket(elementId: DreadElementId): Item {
 function zap(item: Item): [Item | null, boolean] {
   const output = cliExecuteOutput(`zap ${item}`);
   const blewUp = !!output.match(/You lose [0-9,]+ hit points/);
-  const match = output.match(/You acquire an item: (.*)$/);
+  const match = output.match(/You acquire an item: (.*?)\n/);
   if (!match) return [null, blewUp];
 
   return [Item.get(match[1]), blewUp];
@@ -96,7 +96,7 @@ export default new Command(
 
       // Do the zap wand quest...
       try {
-        while (get("lastPlusSignUnlock") !== myAscensions()) {
+        while (get("lastPlusSignUnlock") < myAscensions()) {
           const freeRun = zapQuestOutfit();
           if (!have($item`plus sign`)) {
             propertyManager.setChoices({ [451]: 3 });
@@ -124,12 +124,16 @@ export default new Command(
             adventureMacro($location`Noob Cave`, freeRun?.macro ?? Macro.kill());
           }
         }
+
+        if (get("lastPlusSignUnlock") < myAscensions() && !use($item`plus sign`)) {
+          print("Failed to use plus sign.", "red");
+          return;
+        }
       } finally {
         if (have($effect`Feeling Lost`)) cliExecute("shrug Feeling Lost");
         if (have($effect`Teleportitis`)) cliExecute("shrug Teleportitis");
       }
 
-      use($item`plus sign`);
       while (!have($item`dead mimic`)) {
         const freeRun = zapQuestOutfit();
         propertyManager.setChoices({ [25]: 2 });
@@ -160,8 +164,8 @@ export default new Command(
       }
 
       try {
-        while (get("_zapCount") < 2 || (have(pyec) && !get("expressCardUsed"))) {
-          if (get("_zapCount") === 2 && have(pyec)) use(pyec);
+        while (get("_zapCount") < 1 || (have(pyec) && !get("expressCardUsed"))) {
+          if (get("_zapCount") === 1 && have(pyec)) use(pyec);
           const pocket = elementPocket(element);
           if (!clan.take([pocket])) {
             print("Failed to withdraw from stash.", "red");

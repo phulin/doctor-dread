@@ -91,7 +91,7 @@ export default new Command(
   (args: string[]) => {
     // const grindFlour = !get("_dr_groundFlour", false) && myPrimestat() === $stat`Muscle`;
 
-    const items = $items`dreadful roast, stinking agaricus, wax banana, eau de mort`;
+    const items = $items`dreadful roast, stinking agaricus, wax banana, complicated lock impression, eau de mort`;
     // if (grindFlour) items.splice(0, 0, $item`bone flour`);
     // if (myClass() === $class`Accordion Thief`) items.splice(0, 0, $item`intricate music box parts`);
     if (args.includes("freddies")) items.push($item`Freddy Kruegerand`);
@@ -119,31 +119,51 @@ export default new Command(
     const stashClanName = clans()[0];
     const acquired = new Map<Item, number>();
 
-    let flourCount = 0;
-    const bone = $item`old dry bone`;
+    const requirementItems = $items`old dry bone, wax banana`;
 
     try {
       Clan.join(stashClanName);
-      let plan = planAllNoncombats(items, unlock, new Map([[bone, stashAmount(bone)]]));
-
-      flourCount = sum(
-        plan,
-        ([, noncombatPlans]) =>
-          noncombatPlans.filter(([, , , item]) => item === $item`bone flour`).length
+      let plan = planAllNoncombats(
+        items,
+        unlock,
+        new Map(requirementItems.map((item) => [item, stashAmount(item)]))
       );
 
-      let boneCount = 0;
-      if (flourCount > 0) {
+      const requirementCounts = requirementItems
+        .map(
+          (requirement) =>
+            [
+              requirement,
+              sum(
+                plan,
+                ([, noncombatPlans]) =>
+                  noncombatPlans.filter(([zone, choiceIndex, subIndex]) => {
+                    const choice = zone.choices.get(choiceIndex);
+                    if (!choice) return false;
+                    const subNoncombat = choice.choices.get(subIndex);
+                    if (!subNoncombat) return false;
+                    return subNoncombat && subNoncombat.requirement === requirement;
+                  }).length
+              ),
+            ] as [Item, number]
+        )
+        .filter(([, count]) => count > 0);
+
+      let taken = new Map<Item, number>();
+      if (requirementCounts.length > 0) {
         const stashClan = Clan.join(stashClanName);
-        const taken = stashClan.take(new Map([[$item`old dry bone`, flourCount]]));
-        boneCount = taken.get($item`old dry bone`) ?? 0;
+        taken = stashClan.take(new Map(requirementCounts));
       }
 
-      if (boneCount < flourCount) {
-        print(
-          `Failed to take ${flourCount} old dry bones from stash! Replanning with ${boneCount}...`
-        );
-        plan = planAllNoncombats(items, unlock, new Map([[$item`old dry bone`, boneCount]]));
+      if (
+        requirementCounts.some(([item, requiredCount]) => (taken.get(item) ?? 0) < requiredCount)
+      ) {
+        const requiredString = requirementCounts
+          .map(([item, count]) => `${count} ${item.plural}`)
+          .join(", ");
+        const takenString = [...taken].map(([item, count]) => `${count} ${item.plural}`).join(", ");
+        print(`Failed to take ${requiredString} from stash! Replanning with ${takenString}...`);
+        plan = planAllNoncombats(items, unlock, taken);
       }
 
       withWineglass(() => {
